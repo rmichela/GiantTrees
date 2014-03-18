@@ -1,0 +1,4 @@
+name: GiantTrees
+version: "1.0-R01"
+author: Ryan Michela
+main: com.ryanmichela.trees.TreePlugin
