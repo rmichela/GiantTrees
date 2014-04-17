@@ -33,6 +33,7 @@ public class TreePlugin extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
+        if (event.getItem() != null)
         if (event.getItem().getType() == Material.GOLD_HOE && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             Chunk chunk = event.getClickedBlock().getChunk();
             World world = chunk.getWorld();

@@ -2,6 +2,7 @@ package com.ryanmichela.trees;
 
 import com.ryanmichela.trees.rendering.Draw3d;
 import com.ryanmichela.trees.rendering.MinecraftExporter;
+import net.sourceforge.arbaro.params.AbstractParam;
 import net.sourceforge.arbaro.tree.Tree;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -30,12 +31,13 @@ public class TreePopulator extends BlockPopulator {
             File treeFile = new File(plugin.getDataFolder(), "tree.xml");
             InputStream treeStream = new FileInputStream(treeFile);
 
+            AbstractParam.loading = true;
             Tree tree = new Tree();
             tree.setOutputType(Tree.CONES);
             tree.readFromXML(treeStream);
             tree.params.Seed = random.nextInt();
-            tree.params.stopLevel = -1;
-            tree.params.verbose = true;
+            tree.params.stopLevel = 3; // -1 for everything
+            tree.params.verbose = false;
             tree.make();
 
             Location refPoint = new Location(world, chunk.getX() * 16 + 8, 64, chunk.getZ() * 16 + 8);
@@ -43,6 +45,7 @@ public class TreePopulator extends BlockPopulator {
 
             MinecraftExporter treeExporter = new MinecraftExporter(tree, new Draw3d(refPoint));
             treeExporter.write();
+            AbstractParam.loading = false;
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -4,16 +4,19 @@ import net.sourceforge.arbaro.tree.DefaultStemTraversal;
 import net.sourceforge.arbaro.tree.Segment;
 import net.sourceforge.arbaro.tree.Subsegment;
 import net.sourceforge.arbaro.tree.TraversalException;
+import org.bukkit.Material;
 
 /**
  * Copyright 2014 Ryan Michela
  */
 public class MinecraftSegmentExporter extends DefaultStemTraversal {
     private Draw3d d3d;
+    private Material material;
 
-    public MinecraftSegmentExporter(Draw3d d3d) {
+    public MinecraftSegmentExporter(Draw3d d3d, Material material) {
         super();
         this.d3d = d3d;
+        this.material = material;
     }
 
     public boolean enterSegment(Segment s) throws TraversalException {
@@ -24,7 +27,7 @@ public class MinecraftSegmentExporter extends DefaultStemTraversal {
         for (int i=0; i<s.subsegments.size()-1; i++) {
             Subsegment ss1 = (Subsegment)s.subsegments.elementAt(i);
             Subsegment ss2 = (Subsegment)s.subsegments.elementAt(i+1);
-            d3d.drawCone(d3d.toLoc(ss1.pos), ss1.rad, d3d.toLoc(ss2.pos), ss2.rad);
+            d3d.drawCone(d3d.toLoc(ss1.pos), ss1.rad, d3d.toLoc(ss2.pos), ss2.rad, material);
             // for helix subsegs put spheres between
             if (s.lpar.nCurveV<0 && i<s.subsegments.size()-2) {
                 d3d.drawSphere(d3d.toLoc(ss1.pos), ss1.rad - 0.0001);

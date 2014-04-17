@@ -1,6 +1,7 @@
 package com.ryanmichela.trees.rendering;
 
 import net.sourceforge.arbaro.tree.*;
+import org.bukkit.Material;
 
 /**
  * Copyright 2014 Ryan Michela
@@ -37,7 +38,12 @@ public class MinecraftStemExporter implements TreeTraversal {
 
         } else {
 
-            MinecraftSegmentExporter exporter = new MinecraftSegmentExporter(d3d);
+            Material material = Material.LOG;
+            if (stem.stemlevel == 0) material = Material.WOOL;
+            if (stem.stemlevel == 1) material = Material.SANDSTONE;
+            if (stem.stemlevel == 2) material = Material.BRICK;
+
+            MinecraftSegmentExporter exporter = new MinecraftSegmentExporter(d3d, material);
             stem.traverseStem(exporter);
 
             return true;

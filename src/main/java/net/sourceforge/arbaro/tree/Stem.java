@@ -322,7 +322,7 @@ public class Stem {
 	/**
 	 * Creates a new stem
 	 * 
-	 * @param tr the tree object 
+	 * @param tr the tree object
 	 * @param params the general tree parameters
 	 * @param lparams the parameters for the stem level
 	 * @param parnt the parent stem, from wich the stems grows out
