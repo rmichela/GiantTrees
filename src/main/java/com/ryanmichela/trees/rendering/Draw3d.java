@@ -19,7 +19,7 @@ public class Draw3d {
         this.refPoint = refPoint;
     }
 
-    public void drawCone(Location l1, double rad1, Location l2, double rad2, Material material) {
+    public void drawCone(Location l1, double rad1, Location l2, double rad2) {
         l1.add(refPoint);
         l2.add(refPoint);
 
@@ -67,7 +67,22 @@ public class Draw3d {
         }
 
         for(Location loc : locations) {
-            refPoint.getWorld().getBlockAt(loc).setType(material);
+            Block b = refPoint.getWorld().getBlockAt(loc);
+            b.setType(Material.LOG);
+            b.setData(LogData((byte)0, orientation));
+        }
+    }
+
+    private byte LogData(byte baseData, Orientation orientation) {
+        switch (orientation) {
+            case xMajor:
+                return (byte)(baseData + 4);
+            case yMajor:
+                return baseData;
+            case zMajor:
+                return (byte)(baseData + 8);
+            default:
+                return baseData;
         }
     }
 

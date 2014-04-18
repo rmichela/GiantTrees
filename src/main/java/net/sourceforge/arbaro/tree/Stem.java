@@ -22,10 +22,12 @@
 
 package net.sourceforge.arbaro.tree;
 
-import java.util.Enumeration;
+import net.sourceforge.arbaro.params.LevelParams;
+import net.sourceforge.arbaro.params.Params;
+import net.sourceforge.arbaro.transformation.Transformation;
+import net.sourceforge.arbaro.transformation.Vector;
 
-import net.sourceforge.arbaro.transformation.*;
-import net.sourceforge.arbaro.params.*;
+import java.util.Enumeration;
 
 class ArbaroError extends Exception {
 	public ArbaroError(String errmsg) {

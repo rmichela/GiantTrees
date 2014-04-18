@@ -20,10 +20,8 @@ public class MinecraftExporter extends Exporter {
     public void write() throws ExportError {
         try {
             // stems
-            for (int level=0; level < tree.params.Levels; level++) {
-                MinecraftStemExporter exporter = new MinecraftStemExporter(d3d, level);
-                tree.traverseTree(exporter);
-            }
+            MinecraftStemExporter exporter = new MinecraftStemExporter(d3d, tree.params.stopLevel);
+            tree.traverseTree(exporter);
 
             // leaves
             if (tree.params.Leaves!=0) {

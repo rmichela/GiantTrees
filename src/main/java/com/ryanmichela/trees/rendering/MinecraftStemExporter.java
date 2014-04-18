@@ -1,7 +1,6 @@
 package com.ryanmichela.trees.rendering;
 
 import net.sourceforge.arbaro.tree.*;
-import org.bukkit.Material;
 
 /**
  * Copyright 2014 Ryan Michela
@@ -30,29 +29,16 @@ public class MinecraftStemExporter implements TreeTraversal {
 
     @Override
     public boolean enterStem(Stem stem) throws TraversalException {
-        if (level >= 0 && stem.stemlevel < level) {
-            return true; // look further for stems
-
-        } else if (level >= 0 && stem.stemlevel > level) {
-            return false; // go back to higher level
-
-        } else {
-
-            Material material = Material.LOG;
-            if (stem.stemlevel == 0) material = Material.WOOL;
-            if (stem.stemlevel == 1) material = Material.SANDSTONE;
-            if (stem.stemlevel == 2) material = Material.BRICK;
-
-            MinecraftSegmentExporter exporter = new MinecraftSegmentExporter(d3d, material);
+        if (stem.stemlevel < level || level == -1)  {
+            MinecraftSegmentExporter exporter = new MinecraftSegmentExporter(d3d);
             stem.traverseStem(exporter);
-
-            return true;
         }
+        return true;
     }
 
     @Override
     public boolean leaveStem(Stem stem) throws TraversalException {
-        return false;
+        return true;
     }
 
     @Override
