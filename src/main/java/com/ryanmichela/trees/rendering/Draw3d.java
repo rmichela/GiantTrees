@@ -32,7 +32,7 @@ public class Draw3d {
         double ht = (-rad1 * h) / (rad2 - rad1);
         for (int i = 0; i < centerLine.size(); i++) {
             Location centerPoint = centerLine.get(i);
-            int r = (int)Math.ceil(rad1 * (ht - i) / ht);
+            int r = (int)Math.round(rad1 * (ht - i) / ht);
 
             List<Point2D> circle2d;
             switch(orientation) {
@@ -223,7 +223,7 @@ public class Draw3d {
             points2d.add(new Point2D(cx + x, cy - y));
             points2d.add(new Point2D(cx + y, cy + x));
             points2d.add(new Point2D(cx - y, cy + x));
-            points2d.add(new Point2D(cx - y, cy - y));
+            points2d.add(new Point2D(cx - y, cy - x));
             points2d.add(new Point2D(cx + y, cy - x));
             y++;
             radiusError += yChange;
