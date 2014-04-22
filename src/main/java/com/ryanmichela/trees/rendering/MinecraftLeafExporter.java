@@ -36,7 +36,7 @@ public class MinecraftLeafExporter implements TreeTraversal {
 
     @Override
     public boolean visitLeaf(Leaf leaf) throws TraversalException {
-        d3d.drawLeafCluster(d3d.toLoc(leaf.transf.vector()));
+        d3d.drawLeafCluster(d3d.toLoc(leaf.transf.vector()), leaf.par.LeafScale/2);
         return true;
     }
 }

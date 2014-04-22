@@ -22,10 +22,9 @@
 
 package net.sourceforge.arbaro.tree;
 
-import java.lang.Math;
-
-import net.sourceforge.arbaro.transformation.*;
-import net.sourceforge.arbaro.params.*;
+import net.sourceforge.arbaro.params.Params;
+import net.sourceforge.arbaro.transformation.Transformation;
+import net.sourceforge.arbaro.transformation.Vector;
 
 /**
  * A class for the leaves of the tree
@@ -35,7 +34,7 @@ import net.sourceforge.arbaro.params.*;
 public class Leaf {
 	
 	public Transformation transf;
-	Params par;
+	public Params par;
 	
 //	double offset;    // how far from the parent's base
 //	double length;    // the length of the leaf (without leaf stem)

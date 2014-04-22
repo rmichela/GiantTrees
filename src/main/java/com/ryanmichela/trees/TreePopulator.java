@@ -36,7 +36,7 @@ public class TreePopulator extends BlockPopulator {
             tree.setOutputType(Tree.CONES);
             tree.readFromXML(treeStream);
             tree.params.Seed = random.nextInt();
-            tree.params.stopLevel = 3; // -1 for everything
+            tree.params.stopLevel = -1; // -1 for everything
             tree.params.verbose = false;
             tree.make();
 

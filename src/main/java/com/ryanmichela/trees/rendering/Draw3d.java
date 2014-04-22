@@ -86,17 +86,34 @@ public class Draw3d {
         }
     }
 
-    public void drawSphere(Location pos, double rad) {
-        pos.add(refPoint);
-        refPoint.getWorld().getBlockAt(pos).setType(Material.LOG);
+    public List<Location> drawSphere(Location pos, double r) {
+        List<Location> locations = new LinkedList<Location>();
+        int x = pos.getBlockX();
+        int y = pos.getBlockY();
+        int z = pos.getBlockZ();
+        int rCeil = (int)Math.ceil(r);
+        double r2 = r*r;
+        for (int xx = -rCeil; xx < rCeil; xx++) {
+            for (int yy = -rCeil; yy < rCeil; yy++) {
+                for (int zz = -rCeil; zz < rCeil; zz++) {
+                    double dist2 = xx*xx + yy*yy + zz*zz;
+                    if (dist2 <= r2) {
+                        locations.add(new Location(pos.getWorld(), x+xx, y+yy, z+zz));
+                    }
+                }
+            }
+        }
+        return locations;
     }
 
-    public void drawLeafCluster(Location pos) {
+    public void drawLeafCluster(Location pos, double r) {
         pos.add(refPoint);
-        Block b = refPoint.getWorld().getBlockAt(pos);
-        if (b.getType() == Material.AIR) {
-            b.setType(Material.LEAVES);
-            b.setData((byte)4);
+        for(Location loc:drawSphere(pos, r)) {
+            Block b = loc.getBlock();
+            if (b.getType() == Material.AIR) {
+                b.setType(Material.LEAVES);
+                b.setData((byte)4);
+            }
         }
     }
 

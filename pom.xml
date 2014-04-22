@@ -30,6 +30,9 @@
     <build>
         <resources>
             <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
                 <directory>src/main/java/net/sourceforge/arbaro/gui/images</directory>
                 <targetPath>net/sourceforge/arbaro/gui/images</targetPath>
             </resource>

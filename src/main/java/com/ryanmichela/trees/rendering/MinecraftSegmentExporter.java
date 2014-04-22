@@ -28,7 +28,7 @@ public class MinecraftSegmentExporter extends DefaultStemTraversal {
             d3d.drawCone(d3d.toLoc(ss1.pos), ss1.rad, d3d.toLoc(ss2.pos), ss2.rad);
             // for helix subsegs put spheres between
             if (s.lpar.nCurveV<0 && i<s.subsegments.size()-2) {
-                d3d.drawSphere(d3d.toLoc(ss1.pos), ss1.rad - 0.0001);
+                d3d.drawSphere(d3d.toLoc(ss1.pos), Math.round(ss1.rad - 0.0001));
             }
         }
 
