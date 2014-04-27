@@ -4,7 +4,6 @@ package com.ryanmichela.trees.rendering;
 import net.sourceforge.arbaro.transformation.Vector;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -13,7 +12,8 @@ import java.util.List;
  * Copyright 2014 Ryan Michela
  */
 public class Draw3d {
-    Location refPoint;
+    private Location refPoint;
+    private WorldChangeTracker changeTracker = new WorldChangeTracker();
 
     public Draw3d(Location refPoint) {
         this.refPoint = refPoint;
@@ -23,11 +23,14 @@ public class Draw3d {
         return new Location(refPoint.getWorld(), vec.getX(), vec.getZ(), vec.getY());
     }
 
+    public void applyChanges() {
+        changeTracker.applyChanges(refPoint.getWorld());
+    }
+
     public void drawCone(Location l1, double rad1, Location l2, double rad2) {
         l1.add(refPoint);
         l2.add(refPoint);
 
-        List<Location> locations = new LinkedList<Location>();
         Orientation orientation = Orientation.orient(l1, l2);
         List<Location> centerLine = plotLine3d(l1, l2, orientation);
 
@@ -43,45 +46,52 @@ public class Draw3d {
                 case xMajor:
                     circle2d = plotCircle(centerPoint.getBlockY(), centerPoint.getBlockZ(), r);
                     for (Point2D p : circle2d) {
-                        locations.add(new Location(centerPoint.getWorld(),
+                        changeTracker.addChange(
                                 centerPoint.getBlockX(),
                                 l1.getBlockY() - centerPoint.getBlockY() + p.p,
-                                l1.getBlockZ() - centerPoint.getBlockZ() + p.q));
+                                l1.getBlockZ() - centerPoint.getBlockZ() + p.q,
+                                Material.LOG,
+                                LogData((byte)0, orientation),
+                                true);
                     }
                     break;
                 case yMajor:
                     circle2d = plotCircle(centerPoint.getBlockX(), centerPoint.getBlockZ(), r);
                     for (Point2D p : circle2d) {
-                        locations.add(new Location(centerPoint.getWorld(),
+                        changeTracker.addChange(
                                 l1.getBlockX() - centerPoint.getBlockX() + p.p,
                                 centerPoint.getBlockY(),
-                                l1.getBlockZ() - centerPoint.getBlockZ() + p.q));
+                                l1.getBlockZ() - centerPoint.getBlockZ() + p.q,
+                                Material.LOG,
+                                LogData((byte)0, orientation),
+                                true);
                     }
                     break;
                 case zMajor:
                     circle2d = plotCircle(centerPoint.getBlockX(), centerPoint.getBlockY(), r);
                     for (Point2D p : circle2d) {
-                        locations.add(new Location(centerPoint.getWorld(),
+                        changeTracker.addChange(
                                 l1.getBlockX() - centerPoint.getBlockX() + p.p,
                                 l1.getBlockY() - centerPoint.getBlockY() + p.q,
-                                centerPoint.getBlockZ()));
+                                centerPoint.getBlockZ(),
+                                Material.LOG,
+                                LogData((byte)0, orientation),
+                                true);
                     }
                     break;
             }
-        }
-
-        for(Location loc : locations) {
-            Block b = refPoint.getWorld().getBlockAt(loc);
-            b.setType(Material.LOG);
-            b.setData(LogData((byte)0, orientation));
         }
     }
 
     public void drawWoodSphere(Location pos, double r, Orientation orientation) {
         for(Location loc : plotSphere(pos, r)) {
-            Block b = refPoint.getWorld().getBlockAt(loc);
-            b.setType(Material.LOG);
-            b.setData(LogData((byte)0, orientation));
+            changeTracker.addChange(
+                    loc.getBlockX(),
+                    loc.getBlockY(),
+                    loc.getBlockZ(),
+                    Material.LOG,
+                    LogData((byte)0, orientation),
+                    true);
         }
     }
 
@@ -105,9 +115,9 @@ public class Draw3d {
         int z = pos.getBlockZ();
         int rCeil = (int)Math.ceil(r);
         double r2 = r*r;
-        for (int xx = -rCeil; xx < rCeil; xx++) {
-            for (int yy = -rCeil; yy < rCeil; yy++) {
-                for (int zz = -rCeil; zz < rCeil; zz++) {
+        for (int xx = -rCeil; xx <= rCeil; xx++) {
+            for (int yy = -rCeil; yy <= rCeil; yy++) {
+                for (int zz = -rCeil; zz <= rCeil; zz++) {
                     double dist2 = xx*xx + yy*yy + zz*zz;
                     if (dist2 <= r2) {
                         locations.add(new Location(pos.getWorld(), x+xx, y+yy, z+zz));
@@ -126,9 +136,9 @@ public class Draw3d {
 
         int halfSize = (int)Math.ceil(Math.max(Math.max(a, b), c));
 
-        for (int xx = -halfSize; xx < halfSize; xx++) {
-            for (int yy = -halfSize; yy < halfSize; yy++) {
-                for (int zz = -halfSize; zz < halfSize; zz++) {
+        for (int xx = -halfSize; xx <= halfSize; xx++) {
+            for (int yy = -halfSize; yy <= halfSize; yy++) {
+                for (int zz = -halfSize; zz <= halfSize; zz++) {
                     double left = ((xx*xx)/(a*a)) + ((yy*yy)/(b*b)) + ((zz*zz)/(c*c));
                     if (left <= 1) {
                         locations.add(new Location(pos.getWorld(), x+xx, y+yy, z+zz));
@@ -142,11 +152,13 @@ public class Draw3d {
     public void drawLeafCluster(Location pos, double length, double width) {
         pos.add(refPoint);
         for(Location loc: plotEllipsoid(pos, length, width, width)) {
-            Block b = loc.getBlock();
-            if (b.getType() == Material.AIR) {
-                b.setType(Material.LEAVES);
-                b.setData((byte)4);
-            }
+            changeTracker.addChange(
+                    loc.getBlockX(),
+                    loc.getBlockY(),
+                    loc.getBlockZ(),
+                    Material.LEAVES,
+                    (byte)4,
+                    true);
         }
     }
 
@@ -252,9 +264,9 @@ public class Draw3d {
         List<Point2D> points2d = new LinkedList<Point2D>();
 
         int rSquare = r*r;
-        for (int xx = -r; xx < r; xx++) {
-            for (int yy = -r; yy < r; yy++) {
-                if (xx*xx + yy*yy <= rSquare) {
+        for (int xx = -r; xx <= r; xx++) {
+            for (int yy = -r; yy <= r; yy++) {
+                if ((xx == 0 && yy == 0) || (xx*xx + yy*yy <= rSquare)) {
                     points2d.add(new Point2D(cx + xx, cy + yy));
                 }
             }

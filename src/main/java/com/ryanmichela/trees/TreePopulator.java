@@ -43,8 +43,10 @@ public class TreePopulator extends BlockPopulator {
             Location refPoint = new Location(world, chunk.getX() * 16 + 8, 64, chunk.getZ() * 16 + 8);
             refPoint.setY(world.getHighestBlockYAt(refPoint));
 
-            MinecraftExporter treeExporter = new MinecraftExporter(tree, new Draw3d(refPoint));
+            Draw3d d3d = new Draw3d(refPoint);
+            MinecraftExporter treeExporter = new MinecraftExporter(tree, d3d);
             treeExporter.write();
+            d3d.applyChanges();
             AbstractParam.loading = false;
 
         } catch (Exception e) {
