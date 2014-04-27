@@ -73,6 +73,14 @@ public class Draw3d {
         }
     }
 
+    public void drawWoodSphere(Location pos, double r, Orientation orientation) {
+        for(Location loc : plotSphere(pos, r)) {
+            Block b = refPoint.getWorld().getBlockAt(loc);
+            b.setType(Material.LOG);
+            b.setData(LogData((byte)0, orientation));
+        }
+    }
+
     private byte LogData(byte baseData, Orientation orientation) {
         switch (orientation) {
             case xMajor:
@@ -86,7 +94,7 @@ public class Draw3d {
         }
     }
 
-    public List<Location> drawSphere(Location pos, double r) {
+    public List<Location> plotSphere(Location pos, double r) {
         List<Location> locations = new LinkedList<Location>();
         int x = pos.getBlockX();
         int y = pos.getBlockY();
@@ -106,7 +114,7 @@ public class Draw3d {
         return locations;
     }
 
-    public List<Location> drawElipsoid(Location pos, double a, double b, double c) {
+    public List<Location> plotEllipsoid(Location pos, double a, double b, double c) {
         List<Location> locations = new LinkedList<Location>();
         int x = pos.getBlockX();
         int y = pos.getBlockY();
@@ -129,7 +137,7 @@ public class Draw3d {
 
     public void drawLeafCluster(Location pos, double length, double width) {
         pos.add(refPoint);
-        for(Location loc:drawElipsoid(pos, length, width, width)) {
+        for(Location loc: plotEllipsoid(pos, length, width, width)) {
             Block b = loc.getBlock();
             if (b.getType() == Material.AIR) {
                 b.setType(Material.LEAVES);
@@ -275,7 +283,7 @@ public class Draw3d {
         return points2d;
     }
 
-    private enum Orientation {
+    public enum Orientation {
         xMajor,
         yMajor,
         zMajor

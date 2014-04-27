@@ -4,7 +4,7 @@ import net.sourceforge.arbaro.tree.DefaultStemTraversal;
 import net.sourceforge.arbaro.tree.Segment;
 import net.sourceforge.arbaro.tree.Subsegment;
 import net.sourceforge.arbaro.tree.TraversalException;
-import org.bukkit.Material;
+import org.bukkit.Location;
 
 /**
  * Copyright 2014 Ryan Michela
@@ -22,21 +22,20 @@ public class MinecraftSegmentExporter extends DefaultStemTraversal {
         // it would be nicer to use visitSubsegment, but
         // how to see when we visit the last but one subsegment?
         // may be need an index in Subsegment
+        Draw3d.Orientation orientation = Draw3d.Orientation.yMajor;
         for (int i=0; i<s.subsegments.size()-1; i++) {
             Subsegment ss1 = (Subsegment)s.subsegments.elementAt(i);
             Subsegment ss2 = (Subsegment)s.subsegments.elementAt(i+1);
-            d3d.drawCone(d3d.toLoc(ss1.pos), ss1.rad, d3d.toLoc(ss2.pos), ss2.rad);
-            // for helix subsegs put spheres between
-            if (s.lpar.nCurveV<0 && i<s.subsegments.size()-2) {
-                d3d.drawSphere(d3d.toLoc(ss1.pos), Math.round(ss1.rad - 0.0001));
-            }
-        }
 
-        // put sphere at segment end
-        if ((s.rad2 > 0) && (! s.isLastStemSegment() ||
-                (s.lpar.nTaper>1 && s.lpar.nTaper<=2)))
-        {
-            d3d.drawSphere(d3d.toLoc(s.posTo()), s.rad2 - 0.0001);
+            Location l1 = d3d.toLoc(ss1.pos);
+            Location l2 = d3d.toLoc(ss2.pos);
+            orientation = d3d.orient(l1, l2);
+
+            d3d.drawCone(l1, ss1.rad, l2, ss2.rad);
+
+            if (l1.subtract(l2).length() > 1) {
+                d3d.drawWoodSphere(l2, ss2.rad, orientation);
+            }
         }
 
         return true;

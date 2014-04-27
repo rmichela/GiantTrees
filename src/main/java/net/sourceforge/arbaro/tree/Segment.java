@@ -43,7 +43,7 @@ public class Segment {
 	double length;
 	public double getLength() { return length; }
 	
-	Stem stem;
+	public Stem stem;
 	
 	// FIXME: use Enumeration instead of making this public
 	public java.util.Vector subsegments;
