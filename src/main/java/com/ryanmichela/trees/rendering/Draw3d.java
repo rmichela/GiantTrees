@@ -106,9 +106,30 @@ public class Draw3d {
         return locations;
     }
 
-    public void drawLeafCluster(Location pos, double r) {
+    public List<Location> drawElipsoid(Location pos, double a, double b, double c) {
+        List<Location> locations = new LinkedList<Location>();
+        int x = pos.getBlockX();
+        int y = pos.getBlockY();
+        int z = pos.getBlockZ();
+
+        int halfSize = (int)Math.ceil(Math.max(Math.max(a, b), c));
+
+        for (int xx = -halfSize; xx < halfSize; xx++) {
+            for (int yy = -halfSize; yy < halfSize; yy++) {
+                for (int zz = -halfSize; zz < halfSize; zz++) {
+                    double left = ((xx*xx)/(a*a)) + ((yy*yy)/(b*b)) + ((zz*zz)/(c*c));
+                    if (left <= 1) {
+                        locations.add(new Location(pos.getWorld(), x+xx, y+yy, z+zz));
+                    }
+                }
+            }
+        }
+        return locations;
+    }
+
+    public void drawLeafCluster(Location pos, double length, double width) {
         pos.add(refPoint);
-        for(Location loc:drawSphere(pos, r)) {
+        for(Location loc:drawElipsoid(pos, length, width, width)) {
             Block b = loc.getBlock();
             if (b.getType() == Material.AIR) {
                 b.setType(Material.LEAVES);

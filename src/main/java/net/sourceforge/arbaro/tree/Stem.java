@@ -325,9 +325,6 @@ public class Stem {
 	 * Creates a new stem
 	 * 
 	 * @param tr the tree object
-	 * @param params the general tree parameters
-	 * @param lparams the parameters for the stem level
-	 * @param parnt the parent stem, from wich the stems grows out
 	 * @param stlev the stem level
 	 * @param trf the base transformation of the stem
 	 * @param offs the offset of ste stem within the parent stem (0..1)
@@ -958,6 +955,9 @@ public class Stem {
 		for (int s=0; s<substems_eff; s++) {
 			// where on the segment add the substem
 			double where = offs+dist/2+s*dist+lpar_1.var(distv);
+            if (where > 1) {
+                where = 1/where;
+            }
 			
 			//offset from stembase
 			double offset = (segment.index + where) * segmentLength;
@@ -1228,8 +1228,7 @@ public class Stem {
 	
 	/**
 	 * Adds the current stem to the mesh object
-	 *  
-	 * @param mesh the mesh object
+	 *
 	 * @throws Exception
 	 */
 	/*
