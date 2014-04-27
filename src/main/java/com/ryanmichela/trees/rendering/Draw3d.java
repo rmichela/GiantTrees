@@ -25,7 +25,7 @@ public class Draw3d {
 
         List<Location> locations = new LinkedList<Location>();
         Orientation orientation = orient(l1, l2);
-        List<Location> centerLine = line3d(l1, l2, orientation);
+        List<Location> centerLine = plotLine3d(l1, l2, orientation);
 
         // Circle stuff
         double h = l1.distance(l2);
@@ -37,7 +37,7 @@ public class Draw3d {
             List<Point2D> circle2d;
             switch(orientation) {
                 case xMajor:
-                    circle2d = drawCircle(centerPoint.getBlockY(), centerPoint.getBlockZ(), r);
+                    circle2d = plotCircle(centerPoint.getBlockY(), centerPoint.getBlockZ(), r);
                     for (Point2D p : circle2d) {
                         locations.add(new Location(centerPoint.getWorld(),
                                 centerPoint.getBlockX(),
@@ -46,7 +46,7 @@ public class Draw3d {
                     }
                     break;
                 case yMajor:
-                    circle2d = drawCircle(centerPoint.getBlockX(), centerPoint.getBlockZ(), r);
+                    circle2d = plotCircle(centerPoint.getBlockX(), centerPoint.getBlockZ(), r);
                     for (Point2D p : circle2d) {
                         locations.add(new Location(centerPoint.getWorld(),
                                 l1.getBlockX() - centerPoint.getBlockX() + p.p,
@@ -55,7 +55,7 @@ public class Draw3d {
                     }
                     break;
                 case zMajor:
-                    circle2d = drawCircle(centerPoint.getBlockX(), centerPoint.getBlockY(), r);
+                    circle2d = plotCircle(centerPoint.getBlockX(), centerPoint.getBlockY(), r);
                     for (Point2D p : circle2d) {
                         locations.add(new Location(centerPoint.getWorld(),
                                 l1.getBlockX() - centerPoint.getBlockX() + p.p,
@@ -94,7 +94,7 @@ public class Draw3d {
         }
     }
 
-    public List<Location> plotSphere(Location pos, double r) {
+    private List<Location> plotSphere(Location pos, double r) {
         List<Location> locations = new LinkedList<Location>();
         int x = pos.getBlockX();
         int y = pos.getBlockY();
@@ -114,7 +114,7 @@ public class Draw3d {
         return locations;
     }
 
-    public List<Location> plotEllipsoid(Location pos, double a, double b, double c) {
+    private List<Location> plotEllipsoid(Location pos, double a, double b, double c) {
         List<Location> locations = new LinkedList<Location>();
         int x = pos.getBlockX();
         int y = pos.getBlockY();
@@ -150,33 +150,29 @@ public class Draw3d {
         return new Location(refPoint.getWorld(), vec.getX(), vec.getZ(), vec.getY());
     }
 
-    public List<Location> line3d(Location l1, Location l2) {
-        return line3d(l1, l2, orient(l1, l2));
-    }
-
-    private List<Location> line3d(Location l1, Location l2, Orientation orientation)
+    private List<Location> plotLine3d(Location l1, Location l2, Orientation orientation)
     {
         List<Location> locations = new LinkedList<Location>();
         if (orientation == Orientation.xMajor)            /* x dominant */
         {
-            List<Point2D> xy = line2d(l1.getBlockX(), l1.getBlockY(), l2.getBlockX(), l2.getBlockZ());
-            List<Point2D> xz = line2d(l1.getBlockX(), l1.getBlockZ(), l2.getBlockX(), l2.getBlockZ());
+            List<Point2D> xy = plotLine2d(l1.getBlockX(), l1.getBlockY(), l2.getBlockX(), l2.getBlockZ());
+            List<Point2D> xz = plotLine2d(l1.getBlockX(), l1.getBlockZ(), l2.getBlockX(), l2.getBlockZ());
             for(int i = 0; i < Math.min(xy.size(), xz.size()); i++) {
                 locations.add(new Location(refPoint.getWorld(), l1.getBlockX() + i, xy.get(i).q, xz.get(i).q));
             }
         }
         else if (orientation == Orientation.yMajor)            /* y dominant */
         {
-            List<Point2D> yx = line2d(l1.getBlockY(), l1.getBlockX(), l2.getBlockY(), l2.getBlockX());
-            List<Point2D> yz = line2d(l1.getBlockY(), l1.getBlockZ(), l2.getBlockY(), l2.getBlockZ());
+            List<Point2D> yx = plotLine2d(l1.getBlockY(), l1.getBlockX(), l2.getBlockY(), l2.getBlockX());
+            List<Point2D> yz = plotLine2d(l1.getBlockY(), l1.getBlockZ(), l2.getBlockY(), l2.getBlockZ());
             for(int i = 0; i < Math.min(yx.size(), yz.size()); i++) {
                 locations.add(new Location(refPoint.getWorld(), yx.get(i).q, l1.getBlockY() + i, yz.get(i).q));
             }
         }
         else if (orientation == Orientation.zMajor)            /* z dominant */
         {
-            List<Point2D> zx = line2d(l1.getBlockZ(), l1.getBlockX(), l2.getBlockZ(), l2.getBlockX());
-            List<Point2D> zy = line2d(l1.getBlockZ(), l1.getBlockY(), l2.getBlockZ(), l2.getBlockY());
+            List<Point2D> zx = plotLine2d(l1.getBlockZ(), l1.getBlockX(), l2.getBlockZ(), l2.getBlockX());
+            List<Point2D> zy = plotLine2d(l1.getBlockZ(), l1.getBlockY(), l2.getBlockZ(), l2.getBlockY());
             for(int i = 0; i < Math.min(zx.size(), zy.size()); i++) {
                 locations.add(new Location(refPoint.getWorld(), zx.get(i).q, zy.get(i).q, l1.getBlockZ() + i));
             }
@@ -195,7 +191,7 @@ public class Draw3d {
         }
     }
 
-    public List<Point2D> line2d(int x1, int y1, int x2, int y2) {
+    private List<Point2D> plotLine2d(int x1, int y1, int x2, int y2) {
         List<Point2D> points2d = new LinkedList<Point2D>();
         // Bresenham's Line Algorithm
         int currentX, currentY;
@@ -252,34 +248,18 @@ public class Draw3d {
         return points2d;
     }
 
-    public List<Point2D> drawCircle(int cx, int cy, int r) {
+    private List<Point2D> plotCircle(int cx, int cy, int r) {
         List<Point2D> points2d = new LinkedList<Point2D>();
-        int x, y;
-        int xChange, yChange;
-        int radiusError;
-        x = r;
-        y = 0;
-        xChange = 1-2*r;
-        yChange = 1;
-        radiusError = 0;
-        while (x >= y) {
-            points2d.add(new Point2D(cx + x, cy + y));
-            points2d.add(new Point2D(cx - x, cy + y));
-            points2d.add(new Point2D(cx - x, cy - y));
-            points2d.add(new Point2D(cx + x, cy - y));
-            points2d.add(new Point2D(cx + y, cy + x));
-            points2d.add(new Point2D(cx - y, cy + x));
-            points2d.add(new Point2D(cx - y, cy - x));
-            points2d.add(new Point2D(cx + y, cy - x));
-            y++;
-            radiusError += yChange;
-            yChange += 2;
-            if (2*radiusError + xChange > 0) {
-                x--;
-                radiusError += xChange;
-                xChange += 2;
+
+        int rSquare = r*r;
+        for (int xx = -r; xx < r; xx++) {
+            for (int yy = -r; yy < r; yy++) {
+                if (xx*xx + yy*yy <= rSquare) {
+                    points2d.add(new Point2D(cx + xx, cy + yy));
+                }
             }
         }
+
         return points2d;
     }
 
@@ -290,7 +270,6 @@ public class Draw3d {
     }
 
     public Orientation orient(Location l1, Location l2) {
-        List<Location> locations = new LinkedList<Location>();
         double dx = Math.abs(l2.getX() - l1.getX());
         double dy = Math.abs(l2.getY() - l1.getY());
         double dz = Math.abs(l2.getZ() - l1.getZ());
