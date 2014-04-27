@@ -138,7 +138,7 @@ public class Draw3d {
     }
 
     public void drawLeafCluster(Vector pos, double length, double width) {
-        for(Vector loc: plotEllipsoid(length, width, width)) {
+        for(Vector loc: plotEllipsoid(length, width, length)) {
             loc.add(pos);
             changeTracker.addChange(
                     loc,
