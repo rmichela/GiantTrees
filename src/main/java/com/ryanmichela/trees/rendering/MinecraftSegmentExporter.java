@@ -22,14 +22,14 @@ public class MinecraftSegmentExporter extends DefaultStemTraversal {
         // it would be nicer to use visitSubsegment, but
         // how to see when we visit the last but one subsegment?
         // may be need an index in Subsegment
-        Draw3d.Orientation orientation = Draw3d.Orientation.yMajor;
+        Orientation orientation = Orientation.yMajor;
         for (int i=0; i<s.subsegments.size()-1; i++) {
             Subsegment ss1 = (Subsegment)s.subsegments.elementAt(i);
             Subsegment ss2 = (Subsegment)s.subsegments.elementAt(i+1);
 
             Location l1 = d3d.toLoc(ss1.pos);
             Location l2 = d3d.toLoc(ss2.pos);
-            orientation = d3d.orient(l1, l2);
+            orientation = Orientation.orient(l1, l2);
 
             d3d.drawCone(l1, ss1.rad, l2, ss2.rad);
 

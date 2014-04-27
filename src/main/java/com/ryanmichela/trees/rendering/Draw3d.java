@@ -19,12 +19,16 @@ public class Draw3d {
         this.refPoint = refPoint;
     }
 
+    public Location toLoc(Vector vec) {
+        return new Location(refPoint.getWorld(), vec.getX(), vec.getZ(), vec.getY());
+    }
+
     public void drawCone(Location l1, double rad1, Location l2, double rad2) {
         l1.add(refPoint);
         l2.add(refPoint);
 
         List<Location> locations = new LinkedList<Location>();
-        Orientation orientation = orient(l1, l2);
+        Orientation orientation = Orientation.orient(l1, l2);
         List<Location> centerLine = plotLine3d(l1, l2, orientation);
 
         // Circle stuff
@@ -146,10 +150,6 @@ public class Draw3d {
         }
     }
 
-    public Location toLoc(Vector vec) {
-        return new Location(refPoint.getWorld(), vec.getX(), vec.getZ(), vec.getY());
-    }
-
     private List<Location> plotLine3d(Location l1, Location l2, Orientation orientation)
     {
         List<Location> locations = new LinkedList<Location>();
@@ -261,22 +261,5 @@ public class Draw3d {
         }
 
         return points2d;
-    }
-
-    public enum Orientation {
-        xMajor,
-        yMajor,
-        zMajor
-    }
-
-    public Orientation orient(Location l1, Location l2) {
-        double dx = Math.abs(l2.getX() - l1.getX());
-        double dy = Math.abs(l2.getY() - l1.getY());
-        double dz = Math.abs(l2.getZ() - l1.getZ());
-
-        if (dx >= Math.max(dy, dz)) return Orientation.xMajor;
-        if (dy >= Math.max(dx, dz)) return Orientation.yMajor;
-        if (dz >= Math.max(dx, dy)) return Orientation.zMajor;
-        return Orientation.yMajor;
     }
 }
