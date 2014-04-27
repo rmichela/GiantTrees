@@ -4,7 +4,7 @@ import net.sourceforge.arbaro.tree.DefaultStemTraversal;
 import net.sourceforge.arbaro.tree.Segment;
 import net.sourceforge.arbaro.tree.Subsegment;
 import net.sourceforge.arbaro.tree.TraversalException;
-import org.bukkit.Location;
+import org.bukkit.util.Vector;
 
 /**
  * Copyright 2014 Ryan Michela
@@ -27,8 +27,8 @@ public class MinecraftSegmentExporter extends DefaultStemTraversal {
             Subsegment ss1 = (Subsegment)s.subsegments.elementAt(i);
             Subsegment ss2 = (Subsegment)s.subsegments.elementAt(i+1);
 
-            Location l1 = d3d.toLoc(ss1.pos);
-            Location l2 = d3d.toLoc(ss2.pos);
+            Vector l1 = Draw3d.toMcVector(ss1.pos);
+            Vector l2 = Draw3d.toMcVector(ss2.pos);
             orientation = Orientation.orient(l1, l2);
 
             d3d.drawCone(l1, ss1.rad, l2, ss2.rad);

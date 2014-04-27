@@ -1,6 +1,6 @@
 package com.ryanmichela.trees.rendering;
 
-import org.bukkit.Location;
+import org.bukkit.util.Vector;
 
 /**
  * Copyright 2014 Ryan Michela
@@ -10,7 +10,7 @@ public enum Orientation {
     yMajor,
     zMajor;
 
-    public static Orientation orient(Location l1, Location l2) {
+    public static Orientation orient(Vector l1, Vector l2) {
         double dx = Math.abs(l2.getX() - l1.getX());
         double dy = Math.abs(l2.getY() - l1.getY());
         double dz = Math.abs(l2.getZ() - l1.getZ());
