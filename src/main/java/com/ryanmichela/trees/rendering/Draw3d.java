@@ -4,6 +4,8 @@ package com.ryanmichela.trees.rendering;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.util.Vector;
+import org.bukkit.util.noise.NoiseGenerator;
+import org.bukkit.util.noise.SimplexNoiseGenerator;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -12,13 +14,22 @@ import java.util.List;
  * Copyright 2014 Ryan Michela
  */
 public class Draw3d {
+    private Location refPoint;
     private WorldChangeTracker changeTracker = new WorldChangeTracker();
+    private NoiseGenerator noise;
+    private double noiseIntensity;
+
+    public Draw3d(Location refPoint, double noiseIntensity) {
+        this.refPoint = refPoint;
+        this.noise = new SimplexNoiseGenerator(refPoint.hashCode());
+        this.noiseIntensity = noiseIntensity;
+    }
 
     public static Vector toMcVector(net.sourceforge.arbaro.transformation.Vector arbVec) {
         return new Vector(arbVec.getX(), arbVec.getZ(), arbVec.getY());
     }
 
-    public void applyChanges(Location refPoint) {
+    public void applyChanges() {
         changeTracker.applyChanges(refPoint);
     }
 
@@ -79,8 +90,7 @@ public class Draw3d {
     }
 
     public void drawWoodSphere(Vector pos, double r, Orientation orientation) {
-        for(Vector loc : plotSphere(r)) {
-            loc.add(pos);
+        for(Vector loc : plotSphere(pos, r)) {
             changeTracker.addChange(
                     loc,
                     Material.LOG,
@@ -102,16 +112,17 @@ public class Draw3d {
         }
     }
 
-    private List<Vector> plotSphere(double r) {
+    private List<Vector> plotSphere(Vector pos, double r) {
         List<Vector> points = new LinkedList<Vector>();
         int rCeil = (int)Math.ceil(r);
         double r2 = r*r;
         for (int x = -rCeil; x <= rCeil; x++) {
             for (int y = -rCeil; y <= rCeil; y++) {
                 for (int z = -rCeil; z <= rCeil; z++) {
-                    double dist2 = x*x + y*y + z*z;
-                    if (dist2 <= r2) {
-                        points.add(new Vector(x, y, z));
+                    double left = x*x + y*y + z*z;
+                    double noiseOffset = noise.noise((x + pos.getBlockX())*.25, (y + pos.getBlockY())*.25, (z + pos.getBlockZ())*.25) * noiseIntensity * 2;
+                    if (left <= r2 + noiseOffset) {
+                        points.add(new Vector(x, y, z).add(pos));
                     }
                 }
             }
@@ -119,7 +130,7 @@ public class Draw3d {
         return points;
     }
 
-    private List<Vector> plotEllipsoid(double a, double b, double c) {
+    private List<Vector> plotEllipsoid(Vector pos, double a, double b, double c) {
         List<Vector> points = new LinkedList<Vector>();
 
         int halfSize = (int)Math.ceil(Math.max(Math.max(a, b), c));
@@ -128,8 +139,9 @@ public class Draw3d {
             for (int y = -halfSize; y <= halfSize; y++) {
                 for (int z = -halfSize; z <= halfSize; z++) {
                     double left = ((x*x)/(a*a)) + ((y*y)/(b*b)) + ((z*z)/(c*c));
-                    if (left <= 1) {
-                        points.add(new Vector(x, y, z));
+                    double noiseOffset = noise.noise((x + pos.getBlockX())*.25, (y + pos.getBlockY())*.25, (z + pos.getBlockZ())*.25) * noiseIntensity;
+                    if (left <= 1 + noiseOffset) {
+                        points.add(new Vector(x, y, z).add(pos));
                     }
                 }
             }
@@ -138,8 +150,7 @@ public class Draw3d {
     }
 
     public void drawLeafCluster(Vector pos, double length, double width) {
-        for(Vector loc: plotEllipsoid(length, width, length)) {
-            loc.add(pos);
+        for(Vector loc: plotEllipsoid(pos, length, width, length)) {
             changeTracker.addChange(
                     loc,
                     Material.LEAVES,

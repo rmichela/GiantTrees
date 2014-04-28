@@ -18,10 +18,6 @@ public class MinecraftSegmentExporter extends DefaultStemTraversal {
     }
 
     public boolean enterSegment(Segment s) throws TraversalException {
-        // TODO instead of accessing subsegments this way
-        // it would be nicer to use visitSubsegment, but
-        // how to see when we visit the last but one subsegment?
-        // may be need an index in Subsegment
         Orientation orientation = Orientation.yMajor;
         for (int i=0; i<s.subsegments.size()-1; i++) {
             Subsegment ss1 = (Subsegment)s.subsegments.elementAt(i);
