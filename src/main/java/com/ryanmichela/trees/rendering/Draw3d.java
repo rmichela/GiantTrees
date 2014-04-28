@@ -47,7 +47,7 @@ public class Draw3d {
             List<Point2D> circle2d;
             switch(orientation) {
                 case xMajor:
-                    circle2d = plotCircle(centerPoint.getBlockY(), centerPoint.getBlockZ(), r);
+                    circle2d = plotCircle(centerPoint.getBlockY(), centerPoint.getBlockZ(), centerPoint.getBlockX(), r);
                     for (Point2D p : circle2d) {
                         changeTracker.addChange(
                                 new Vector(
@@ -60,7 +60,7 @@ public class Draw3d {
                     }
                     break;
                 case yMajor:
-                    circle2d = plotCircle(centerPoint.getBlockX(), centerPoint.getBlockZ(), r);
+                    circle2d = plotCircle(centerPoint.getBlockX(), centerPoint.getBlockZ(),centerPoint.getBlockY(), r);
                     for (Point2D p : circle2d) {
                         changeTracker.addChange(
                                 new Vector(
@@ -73,7 +73,7 @@ public class Draw3d {
                     }
                     break;
                 case zMajor:
-                    circle2d = plotCircle(centerPoint.getBlockX(), centerPoint.getBlockY(), r);
+                    circle2d = plotCircle(centerPoint.getBlockX(), centerPoint.getBlockY(), centerPoint.getBlockZ(), r);
                     for (Point2D p : circle2d) {
                         changeTracker.addChange(
                                 new Vector(
@@ -114,14 +114,14 @@ public class Draw3d {
 
     private List<Vector> plotSphere(Vector pos, double r) {
         List<Vector> points = new LinkedList<Vector>();
-        int rCeil = (int)Math.ceil(r);
+        int rCeil = (int)Math.ceil(r) + 4;
         double r2 = r*r;
         for (int x = -rCeil; x <= rCeil; x++) {
             for (int y = -rCeil; y <= rCeil; y++) {
                 for (int z = -rCeil; z <= rCeil; z++) {
                     double left = x*x + y*y + z*z;
-                    double noiseOffset = noise.noise((x + pos.getBlockX())*.25, (y + pos.getBlockY())*.25, (z + pos.getBlockZ())*.25) * noiseIntensity * 2;
-                    if (left <= r2 + noiseOffset) {
+                    double noiseOffset = (noise.noise((x + pos.getBlockX())*.25, (y + pos.getBlockY())*.25, (z + pos.getBlockZ())*.25) + 1) * noiseIntensity * 2;
+                    if (left <= r2 + noiseOffset*noiseOffset) {
                         points.add(new Vector(x, y, z).add(pos));
                     }
                 }
@@ -133,13 +133,13 @@ public class Draw3d {
     private List<Vector> plotEllipsoid(Vector pos, double a, double b, double c) {
         List<Vector> points = new LinkedList<Vector>();
 
-        int halfSize = (int)Math.ceil(Math.max(Math.max(a, b), c));
+        int halfSize = (int)Math.ceil(Math.max(Math.max(a, b), c)) + 2;
 
         for (int x = -halfSize; x <= halfSize; x++) {
             for (int y = -halfSize; y <= halfSize; y++) {
                 for (int z = -halfSize; z <= halfSize; z++) {
                     double left = ((x*x)/(a*a)) + ((y*y)/(b*b)) + ((z*z)/(c*c));
-                    double noiseOffset = noise.noise((x + pos.getBlockX())*.25, (y + pos.getBlockY())*.25, (z + pos.getBlockZ())*.25) * noiseIntensity;
+                    double noiseOffset = (noise.noise((x + pos.getBlockX())*.25, (y + pos.getBlockY())*.25, (z + pos.getBlockZ())*.25) + 1) * noiseIntensity;
                     if (left <= 1 + noiseOffset) {
                         points.add(new Vector(x, y, z).add(pos));
                     }
@@ -257,14 +257,15 @@ public class Draw3d {
         return points2d;
     }
 
-    private List<Point2D> plotCircle(int cx, int cy, int r) {
+    private List<Point2D> plotCircle(int cx, int cy, int z, int r) {
         List<Point2D> points2d = new LinkedList<Point2D>();
 
         int rSquare = r*r;
-        for (int xx = -r; xx <= r; xx++) {
-            for (int yy = -r; yy <= r; yy++) {
-                if ((xx == 0 && yy == 0) || (xx*xx + yy*yy <= rSquare)) {
-                    points2d.add(new Point2D(cx + xx, cy + yy));
+        for (int x = -r-8; x <= r+8; x++) {
+            for (int y = -r-8; y <= r+8; y++) {
+                double noiseOffset = (noise.noise((x + cx)*.25, (y + cy)*.25, (z)*.25) + 1) * noiseIntensity * 4;
+                if ((x == 0 && y == 0) || (x*x + y*y <= rSquare + noiseOffset*noiseOffset)) {
+                    points2d.add(new Point2D(cx + x, cy + y));
                 }
             }
         }
