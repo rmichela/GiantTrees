@@ -1,5 +1,6 @@
 package com.ryanmichela.trees;
 
+import me.desht.dhutils.nms.NMSHelper;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -9,7 +10,9 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.mcstats.Metrics;
 
+import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -23,7 +26,19 @@ public class TreePlugin extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        getServer().getPluginManager().registerEvents(this, this);
+        try {
+            Metrics metrics = new Metrics(this);
+            metrics.start();
+        } catch (IOException e) {
+            // Failed to submit the stats :-(
+        }
+
+        try {
+            NMSHelper.init(this, true);
+            getServer().getPluginManager().registerEvents(this, this);
+        } catch (Exception e) {
+            getLogger().severe("Failed to initialize plugin: " + e.getMessage());
+        }
     }
 
     @Override

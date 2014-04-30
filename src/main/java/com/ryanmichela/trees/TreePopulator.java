@@ -2,6 +2,9 @@ package com.ryanmichela.trees;
 
 import com.ryanmichela.trees.rendering.Draw3d;
 import com.ryanmichela.trees.rendering.MinecraftExporter;
+import com.ryanmichela.trees.rendering.WorldChangeTracker;
+import me.desht.dhutils.block.CraftMassBlockUpdate;
+import me.desht.dhutils.block.MassBlockUpdate;
 import net.sourceforge.arbaro.params.AbstractParam;
 import net.sourceforge.arbaro.tree.Tree;
 import org.bukkit.Chunk;
@@ -43,7 +46,10 @@ public class TreePopulator extends BlockPopulator {
             Location refPoint = new Location(world, chunk.getX() * 16 + 8, 64, chunk.getZ() * 16 + 8);
             refPoint.setY(world.getHighestBlockYAt(refPoint));
 
-            Draw3d d3d = new Draw3d(refPoint, tree.params.Smooth);
+            MassBlockUpdate massBlockUpdate = new CraftMassBlockUpdate(plugin, world);
+            massBlockUpdate.setRelightingStrategy(MassBlockUpdate.RelightingStrategy.DEFERRED);
+            WorldChangeTracker changeTracker = new WorldChangeTracker(massBlockUpdate);
+            Draw3d d3d = new Draw3d(refPoint, tree.params.Smooth, changeTracker);
             MinecraftExporter treeExporter = new MinecraftExporter(tree, d3d);
             treeExporter.write();
             d3d.applyChanges();

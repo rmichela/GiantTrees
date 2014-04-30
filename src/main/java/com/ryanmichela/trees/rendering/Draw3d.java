@@ -15,14 +15,15 @@ import java.util.List;
  */
 public class Draw3d {
     private Location refPoint;
-    private WorldChangeTracker changeTracker = new WorldChangeTracker();
+    private WorldChangeTracker changeTracker;
     private NoiseGenerator noise;
     private double noiseIntensity;
 
-    public Draw3d(Location refPoint, double noiseIntensity) {
+    public Draw3d(Location refPoint, double noiseIntensity, WorldChangeTracker changeTracker) {
         this.refPoint = refPoint;
         this.noise = new SimplexNoiseGenerator(refPoint.hashCode());
         this.noiseIntensity = noiseIntensity;
+        this.changeTracker = changeTracker;
     }
 
     public static Vector toMcVector(net.sourceforge.arbaro.transformation.Vector arbVec) {
