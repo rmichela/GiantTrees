@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Copyright 2014 Ryan Michela
@@ -46,8 +47,9 @@ public class TreePopulator extends BlockPopulator {
             Location refPoint = new Location(world, chunk.getX() * 16 + 8, 64, chunk.getZ() * 16 + 8);
             refPoint.setY(world.getHighestBlockYAt(refPoint));
 
-            MassBlockUpdate massBlockUpdate = new CraftMassBlockUpdate(plugin, world);
-            massBlockUpdate.setRelightingStrategy(MassBlockUpdate.RelightingStrategy.DEFERRED);
+            CraftMassBlockUpdate massBlockUpdate = new CraftMassBlockUpdate(plugin, world);
+            massBlockUpdate.setRelightingStrategy(MassBlockUpdate.RelightingStrategy.HYBRID);
+            massBlockUpdate.setMaxRelightTimePerTick(100, TimeUnit.MILLISECONDS);
             WorldChangeTracker changeTracker = new WorldChangeTracker(massBlockUpdate);
             Draw3d d3d = new Draw3d(refPoint, tree.params.Smooth, changeTracker);
             MinecraftExporter treeExporter = new MinecraftExporter(tree, d3d);

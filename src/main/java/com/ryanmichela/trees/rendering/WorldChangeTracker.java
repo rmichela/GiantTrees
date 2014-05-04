@@ -1,6 +1,6 @@
 package com.ryanmichela.trees.rendering;
 
-import me.desht.dhutils.block.MassBlockUpdate;
+import me.desht.dhutils.block.CraftMassBlockUpdate;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.util.Vector;
@@ -13,9 +13,9 @@ import java.util.Map;
  */
 public class WorldChangeTracker {
     private Map<WorldChangeKey, WorldChange> changes = new HashMap<WorldChangeKey, WorldChange>(1000);
-    private MassBlockUpdate massBlockUpdate;
+    private CraftMassBlockUpdate massBlockUpdate;
 
-    public WorldChangeTracker(MassBlockUpdate massBlockUpdate) {
+    public WorldChangeTracker(CraftMassBlockUpdate massBlockUpdate) {
         this.massBlockUpdate = massBlockUpdate;
     }
 
@@ -36,6 +36,8 @@ public class WorldChangeTracker {
     }
 
     public void applyChanges(Location refPoint) {
+        System.out.println("Affected blocks: " + changes.size());
+        massBlockUpdate.setDeferredBufferSize(changes.size());
         for (WorldChange change : changes.values()) {
             Location changeLoc = refPoint.clone().add(change.location);
             massBlockUpdate.setBlock(changeLoc.getBlockX(), changeLoc.getBlockY(), changeLoc.getBlockZ(), change.material.getId(), change.materialData);
