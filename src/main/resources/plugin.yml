@@ -2,3 +2,8 @@ name: GiantTrees
 version: "1.0-R01"
 author: Ryan Michela
 main: com.ryanmichela.trees.TreePlugin
+
+commands:
+   tree-edit:
+     description: Opens the giant tree editor. Can only be called from the server console.
+     usage: tree-edit treename

@@ -39,6 +39,8 @@ public class TreePlugin extends JavaPlugin implements Listener {
         } catch (Exception e) {
             getLogger().severe("Failed to initialize plugin: " + e.getMessage());
         }
+
+        getCommand("tree-edit").setExecutor(new EditTreeCommand(this));
     }
 
     @Override

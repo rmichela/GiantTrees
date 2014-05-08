@@ -22,41 +22,21 @@
 
 package net.sourceforge.arbaro.gui;
 
-import java.awt.*;
-import java.awt.event.*;
+import net.sourceforge.arbaro.params.AbstractParam;
+import net.sourceforge.arbaro.params.IntParam;
+import net.sourceforge.arbaro.params.ParamError;
+import net.sourceforge.arbaro.tree.Tree;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.Box;
+import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import javax.swing.JToolBar;
-import javax.swing.JButton;
-import javax.swing.ImageIcon;
-import javax.swing.JSplitPane;
-import javax.swing.JSlider;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JSeparator;
-import javax.swing.JScrollPane;
-import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import net.sourceforge.arbaro.params.*;
-import net.sourceforge.arbaro.tree.Tree;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.*;
 
 /**
  * The main window of Arbaro GUI
@@ -550,39 +530,42 @@ import net.sourceforge.arbaro.tree.Tree;
 			
 			int returnVal = fileChooser.showOpenDialog(frame);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				System.err.println("opening file: " +
-						fileChooser.getSelectedFile().getName());
-				try {
-					AbstractParam.loading=true;
-					tree.clearParams();
-					treefile = fileChooser.getSelectedFile();
-					// read parameters
-					tree.readFromXML(new FileInputStream(treefile));
-					AbstractParam.loading=false;
-					setModified(false);
-
-					groupsView.fireStateChanged();
-					frame.setTitle("Arbaro ["+tree.getParam("Species").toString()+"]");
-					// draw opened tree
-					previewTree.remake();
-					
-				} catch (ParamError err) {
-					setModified(false);
-					JOptionPane.showMessageDialog(frame,err.getMessage(),
-							"Parameter Error",
-							JOptionPane.ERROR_MESSAGE);
-				} catch (FileNotFoundException err) {
-					JOptionPane.showMessageDialog(frame,err.getMessage(),
-							"File not found",
-							JOptionPane.ERROR_MESSAGE);
-				} catch (Exception err) {
-					System.err.println(err);
-					err.printStackTrace();
-				}
-
+			    openFile(fileChooser.getSelectedFile());
 			}	
 		}
 	};
+
+    public void openFile(File file) {
+        System.err.println("opening file: " +
+                file.getName());
+        try {
+            AbstractParam.loading=true;
+            tree.clearParams();
+            treefile = file;
+            // read parameters
+            tree.readFromXML(new FileInputStream(treefile));
+            AbstractParam.loading=false;
+            setModified(false);
+
+            groupsView.fireStateChanged();
+            frame.setTitle("Arbaro ["+tree.getParam("Species").toString()+"]");
+            // draw opened tree
+            previewTree.remake();
+
+        } catch (ParamError err) {
+            setModified(false);
+            JOptionPane.showMessageDialog(frame,err.getMessage(),
+                    "Parameter Error",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (FileNotFoundException err) {
+            JOptionPane.showMessageDialog(frame,err.getMessage(),
+                    "File not found",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (Exception err) {
+            System.err.println(err);
+            err.printStackTrace();
+        }
+    }
 	
 	boolean shouldSave() {
 		if (modified) {

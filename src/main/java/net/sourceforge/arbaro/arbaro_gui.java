@@ -22,7 +22,9 @@
 
 package net.sourceforge.arbaro;
 
-import net.sourceforge.arbaro.gui.Workplace;    
+import net.sourceforge.arbaro.gui.Workplace;
+
+import java.io.File;
 
 /**
  * Main class for GUI version of Arbaro. It creates a new Workplace. 
@@ -31,7 +33,11 @@ import net.sourceforge.arbaro.gui.Workplace;
 public class arbaro_gui {
 
     public static void main(String[] args) {
-    	new Workplace();
+    	Workplace wp = new Workplace();
+        if (args.length == 1) {
+            File toOpen = new File(args[0]);
+            wp.openFile(toOpen);
+        }
     }
 }
 
