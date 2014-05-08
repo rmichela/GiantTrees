@@ -22,38 +22,25 @@
 
 package net.sourceforge.arbaro.gui;
 
-import java.util.Iterator;
-import java.util.TreeMap;
+import net.sourceforge.arbaro.params.*;
+import net.sourceforge.arbaro.tree.Tree;
 
-import java.awt.Component;
-import java.awt.Color;
-import java.awt.BorderLayout;
-import java.awt.Font;
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableColumn;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JComboBox;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.*;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.BorderFactory;
-import javax.swing.ListCellRenderer;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.table.*;
-import javax.swing.AbstractCellEditor;
-
-import net.sourceforge.arbaro.params.*;
-import net.sourceforge.arbaro.tree.Tree;
+import java.util.Iterator;
+import java.util.TreeMap;
 
 
 
@@ -118,6 +105,40 @@ public final class ParamValueTable extends JPanel {
 		}
 
 	}
+
+    /********************** LeafShapeBox *****************************/
+
+    class WoodTypeBox extends JComboBox {
+
+        public WoodTypeBox() {
+            super();
+            setEditable(true);
+
+            //LeafShapeParam param = (LeafShapeParam)tree.getParam("LeafShape");
+
+            //fill
+            String[] items = WoodTypeParam.values();
+
+            for (int i=0; i<items.length; i++) {
+                addItem(items[i]);
+            }
+        }
+
+        public void setValue(AbstractParam p) {
+            // select item
+            for (int i=0; i<getItemCount(); i++) {
+                if (getItemAt(i).equals(p.getValue())) {
+                    setSelectedIndex(i);
+                    return;
+                }
+            }
+        }
+
+        public String getValue() {
+            return (String)getSelectedItem();
+        }
+
+    }
 	
 	/********************** ShapeBox *****************************/
 
@@ -214,6 +235,7 @@ public final class ParamValueTable extends JPanel {
 		AbstractParam param;
 		JTextField paramField;
 		ShapeBox shapeBox;
+        WoodTypeBox woodTypeBox;
 		LeafShapeBox leafShapeBox;
 		JComponent editor;
 		
@@ -228,6 +250,13 @@ public final class ParamValueTable extends JPanel {
 	    			fireEditingStopped();
 	    		}
 	    	});
+
+            woodTypeBox = new WoodTypeBox();
+            woodTypeBox.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    fireEditingStopped();
+                }
+            });
 			
 			leafShapeBox = new LeafShapeBox();
 			leafShapeBox.addActionListener(new ActionListener() {
@@ -244,6 +273,8 @@ public final class ParamValueTable extends JPanel {
 					param.setValue(shapeBox.getValue());
 				} else if (editor == leafShapeBox) {
 					param.setValue(leafShapeBox.getValue());
+                } else if (editor == woodTypeBox) {
+                    param.setValue(woodTypeBox.getValue());
 				} else { 
 					param.setValue(paramField.getText());
 				}
@@ -269,6 +300,9 @@ public final class ParamValueTable extends JPanel {
 			} else if (param.getName().equals("LeafShape")) {
 				leafShapeBox.setValue(param);
 				editor = leafShapeBox;
+            } else if (param.getName().equals("WoodType")) {
+                woodTypeBox.setValue(param);
+                editor = woodTypeBox;
 			} else {
 				paramField.setText(param.toString());
 				paramField.selectAll();
@@ -291,6 +325,9 @@ public final class ParamValueTable extends JPanel {
 	    	} else if (value.getClass() == LeafShapeParam.class) {
 	    		setHorizontalAlignment(LEFT);
 	    		setText(value.toString());
+            } else if (value.getClass() == WoodTypeParam.class) {
+                setHorizontalAlignment(LEFT);
+                setText(value.toString());
 	    	} else if (value.getClass() == StringParam.class) {
 	    		setHorizontalAlignment(LEFT);
 	    		setText(value.toString());

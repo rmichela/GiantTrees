@@ -22,28 +22,21 @@
 
 package net.sourceforge.arbaro.params;
 
-import java.io.PrintWriter;
-import java.io.InputStream;
-import java.io.IOException;
-import java.io.LineNumberReader;
-import java.io.InputStreamReader;
-import java.io.File;
-import java.io.FileReader;
-
-import java.util.Hashtable;
-import java.util.Enumeration;
-import java.util.TreeMap;
-
-import javax.swing.event.*;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
+import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
+
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.EventListenerList;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.*;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.TreeMap;
 
 /**
  * Read parameters from Config style text file
@@ -186,8 +179,9 @@ public class Params {
 	
 	// general params
 	public String Species;
-	
+
 	public double LeafQuality;
+    public String WoodType;
 	
 	// this mesh parameters are influenced by Smooth, 
 	// this are only defaults here
@@ -261,6 +255,7 @@ public class Params {
 		stopLevel = -1;
 		
 		Species = "default";
+        WoodType = "Oak";
 		
 		LeafQuality = 1;
 		
@@ -286,6 +281,7 @@ public class Params {
 		ignoreVParams = other.ignoreVParams;
 		stopLevel = other.stopLevel;
 		Species = other.Species;
+        WoodType = other.WoodType;
 		Seed = other.Seed;
 		Smooth = other.Smooth;
 		
@@ -342,6 +338,7 @@ public class Params {
 		w.println("    <!-- general params -->");
 		// FIXME: maybe use paramDB to print out params
 		// thus no one could be forgotten?
+        writeParamXML(w,"WoodType",WoodType);
 		writeParamXML(w,"Shape",Shape);
 		writeParamXML(w,"Levels",Levels);
 		writeParamXML(w,"Scale",Scale);
@@ -443,6 +440,7 @@ public class Params {
 		PruneWidthPeak = getDblParam("PruneWidthPeak");
 		_0BaseSplits = getIntParam("0BaseSplits");
 		Species = getStrParam("Species");
+        WoodType = getStrParam("WoodType");
 //		Seed = getIntParam("Seed");
 //		outputType = getIntParam("OutFormat");
 		
@@ -633,6 +631,12 @@ public class Params {
 		paramDB.put(name,new LeafShapeParam(name,deflt,group,AbstractParam.GENERAL,
 				order++,short_desc,long_desc));
 	}
+
+    private void woodTypeParam(String name, String deflt,
+                          String group, String short_desc, String long_desc) {
+        paramDB.put(name,new WoodTypeParam(name,deflt,group,AbstractParam.GENERAL,
+                order++,short_desc,long_desc));
+    }
 	
 	private void strParam(String name, String deflt,
 			String group, String short_desc, String long_desc) {
@@ -647,6 +651,9 @@ public class Params {
 				"SHAPE","the tree's species",
 				"<strong>Species</strong> is the kind of tree.<br>\n"+
 				"It is used for declarations in the output file.<br>\n");
+
+        woodTypeParam("WoodType", "Oak", "SHAPE", "the tree's wood texture",
+                "<strong>WoodType</strong> is the name of the Minecraft wood texture to use when rendering the tree.");
 
 		shapeParam ("Shape",0,8,0,"SHAPE","general tree shape id",
 				"The <strong>Shape</strong> can be one of:<ul>\n"+
