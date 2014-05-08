@@ -2,6 +2,7 @@ package com.ryanmichela.trees;
 
 import com.ryanmichela.trees.rendering.Draw3d;
 import com.ryanmichela.trees.rendering.MinecraftExporter;
+import com.ryanmichela.trees.rendering.TreeType;
 import com.ryanmichela.trees.rendering.WorldChangeTracker;
 import me.desht.dhutils.block.CraftMassBlockUpdate;
 import me.desht.dhutils.block.MassBlockUpdate;
@@ -51,7 +52,8 @@ public class TreePopulator extends BlockPopulator {
             massBlockUpdate.setRelightingStrategy(MassBlockUpdate.RelightingStrategy.HYBRID);
             massBlockUpdate.setMaxRelightTimePerTick(100, TimeUnit.MILLISECONDS);
             WorldChangeTracker changeTracker = new WorldChangeTracker(massBlockUpdate);
-            Draw3d d3d = new Draw3d(refPoint, tree.params.Smooth, changeTracker);
+            TreeType treeType = new TreeType(tree.params.WoodType);
+            Draw3d d3d = new Draw3d(refPoint, tree.params.Smooth, treeType, changeTracker);
             MinecraftExporter treeExporter = new MinecraftExporter(tree, d3d);
             treeExporter.write();
             d3d.applyChanges();

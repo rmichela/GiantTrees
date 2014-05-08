@@ -633,7 +633,7 @@ public class Params {
 	}
 
     private void woodTypeParam(String name, String deflt,
-                          String group, String short_desc, String long_desc) {
+            String group, String short_desc, String long_desc) {
         paramDB.put(name,new WoodTypeParam(name,deflt,group,AbstractParam.GENERAL,
                 order++,short_desc,long_desc));
     }

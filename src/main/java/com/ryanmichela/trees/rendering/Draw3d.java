@@ -2,7 +2,6 @@ package com.ryanmichela.trees.rendering;
 
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.util.Vector;
 import org.bukkit.util.noise.NoiseGenerator;
 import org.bukkit.util.noise.SimplexNoiseGenerator;
@@ -18,12 +17,14 @@ public class Draw3d {
     private WorldChangeTracker changeTracker;
     private NoiseGenerator noise;
     private double noiseIntensity;
+    private TreeType treeType;
 
-    public Draw3d(Location refPoint, double noiseIntensity, WorldChangeTracker changeTracker) {
+    public Draw3d(Location refPoint, double noiseIntensity, TreeType treeType, WorldChangeTracker changeTracker) {
         this.refPoint = refPoint;
         this.noise = new SimplexNoiseGenerator(refPoint.hashCode());
         this.noiseIntensity = noiseIntensity;
         this.changeTracker = changeTracker;
+        this.treeType = treeType;
     }
 
     public static Vector toMcVector(net.sourceforge.arbaro.transformation.Vector arbVec) {
@@ -55,8 +56,8 @@ public class Draw3d {
                                     centerPoint.getBlockX(),
                                     l1.getBlockY() - centerPoint.getBlockY() + p.p,
                                     l1.getBlockZ() - centerPoint.getBlockZ() + p.q),
-                                Material.LOG,
-                                LogData((byte)0, orientation),
+                                treeType.woodMaterial,
+                                LogData(treeType.dataOffset, orientation),
                                 true);
                     }
                     break;
@@ -68,8 +69,8 @@ public class Draw3d {
                                     l1.getBlockX() - centerPoint.getBlockX() + p.p,
                                     centerPoint.getBlockY(),
                                     l1.getBlockZ() - centerPoint.getBlockZ() + p.q),
-                                Material.LOG,
-                                LogData((byte) 0, orientation),
+                                treeType.woodMaterial,
+                                LogData(treeType.dataOffset, orientation),
                                 true);
                     }
                     break;
@@ -81,8 +82,8 @@ public class Draw3d {
                                     l1.getBlockX() - centerPoint.getBlockX() + p.p,
                                     l1.getBlockY() - centerPoint.getBlockY() + p.q,
                                     centerPoint.getBlockZ()),
-                                Material.LOG,
-                                LogData((byte) 0, orientation),
+                                treeType.woodMaterial,
+                                LogData(treeType.dataOffset, orientation),
                                 true);
                     }
                     break;
@@ -94,8 +95,8 @@ public class Draw3d {
         for(Vector loc : plotSphere(pos, r)) {
             changeTracker.addChange(
                     loc,
-                    Material.LOG,
-                    LogData((byte)0, orientation),
+                    treeType.woodMaterial,
+                    LogData(treeType.dataOffset, orientation),
                     true);
         }
     }
@@ -154,8 +155,8 @@ public class Draw3d {
         for(Vector loc: plotEllipsoid(pos, length, width, length)) {
             changeTracker.addChange(
                     loc,
-                    Material.LEAVES,
-                    (byte)4,
+                    treeType.leafMaterial,
+                    (byte)(treeType.dataOffset + 4),
                     true);
         }
     }
