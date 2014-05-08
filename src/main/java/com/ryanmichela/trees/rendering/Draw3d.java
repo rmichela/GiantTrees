@@ -35,7 +35,7 @@ public class Draw3d {
         changeTracker.applyChanges(refPoint);
     }
 
-    public void drawCone(Vector l1, double rad1, Vector l2, double rad2) {
+    public void drawCone(Vector l1, double rad1, Vector l2, double rad2, int level) {
         Orientation orientation = Orientation.orient(l1, l2);
         List<Vector> centerLine = plotLine3d(l1, l2, orientation);
 
@@ -49,7 +49,7 @@ public class Draw3d {
             List<Point2D> circle2d;
             switch(orientation) {
                 case xMajor:
-                    circle2d = plotCircle(centerPoint.getBlockY(), centerPoint.getBlockZ(), centerPoint.getBlockX(), r);
+                    circle2d = plotCircle(centerPoint.getBlockY(), centerPoint.getBlockZ(), centerPoint.getBlockX(), r, level);
                     for (Point2D p : circle2d) {
                         changeTracker.addChange(
                                 new Vector(
@@ -62,7 +62,7 @@ public class Draw3d {
                     }
                     break;
                 case yMajor:
-                    circle2d = plotCircle(centerPoint.getBlockX(), centerPoint.getBlockZ(),centerPoint.getBlockY(), r);
+                    circle2d = plotCircle(centerPoint.getBlockX(), centerPoint.getBlockZ(),centerPoint.getBlockY(), r, level);
                     for (Point2D p : circle2d) {
                         changeTracker.addChange(
                                 new Vector(
@@ -75,7 +75,7 @@ public class Draw3d {
                     }
                     break;
                 case zMajor:
-                    circle2d = plotCircle(centerPoint.getBlockX(), centerPoint.getBlockY(), centerPoint.getBlockZ(), r);
+                    circle2d = plotCircle(centerPoint.getBlockX(), centerPoint.getBlockY(), centerPoint.getBlockZ(), r, level);
                     for (Point2D p : circle2d) {
                         changeTracker.addChange(
                                 new Vector(
@@ -91,8 +91,8 @@ public class Draw3d {
         }
     }
 
-    public void drawWoodSphere(Vector pos, double r, Orientation orientation) {
-        for(Vector loc : plotSphere(pos, r)) {
+    public void drawWoodSphere(Vector pos, double r, Orientation orientation, int level) {
+        for(Vector loc : plotSphere(pos, r, level)) {
             changeTracker.addChange(
                     loc,
                     treeType.woodMaterial,
@@ -114,7 +114,7 @@ public class Draw3d {
         }
     }
 
-    private List<Vector> plotSphere(Vector pos, double r) {
+    private List<Vector> plotSphere(Vector pos, double r, int level) {
         List<Vector> points = new LinkedList<Vector>();
         int rCeil = (int)Math.ceil(r) + 4;
         double r2 = r*r;
@@ -122,7 +122,7 @@ public class Draw3d {
             for (int y = -rCeil; y <= rCeil; y++) {
                 for (int z = -rCeil; z <= rCeil; z++) {
                     double left = x*x + y*y + z*z;
-                    double noiseOffset = (noise.noise((x + pos.getBlockX())*.25, (y + pos.getBlockY())*.25, (z + pos.getBlockZ())*.25) + 1) * noiseIntensity * 2;
+                    double noiseOffset = calculateNoiseOffset((x + pos.getBlockX()), (y + pos.getBlockY()), (z + pos.getBlockZ()), 2, level);
                     if (left <= r2 + noiseOffset*noiseOffset) {
                         points.add(new Vector(x, y, z).add(pos));
                     }
@@ -132,7 +132,7 @@ public class Draw3d {
         return points;
     }
 
-    private List<Vector> plotEllipsoid(Vector pos, double a, double b, double c) {
+    private List<Vector> plotEllipsoid(Vector pos, double a, double b, double c, int level) {
         List<Vector> points = new LinkedList<Vector>();
 
         int halfSize = (int)Math.ceil(Math.max(Math.max(a, b), c)) + 2;
@@ -141,7 +141,7 @@ public class Draw3d {
             for (int y = -halfSize; y <= halfSize; y++) {
                 for (int z = -halfSize; z <= halfSize; z++) {
                     double left = ((x*x)/(a*a)) + ((y*y)/(b*b)) + ((z*z)/(c*c));
-                    double noiseOffset = (noise.noise((x + pos.getBlockX())*.25, (y + pos.getBlockY())*.25, (z + pos.getBlockZ())*.25) + 1) * noiseIntensity;
+                    double noiseOffset = calculateNoiseOffset((x + pos.getBlockX()), (y + pos.getBlockY()), (z + pos.getBlockZ()), 1, level);
                     if (left <= 1 + noiseOffset) {
                         points.add(new Vector(x, y, z).add(pos));
                     }
@@ -152,7 +152,7 @@ public class Draw3d {
     }
 
     public void drawLeafCluster(Vector pos, double length, double width) {
-        for(Vector loc: plotEllipsoid(pos, length, width, length)) {
+        for(Vector loc: plotEllipsoid(pos, length, width, length, 0)) {
             changeTracker.addChange(
                     loc,
                     treeType.leafMaterial,
@@ -259,19 +259,24 @@ public class Draw3d {
         return points2d;
     }
 
-    private List<Point2D> plotCircle(int cx, int cy, int z, int r) {
+    private List<Point2D> plotCircle(int cx, int cy, int z, int r, int level) {
         List<Point2D> points2d = new LinkedList<Point2D>();
 
         int rSquare = r*r;
         for (int x = -r-8; x <= r+8; x++) {
             for (int y = -r-8; y <= r+8; y++) {
-                double noiseOffset = (noise.noise((x + cx)*.25, (y + cy)*.25, (z)*.25) + 1) * noiseIntensity * 4;
+                double noiseOffset = calculateNoiseOffset((x + cx), (y + cy), (z), 4, level);
                 if ((x == 0 && y == 0) || (x*x + y*y <= rSquare + noiseOffset*noiseOffset)) {
                     points2d.add(new Point2D(cx + x, cy + y));
                 }
             }
         }
 
-        return points2d;
+    return points2d;
+}
+
+    private double calculateNoiseOffset(int x, int y, int z, int multiplier, int level) {
+        double levelScale = ((double)(4-level)/(double)4);
+        return (noise.noise(x*.25, y*.25, z*.25) + 1) * noiseIntensity * multiplier * levelScale;
     }
 }

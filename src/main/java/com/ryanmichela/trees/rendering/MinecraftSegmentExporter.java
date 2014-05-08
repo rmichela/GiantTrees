@@ -18,19 +18,20 @@ public class MinecraftSegmentExporter extends DefaultStemTraversal {
     }
 
     public boolean enterSegment(Segment s) throws TraversalException {
-        Orientation orientation = Orientation.yMajor;
+        int level = s.lpar.level;
+
         for (int i=0; i<s.subsegments.size()-1; i++) {
             Subsegment ss1 = (Subsegment)s.subsegments.elementAt(i);
             Subsegment ss2 = (Subsegment)s.subsegments.elementAt(i+1);
 
             Vector l1 = Draw3d.toMcVector(ss1.pos);
             Vector l2 = Draw3d.toMcVector(ss2.pos);
-            orientation = Orientation.orient(l1, l2);
+            Orientation orientation = Orientation.orient(l1, l2);
 
-            d3d.drawCone(l1, ss1.rad, l2, ss2.rad);
+            d3d.drawCone(l1, ss1.rad, l2, ss2.rad, level);
 
             if (l1.subtract(l2).length() > 1) {
-                d3d.drawWoodSphere(l2, ss2.rad, orientation);
+                d3d.drawWoodSphere(l2, ss2.rad, orientation, level);
             }
         }
 
