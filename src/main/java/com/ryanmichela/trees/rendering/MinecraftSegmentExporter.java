@@ -1,9 +1,6 @@
 package com.ryanmichela.trees.rendering;
 
-import net.sourceforge.arbaro.tree.DefaultStemTraversal;
-import net.sourceforge.arbaro.tree.Segment;
-import net.sourceforge.arbaro.tree.Subsegment;
-import net.sourceforge.arbaro.tree.TraversalException;
+import net.sourceforge.arbaro.tree.*;
 import org.bukkit.util.Vector;
 
 /**
@@ -34,6 +31,8 @@ public class MinecraftSegmentExporter extends DefaultStemTraversal {
                 d3d.drawWoodSphere(l2, ss2.rad, orientation, level);
             }
         }
+
+
 
         return true;
     }

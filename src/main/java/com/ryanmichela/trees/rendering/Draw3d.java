@@ -101,6 +101,16 @@ public class Draw3d {
         }
     }
 
+    public void drawRootJunction(Vector pos, double r) {
+        for(Vector loc : plotDownwardHemisphere(pos, r)) {
+            changeTracker.addChange(
+                    loc,
+                    treeType.woodMaterial,
+                    LogData(treeType.dataOffset, Orientation.yMajor),
+                    true);
+        }
+    }
+
     private byte LogData(byte baseData, Orientation orientation) {
         switch (orientation) {
             case xMajor:
@@ -123,6 +133,24 @@ public class Draw3d {
                 for (int z = -rCeil; z <= rCeil; z++) {
                     double left = x*x + y*y + z*z;
                     double noiseOffset = calculateNoiseOffset((x + pos.getBlockX()), (y + pos.getBlockY()), (z + pos.getBlockZ()), 2, level);
+                    if (left <= r2 + noiseOffset*noiseOffset) {
+                        points.add(new Vector(x, y, z).add(pos));
+                    }
+                }
+            }
+        }
+        return points;
+    }
+
+    private List<Vector> plotDownwardHemisphere(Vector pos, double r) {
+        List<Vector> points = new LinkedList<Vector>();
+        int rCeil = (int)Math.ceil(r) + 4;
+        double r2 = r*r;
+        for (int x = -rCeil; x <= rCeil; x++) {
+            for (int y = -rCeil; y <= 0; y++) {
+                for (int z = -rCeil; z <= rCeil; z++) {
+                    double left = x*x + y*y + z*z;
+                    double noiseOffset = calculateNoiseOffset((x + pos.getBlockX()), (y + pos.getBlockY()), (z + pos.getBlockZ()), 2, 0);
                     if (left <= r2 + noiseOffset*noiseOffset) {
                         points.add(new Vector(x, y, z).add(pos));
                     }

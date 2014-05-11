@@ -179,7 +179,7 @@ public class Stem {
 	public double getLength() { return length; }
 	double segmentLength;
 	int segmentCount;
-	double baseRadius;
+	public double baseRadius;
 	
 	double lengthChildMax;
 	double substemsPerSegment;

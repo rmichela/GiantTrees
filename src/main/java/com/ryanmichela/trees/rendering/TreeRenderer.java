@@ -3,6 +3,8 @@ package com.ryanmichela.trees.rendering;
 import me.desht.dhutils.block.CraftMassBlockUpdate;
 import me.desht.dhutils.block.MassBlockUpdate;
 import net.sourceforge.arbaro.params.AbstractParam;
+import net.sourceforge.arbaro.tree.Segment;
+import net.sourceforge.arbaro.tree.Stem;
 import net.sourceforge.arbaro.tree.Tree;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
@@ -41,8 +43,11 @@ public class TreeRenderer {
             WorldChangeTracker changeTracker = new WorldChangeTracker(massBlockUpdate);
             TreeType treeType = new TreeType(tree.params.WoodType);
             Draw3d d3d = new Draw3d(refPoint, tree.params.Smooth, treeType, changeTracker);
+
             MinecraftExporter treeExporter = new MinecraftExporter(tree, d3d);
             treeExporter.write();
+            d3d.drawRootJunction(Draw3d.toMcVector(((Segment)((Stem) tree.trunks.get(0)).stemSegments().nextElement()).posFrom()), ((Stem)tree.trunks.get(0)).baseRadius);
+
             d3d.applyChanges();
             AbstractParam.loading = false;
         } catch (Exception e) {

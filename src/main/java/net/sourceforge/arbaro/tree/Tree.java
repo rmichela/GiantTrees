@@ -66,7 +66,7 @@ public class Tree {
 	boolean outputLeafUVs = false;
 	
 	// the trunks (one for trees, many for bushes)
-	java.util.Vector trunks;
+	public java.util.Vector trunks;
 	double trunk_rotangle = 0;
 	
 	Progress progress;

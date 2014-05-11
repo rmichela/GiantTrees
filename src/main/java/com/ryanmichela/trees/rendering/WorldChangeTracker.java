@@ -12,7 +12,7 @@ import java.util.Map;
  * Copyright 2014 Ryan Michela
  */
 public class WorldChangeTracker {
-    private Map<WorldChangeKey, WorldChange> changes = new HashMap<WorldChangeKey, WorldChange>(1000);
+    private Map<WorldChangeKey, WorldChange> changes = new HashMap<WorldChangeKey, WorldChange>(10000);
     private CraftMassBlockUpdate massBlockUpdate;
 
     public WorldChangeTracker(CraftMassBlockUpdate massBlockUpdate) {
@@ -21,9 +21,6 @@ public class WorldChangeTracker {
 
     public void addChange(Vector location, Material material, byte materialData, boolean overwrite) {
         int blockY = location.getBlockY();
-        if (blockY > 255 || blockY < 0) {
-            return;
-        }
 
         WorldChangeKey key = new WorldChangeKey(location.getBlockX(), blockY, location.getBlockZ());
         if (changes.containsKey(key)) {
@@ -40,7 +37,10 @@ public class WorldChangeTracker {
         massBlockUpdate.setDeferredBufferSize(changes.size());
         for (WorldChange change : changes.values()) {
             Location changeLoc = refPoint.clone().add(change.location);
-            massBlockUpdate.setBlock(changeLoc.getBlockX(), changeLoc.getBlockY(), changeLoc.getBlockZ(), change.material.getId(), change.materialData);
+            int blockY = changeLoc.getBlockY();
+            if (blockY <= 255 || blockY >= 0) {
+                massBlockUpdate.setBlock(changeLoc.getBlockX(), changeLoc.getBlockY(), changeLoc.getBlockZ(), change.material.getId(), change.materialData);
+            }
         }
 
         massBlockUpdate.notifyClients();
