@@ -5,5 +5,13 @@ main: com.ryanmichela.trees.TreePlugin
 
 commands:
    tree-edit:
-     description: Opens the giant tree editor. Can only be called from the server console.
-     usage: tree-edit treename
+      description: Opens the giant tree editor. Can only be called from the server console.
+      usage: tree-edit treename
+
+permissions:
+   gianttrees.create:
+      description: Allows the creation of a giant tree using a golden hoe.
+      default: op
+   gianttrees.grow:
+      description: Allows a player to grow a giant tree by fertilizing a 9x9 grid of saplings.
+      default: true
