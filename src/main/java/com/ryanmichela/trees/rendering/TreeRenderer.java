@@ -35,7 +35,8 @@ public class TreeRenderer {
             WorldChangeTracker changeTracker = new WorldChangeTracker(massBlockUpdate);
 
             plugin.getLogger().info("Rendering tree " + treeFile.getName());
-            Tree tree = loadTree(treeFile, seed, true);
+            Tree tree = loadTree(treeFile, seed);
+            tree.make();
             TreeType treeType = new TreeType(tree.params.WoodType);
             Draw3d d3d = new Draw3d(refPoint, tree.params.Smooth, treeType, changeTracker, Draw3d.RenderOrientation.NORMAL);
 
@@ -45,7 +46,11 @@ public class TreeRenderer {
 
             if (rootFile != null) {
                 plugin.getLogger().info("Rendering root " + rootFile.getName());
-                Tree root = loadTree(rootFile, seed, false);
+                Tree root = loadTree(rootFile, seed);
+                // Turn off leaves for roots and scale the roots the same as the tree
+                root.params.Leaves = -1;
+                root.params.scale_tree = tree.params.scale_tree;
+                root.make();
                 TreeType rootType = new TreeType(root.params.WoodType);
                 Draw3d d3dInverted = new Draw3d(refPoint, root.params.Smooth, rootType, changeTracker, Draw3d.RenderOrientation.INVERTED);
 
@@ -60,7 +65,7 @@ public class TreeRenderer {
         }
     }
 
-    private Tree loadTree(File treeFile, int seed, boolean withLeaves) throws Exception {
+    private Tree loadTree(File treeFile, int seed) throws Exception {
         if (treeFile == null) return null;
 
         Tree tree = new Tree();
@@ -69,8 +74,6 @@ public class TreeRenderer {
         tree.params.Seed = seed;
         tree.params.stopLevel = -1; // -1 for everything
         tree.params.verbose = false;
-        tree.params.Leaves = withLeaves ? 0 : -1;
-        tree.make();
         return tree;
     }
 }

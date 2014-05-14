@@ -239,7 +239,7 @@ public class Params {
 	public int _0BaseSplits;
 	
 	// variables need for stem creation
-	public double scale_tree;
+	public double scale_tree = 0;
 	
 	// change events
 	protected ChangeEvent changeEvent = null;
@@ -517,8 +517,10 @@ public class Params {
 			Levels = stopLevel;
 			Leaves = 0;
 		}
-		
-		scale_tree = Scale + levelParams[0].random.uniform(-ScaleV,ScaleV);
+
+        if (scale_tree == 0) {
+		    scale_tree = Scale + levelParams[0].random.uniform(-ScaleV,ScaleV);
+        }
 	}
 	
 	public double getShapeRatio(double ratio) {
