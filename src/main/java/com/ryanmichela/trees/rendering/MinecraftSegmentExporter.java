@@ -21,8 +21,8 @@ public class MinecraftSegmentExporter extends DefaultStemTraversal {
             Subsegment ss1 = (Subsegment)s.subsegments.elementAt(i);
             Subsegment ss2 = (Subsegment)s.subsegments.elementAt(i+1);
 
-            Vector l1 = Draw3d.toMcVector(ss1.pos);
-            Vector l2 = Draw3d.toMcVector(ss2.pos);
+            Vector l1 = d3d.toMcVector(ss1.pos);
+            Vector l2 = d3d.toMcVector(ss2.pos);
             Orientation orientation = Orientation.orient(l1, l2);
 
             d3d.drawCone(l1, ss1.rad, l2, ss2.rad, level);

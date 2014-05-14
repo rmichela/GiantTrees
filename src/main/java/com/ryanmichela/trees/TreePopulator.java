@@ -23,11 +23,12 @@ public class TreePopulator extends BlockPopulator {
     @Override
     public void populate(World world, Random random, Chunk chunk) {
         File treeFile = new File(plugin.getDataFolder(), "tree.xml");
+        File rootFile = new File(plugin.getDataFolder(), "tree.root.xml");
 
         Location refPoint = new Location(world, chunk.getX() * 16 + 8, 64, chunk.getZ() * 16 + 8);
         refPoint.setY(world.getHighestBlockYAt(refPoint));
 
         TreeRenderer renderer = new TreeRenderer(plugin);
-        renderer.RenderTree(refPoint, treeFile, true, random.nextInt());
+        renderer.RenderTree(refPoint, treeFile, rootFile, true, random.nextInt());
     }
 }

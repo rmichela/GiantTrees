@@ -11,7 +11,6 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -24,34 +23,54 @@ public class TreeRenderer {
         this.plugin = plugin;
     }
 
-    public void RenderTree(Location refPoint, File treeFile, boolean applyLight, int seed) {
+    public void RenderTree(Location refPoint, File treeFile, File rootFile, boolean applyLight, int seed) {
         try {
-            InputStream treeStream = new FileInputStream(treeFile);
 
             AbstractParam.loading = true;
-            Tree tree = new Tree();
-            tree.setOutputType(Tree.CONES);
-            tree.readFromXML(treeStream);
-            tree.params.Seed = seed;
-            tree.params.stopLevel = -1; // -1 for everything
-            tree.params.verbose = false;
-            tree.make();
+
 
             CraftMassBlockUpdate massBlockUpdate = new CraftMassBlockUpdate(plugin, refPoint.getWorld());
             massBlockUpdate.setRelightingStrategy(applyLight ? MassBlockUpdate.RelightingStrategy.HYBRID : MassBlockUpdate.RelightingStrategy.NEVER);
             massBlockUpdate.setMaxRelightTimePerTick(100, TimeUnit.MILLISECONDS);
             WorldChangeTracker changeTracker = new WorldChangeTracker(massBlockUpdate);
+
+            plugin.getLogger().info("Rendering tree " + treeFile.getName());
+            Tree tree = loadTree(treeFile, seed, true);
             TreeType treeType = new TreeType(tree.params.WoodType);
-            Draw3d d3d = new Draw3d(refPoint, tree.params.Smooth, treeType, changeTracker);
+            Draw3d d3d = new Draw3d(refPoint, tree.params.Smooth, treeType, changeTracker, Draw3d.RenderOrientation.NORMAL);
 
             MinecraftExporter treeExporter = new MinecraftExporter(tree, d3d);
             treeExporter.write();
-            d3d.drawRootJunction(Draw3d.toMcVector(((Segment)((Stem) tree.trunks.get(0)).stemSegments().nextElement()).posFrom()), ((Stem)tree.trunks.get(0)).baseRadius);
+            d3d.drawRootJunction(d3d.toMcVector(((Segment)((Stem) tree.trunks.get(0)).stemSegments().nextElement()).posFrom()), ((Stem)tree.trunks.get(0)).baseRadius);
+
+            if (rootFile != null) {
+                plugin.getLogger().info("Rendering root " + rootFile.getName());
+                Tree root = loadTree(rootFile, seed, false);
+                TreeType rootType = new TreeType(root.params.WoodType);
+                Draw3d d3dInverted = new Draw3d(refPoint, root.params.Smooth, rootType, changeTracker, Draw3d.RenderOrientation.INVERTED);
+
+                MinecraftExporter treeExporterInverted = new MinecraftExporter(root, d3dInverted);
+                treeExporterInverted.write();
+            }
 
             d3d.applyChanges();
             AbstractParam.loading = false;
         } catch (Exception e) {
             plugin.getLogger().severe("Error rendering tree: " + e.getMessage());
         }
+    }
+
+    private Tree loadTree(File treeFile, int seed, boolean withLeaves) throws Exception {
+        if (treeFile == null) return null;
+
+        Tree tree = new Tree();
+        tree.setOutputType(Tree.CONES);
+        tree.readFromXML(new FileInputStream(treeFile));
+        tree.params.Seed = seed;
+        tree.params.stopLevel = -1; // -1 for everything
+        tree.params.verbose = false;
+        tree.params.Leaves = withLeaves ? 0 : -1;
+        tree.make();
+        return tree;
     }
 }

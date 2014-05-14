@@ -421,7 +421,7 @@ public class Params {
 		Flare = getDblParam("Flare");
 		Lobes = getIntParam("Lobes");
 		LobeDepth = getDblParam("LobeDepth");
-		Leaves = getIntParam("Leaves");
+		Leaves = Leaves != -1 ? getIntParam("Leaves") : 0; // Don't render leaves if explicitly turning them off
 		LeafShape = getStrParam("LeafShape");
 		LeafScale = getDblParam("LeafScale");
 		LeafScaleX = getDblParam("LeafScaleX");

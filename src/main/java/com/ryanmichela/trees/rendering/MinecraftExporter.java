@@ -24,7 +24,7 @@ public class MinecraftExporter extends Exporter {
             tree.traverseTree(exporter);
 
             // leaves
-            if (tree.params.Leaves!=0) {
+            if (tree.params.Leaves > 0) {
                 MinecraftLeafExporter lexporter = new MinecraftLeafExporter(d3d);
                 tree.traverseTree(lexporter);
             }

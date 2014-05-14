@@ -18,17 +18,22 @@ public class Draw3d {
     private NoiseGenerator noise;
     private double noiseIntensity;
     private TreeType treeType;
+    private RenderOrientation renderOrientation;
 
-    public Draw3d(Location refPoint, double noiseIntensity, TreeType treeType, WorldChangeTracker changeTracker) {
+    public enum RenderOrientation {NORMAL, INVERTED}
+
+    public Draw3d(Location refPoint, double noiseIntensity, TreeType treeType, WorldChangeTracker changeTracker, RenderOrientation renderOrientation) {
         this.refPoint = refPoint;
         this.noise = new SimplexNoiseGenerator(refPoint.hashCode());
         this.noiseIntensity = noiseIntensity;
         this.changeTracker = changeTracker;
         this.treeType = treeType;
+        this.renderOrientation = renderOrientation;
     }
 
-    public static Vector toMcVector(net.sourceforge.arbaro.transformation.Vector arbVec) {
-        return new Vector(arbVec.getX(), arbVec.getZ(), arbVec.getY());
+    public Vector toMcVector(net.sourceforge.arbaro.transformation.Vector arbVec) {
+        boolean invertY = renderOrientation == RenderOrientation.INVERTED;
+        return new Vector(arbVec.getX(), invertY ? -arbVec.getZ() : arbVec.getZ(), arbVec.getY());
     }
 
     public void applyChanges() {

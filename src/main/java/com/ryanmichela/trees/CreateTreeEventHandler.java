@@ -37,7 +37,8 @@ public class CreateTreeEventHandler implements Listener {
             event.getPlayer().sendMessage("Let there be trees!");
 
             File treeFile = new File(plugin.getDataFolder(), "tree.xml");
-            renderer.RenderTree(event.getClickedBlock().getLocation(), treeFile, true, seed.nextInt());
+            File rootFile = new File(plugin.getDataFolder(), "tree.root.xml");
+            renderer.RenderTree(event.getClickedBlock().getLocation(), treeFile, rootFile, true, seed.nextInt());
         }
     }
 }
