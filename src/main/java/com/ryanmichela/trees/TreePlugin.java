@@ -28,6 +28,7 @@ public class TreePlugin extends JavaPlugin {
         try {
             NMSHelper.init(this, true);
             getServer().getPluginManager().registerEvents(new CreateTreeEventHandler(this), this);
+            getServer().getPluginManager().registerEvents(new PlantTreeEventHandler(this), this);
         } catch (Exception e) {
             getLogger().severe("Failed to initialize plugin: " + e.getMessage());
         }
