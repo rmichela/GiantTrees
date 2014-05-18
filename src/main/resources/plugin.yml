@@ -15,3 +15,5 @@ permissions:
    gianttrees.grow:
       description: Allows a player to grow a giant tree by fertilizing a 9x9 grid of saplings.
       default: true
+
+softdepend: [ProtocolLib]

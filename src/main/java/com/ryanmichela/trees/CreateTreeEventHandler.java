@@ -19,10 +19,12 @@ import java.util.Random;
 public class CreateTreeEventHandler implements Listener {
     private Plugin plugin;
     private TreeRenderer renderer;
+    private PopupHandler popup;
 
     public CreateTreeEventHandler(Plugin plugin) {
         this.plugin = plugin;
         renderer = new TreeRenderer(plugin);
+        popup = new PopupHandler(plugin);
     }
 
     @EventHandler
@@ -34,7 +36,7 @@ public class CreateTreeEventHandler implements Listener {
             World world = chunk.getWorld();
             Random seed = new Random(world.getSeed());
 
-            event.getPlayer().sendMessage("Let there be trees!");
+            popup.sendPopup(event.getPlayer(), "Stand back!");
 
             File treeFile = new File(plugin.getDataFolder(), "tree.xml");
             File rootFile = new File(plugin.getDataFolder(), "tree.root.xml");

@@ -1,0 +1,18 @@
+# The planting pattern is used to grow giant trees in survival mode using collected resources.
+planting-pattern:
+    # Each row in the pattern represents one row of blocks placed horizontally on the ground.
+    # Each unique character in the pattern represents one material. Spaces mean don't care.
+    # All rows must be the same length.
+    pattern:
+        - SSSSS
+        - SSSSS
+        - SSESS
+        - SSSSS
+        - SSSSS
+    # Each unique character in the pattern must have one material mapping.
+    # The pattern must contain at least one sapling.
+    materials:
+        S: SAPLING
+        E: EMERALD_BLOCK
+    # Fertilizing the tree consumes some number of bone meal.
+    bone-meal-consumed: 64

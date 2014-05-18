@@ -1,5 +1,6 @@
 package com.ryanmichela.trees;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
@@ -25,12 +26,8 @@ public class PhysicalCraftingRecipe {
 
     public static PhysicalCraftingRecipe fromStringRepresentation(String[] rows, Map<Character, Material> materialMap) {
         // Sanity check the input
-        if (rows == null || rows.length == 0) {
-            throw new IllegalArgumentException("rows cannot be null or empty");
-        }
-        if (materialMap == null || materialMap.size() == 0) {
-            throw new IllegalArgumentException("materialMap cannot be null or empty");
-        }
+        Validate.notEmpty(rows, "rows cannot be null or empty");
+        Validate.notEmpty(materialMap, "materialMap cannot be null or empty");
         materialMap.put(' ', null);
 
         int rowLength = rows[0].length();
@@ -58,9 +55,7 @@ public class PhysicalCraftingRecipe {
     }
 
     public boolean matches(Block lastPlaced) {
-        if (lastPlaced == null) {
-            throw new IllegalArgumentException("lastPlaced cannot be null");
-        }
+        Validate.notNull(lastPlaced, "lastPlaced cannot be null");
 
         // Verify that the block placed could be part of the pattern
         if (!usedMaterials.contains(lastPlaced.getType())) {
