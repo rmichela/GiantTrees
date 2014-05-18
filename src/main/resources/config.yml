@@ -16,3 +16,7 @@ planting-pattern:
         E: EMERALD_BLOCK
     # Fertilizing the tree consumes some number of bone meal.
     bone-meal-consumed: 64
+
+# Giant trees can possibly smother players if they don't get out of the way.
+# How many seconds should Giant Trees wait before adding a tree to the world?
+generation-delay: 3

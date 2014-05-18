@@ -40,7 +40,7 @@ public class CreateTreeEventHandler implements Listener {
 
             File treeFile = new File(plugin.getDataFolder(), "tree.xml");
             File rootFile = new File(plugin.getDataFolder(), "tree.root.xml");
-            renderer.RenderTree(event.getClickedBlock().getLocation(), treeFile, rootFile, true, seed.nextInt());
+            renderer.renderTree(event.getClickedBlock().getLocation(), treeFile, rootFile, true, seed.nextInt());
         }
     }
 }

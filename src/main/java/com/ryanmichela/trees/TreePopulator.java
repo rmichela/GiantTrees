@@ -29,6 +29,6 @@ public class TreePopulator extends BlockPopulator {
         refPoint.setY(world.getHighestBlockYAt(refPoint));
 
         TreeRenderer renderer = new TreeRenderer(plugin);
-        renderer.RenderTree(refPoint, treeFile, rootFile, true, random.nextInt());
+        renderer.renderTree(refPoint, treeFile, rootFile, true, random.nextInt());
     }
 }

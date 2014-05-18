@@ -75,7 +75,7 @@ public class PlantTreeEventHandler implements Listener{
                 event.getPlayer().getInventory().remove(itemInHand);
                 popup.sendPopup(event.getPlayer(), "Stand back!");
 
-                renderer.RenderTree(clickedBlock.getLocation(), treeFile, rootFile, true, seed.nextInt());
+                renderer.renderTree(clickedBlock.getLocation(), treeFile, rootFile, true, seed.nextInt());
             }
         }
     }
