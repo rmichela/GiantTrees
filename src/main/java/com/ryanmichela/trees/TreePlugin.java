@@ -1,7 +1,9 @@
 package com.ryanmichela.trees;
 
 import me.desht.dhutils.nms.NMSHelper;
-import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.Metrics;
 
@@ -28,6 +30,10 @@ public class TreePlugin extends JavaPlugin {
         try {
             NMSHelper.init(this, true);
             getServer().getPluginManager().registerEvents(new PlantTreeEventHandler(this), this);
+            // attach to worlds automatically when onlyUseWorldManagers is false
+            if (!getConfig().getBoolean("onlyUseWorldManagers", false)) {
+                getServer().getPluginManager().registerEvents(new WorldInitListener(), this);
+            }
         } catch (Exception e) {
             getLogger().severe("Failed to initialize plugin: " + e.getMessage());
         }
@@ -41,8 +47,21 @@ public class TreePlugin extends JavaPlugin {
         super.onDisable();
     }
 
-    @Override
-    public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
-        return super.getDefaultWorldGenerator(worldName, id);
+//    @Override
+//    public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
+//        return new TreeChunkGenerator(this);
+//    }
+
+    private class WorldInitListener implements Listener {
+        @EventHandler
+        public void onWorldInit(WorldInitEvent event) {
+            for(String worldName : getConfig().getStringList("worlds")) {
+                if (worldName.equals(event.getWorld().getName())) {
+                    getLogger().info("Attaching giant tree populator to world \"" + event.getWorld().getName() + "\"");
+                    event.getWorld().getPopulators().add(new TreePopulator(TreePlugin.this));
+                    return;
+                }
+            }
+        }
     }
 }

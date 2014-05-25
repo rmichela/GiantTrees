@@ -3,6 +3,8 @@ version: "1.0-R01"
 author: Ryan Michela
 main: com.ryanmichela.trees.TreePlugin
 description: Grows enormous trees.
+softdepend: [ProtocolLib, Multiverse-Core, MyWorlds]
+load: STARTUP
 
 commands:
    tree-edit:
@@ -21,5 +23,3 @@ permissions:
    gianttrees.grow:
       description: Allows a player to grow a giant tree by fertilizing a grid of saplings.
       default: true
-
-softdepend: [ProtocolLib]
