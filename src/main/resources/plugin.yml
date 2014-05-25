@@ -2,18 +2,24 @@ name: GiantTrees
 version: "1.0-R01"
 author: Ryan Michela
 main: com.ryanmichela.trees.TreePlugin
+description: Grows enormous trees.
 
 commands:
    tree-edit:
       description: Opens the giant tree editor. Can only be called from the server console.
-      usage: tree-edit treename
+      usage: "Usage: tree-edit species"
+   tree-create:
+      description: Creates a giant tree.
+      aliases: gt
+      permission: gianttrees.create
+      usage: "Usage: /<command> [species]"
 
 permissions:
    gianttrees.create:
-      description: Allows the creation of a giant tree using a golden hoe.
+      description: Allows the creation of a giant tree using the tree-create command.
       default: op
    gianttrees.grow:
-      description: Allows a player to grow a giant tree by fertilizing a 9x9 grid of saplings.
+      description: Allows a player to grow a giant tree by fertilizing a grid of saplings.
       default: true
 
 softdepend: [ProtocolLib]

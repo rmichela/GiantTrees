@@ -3,7 +3,7 @@ package com.ryanmichela.trees;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
@@ -22,7 +22,8 @@ public class EditTreeCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] arg) {
-        if (!(sender instanceof ConsoleCommandSender)) {
+        if (sender instanceof Player) {
+            sender.sendMessage("You can only edit trees from the console.");
             return true;
         }
 
@@ -43,6 +44,7 @@ public class EditTreeCommand implements CommandExecutor {
             String toOpen = new File(plugin.getDataFolder(), arg[0] + ".xml").getAbsolutePath();
             ProcessBuilder pb = new ProcessBuilder("javaw", "-jar", gtPluginName, toOpen);
             pb.start();
+            sender.sendMessage("Loading " + arg[0] + "...");
         } catch (IOException e) {
             plugin.getLogger().severe("Error starting Arbario: " + e.getMessage());
         }
