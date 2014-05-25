@@ -1,6 +1,7 @@
 package com.ryanmichela.trees;
 
 import com.ryanmichela.trees.rendering.TreeRenderer;
+import me.desht.dhutils.cost.ItemCost;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -67,12 +68,13 @@ public class PlantTreeEventHandler implements Listener{
             return;
         }
 
-        if (stackIsCorrect(itemInHand)) {
+        ItemCost cost = new ItemCost(Material.INK_SACK, (short)15, boneMealConsumed);
+        if (cost.isAffordable(event.getPlayer()) && stackIsCorrect(itemInHand)) {
             if (recipe.matches(clickedBlock)) {
                 Random seed = new Random(clickedBlock.getWorld().getSeed());
                 File treeFile = new File(plugin.getDataFolder(), "tree.xml");
                 File rootFile = new File(plugin.getDataFolder(), "tree.root.xml");
-                event.getPlayer().getInventory().remove(itemInHand);
+                cost.apply(event.getPlayer());
                 popup.sendPopup(event.getPlayer(), "Stand back!");
 
                 renderer.renderTree(clickedBlock.getLocation(), treeFile, rootFile, true, seed.nextInt());
@@ -83,7 +85,6 @@ public class PlantTreeEventHandler implements Listener{
     private boolean stackIsCorrect(ItemStack inHand) {
         return inHand != null &&
                inHand.getType() == Material.INK_SACK &&
-               inHand.getData().getData() == 15 &&
-               inHand.getAmount() == 64;
+               inHand.getData().getData() == 15;
     }
 }

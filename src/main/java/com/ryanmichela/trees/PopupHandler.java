@@ -1,7 +1,6 @@
 package com.ryanmichela.trees;
 
 import me.desht.dhutils.ItemMessage;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -18,7 +17,6 @@ public class PopupHandler {
     public void sendPopup(Player player, String message) {
         try {
             ItemMessage itemMessage = new ItemMessage(plugin);
-            itemMessage.setEmptyHandReplacement(Material.AIR);
             itemMessage.sendMessage(player, message);
         } catch (Exception e) {
             player.sendMessage(message);
