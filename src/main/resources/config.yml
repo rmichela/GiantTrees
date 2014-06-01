@@ -1,9 +1,10 @@
-# By default, Giant Trees only spawn in worlds created by a world manager like Multiverse or My Worlds.
-# If you want to use Giant Caves as a stand-alone plugin, set onlyUseWorldManagers to false and edit
-# the worlds list below.
-onlyUseWorldManagers: true
+# By default, Giant Trees only creates trees when you ask it to. To enable automatic
+# generation of trees in your world as new chunks are generated, set naturallyGrowTrees
+# to true
+naturallyGrowTrees: false
+treeGrowthPercentChance: 0.5
 
-# The worlds list below is only used when onlyUseWorldManagers is set to false
+# The worlds list below is only used when naturallyGrowTrees is set to true
 worlds:
    - world
 
