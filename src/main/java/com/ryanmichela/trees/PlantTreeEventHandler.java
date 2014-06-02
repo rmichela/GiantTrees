@@ -49,6 +49,9 @@ public class PlantTreeEventHandler implements Listener{
             boneMealConsumed = patternSection.getInt("bone-meal-consumed");
 
             this.recipe = PhysicalCraftingRecipe.fromStringRepresentation(rows.toArray(new String[]{}), materialMap);
+            if (!recipe.usedMaterials.contains(Material.SAPLING)) {
+                throw new Exception();
+            }
 
             enabled = true;
         } catch (Exception e) {
@@ -71,9 +74,10 @@ public class PlantTreeEventHandler implements Listener{
         ItemCost cost = new ItemCost(Material.INK_SACK, (short)15, boneMealConsumed);
         if (cost.isAffordable(event.getPlayer()) && stackIsCorrect(itemInHand)) {
             if (recipe.matches(clickedBlock)) {
+                String treeType = identifyTree(clickedBlock);
                 Random seed = new Random(clickedBlock.getWorld().getSeed());
-                File treeFile = new File(plugin.getDataFolder(), "tree.xml");
-                File rootFile = new File(plugin.getDataFolder(), "tree.root.xml");
+                File treeFile = new File(plugin.getDataFolder(), "tree." + treeType + ".xml");
+                File rootFile = new File(plugin.getDataFolder(), "tree." + treeType + ".root.xml");
                 cost.apply(event.getPlayer());
                 popup.sendPopup(event.getPlayer(), "Stand back!");
 
@@ -86,5 +90,18 @@ public class PlantTreeEventHandler implements Listener{
         return inHand != null &&
                inHand.getType() == Material.INK_SACK &&
                inHand.getData().getData() == 15;
+    }
+
+    private String identifyTree(Block block) {
+        if (block.getType() != Material.SAPLING) {
+            throw new IllegalArgumentException();
+        }
+        if (block.getData() == 0) return "OAK";
+        if (block.getData() == 1) return "SPRUCE";
+        if (block.getData() == 2) return "BIRCH";
+        if (block.getData() == 3) return "JUNGLE";
+        if (block.getData() == 4) return "ACACIA";
+        if (block.getData() == 5) return "DARK_OAK";
+        return "OAK";
     }
 }

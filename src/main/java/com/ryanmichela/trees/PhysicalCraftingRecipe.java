@@ -12,8 +12,8 @@ import java.util.Set;
  * Copyright 2014 Ryan Michela
  */
 public class PhysicalCraftingRecipe {
-    private Material[][] pattern;
-    private Set<Material> usedMaterials = new HashSet<Material>();
+    public final Material[][] pattern;
+    public final Set<Material> usedMaterials = new HashSet<Material>();
 
     public PhysicalCraftingRecipe(Material[][] pattern) {
         this.pattern = pattern;
