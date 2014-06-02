@@ -26,8 +26,9 @@ public class TreeRenderer {
         AbstractParam.loading = true;
 
         CraftMassBlockUpdate massBlockUpdate = new CraftMassBlockUpdate(plugin, refPoint.getWorld());
-        massBlockUpdate.setRelightingStrategy(applyLight ? MassBlockUpdate.RelightingStrategy.HYBRID : MassBlockUpdate.RelightingStrategy.NEVER);
-        final WorldChangeTracker changeTracker = new WorldChangeTracker(massBlockUpdate);
+        MassBlockUpdate.RelightingStrategy relightingStrategy = applyLight ? MassBlockUpdate.RelightingStrategy.HYBRID : MassBlockUpdate.RelightingStrategy.NEVER;
+        massBlockUpdate.setRelightingStrategy(relightingStrategy);
+        final WorldChangeTracker changeTracker = new WorldChangeTracker(massBlockUpdate, relightingStrategy);
 
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
             @Override

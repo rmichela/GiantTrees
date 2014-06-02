@@ -54,7 +54,7 @@ public class TreePlugin extends JavaPlugin {
             NMSHelper.init(this, true);
             getServer().getPluginManager().registerEvents(new PlantTreeEventHandler(this), this);
             // attach to worlds automatically when onlyUseWorldManagers is false
-            if (!getConfig().getBoolean("naturallyGrowTrees", true)) {
+            if (getConfig().getBoolean("naturallyGrowTrees", true)) {
                 getServer().getPluginManager().registerEvents(new WorldInitListener(), this);
             }
         } catch (Exception e) {

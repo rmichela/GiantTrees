@@ -23,7 +23,7 @@ public class TreePopulator extends BlockPopulator {
 
     @Override
     public void populate(World world, Random random, Chunk chunk) {
-        Location refPoint = new Location(world, chunk.getX() * 16 + 8, 64, chunk.getZ() * 16 + 8);
+        Location refPoint = new Location(world, chunk.getX() * 16 + random.nextInt(16), 64, chunk.getZ() * 16 + random.nextInt(16));
         refPoint.setY(world.getHighestBlockYAt(refPoint));
 
         Biome biome = world.getBiome(refPoint.getBlockX(), refPoint.getBlockZ());
@@ -34,7 +34,7 @@ public class TreePopulator extends BlockPopulator {
             File rootFile = new File(plugin.getDataFolder(), "biome." + treeType + ".root.xml");
 
             TreeRenderer renderer = new TreeRenderer(plugin);
-            renderer.renderTree(refPoint, treeFile, rootFile, true, random.nextInt());
+            renderer.renderTree(refPoint, treeFile, rootFile, false, random.nextInt());
         }
     }
 
