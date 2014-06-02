@@ -1,7 +1,7 @@
 # By default, Giant Trees only creates trees when you ask it to. To enable automatic
 # generation of trees in your world as new chunks are generated, set naturallyGrowTrees
 # to true
-naturallyGrowTrees: false
+naturallyGrowTrees: true
 treeGrowthPercentChance: 0.5
 
 # The worlds list below is only used when naturallyGrowTrees is set to true

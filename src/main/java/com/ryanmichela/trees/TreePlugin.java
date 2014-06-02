@@ -16,6 +16,29 @@ public class TreePlugin extends JavaPlugin {
     @Override
     public void onLoad() {
         saveDefaultConfig();
+        // unpack basic trees
+        saveResource("biome.BIRCH_FOREST.xml", false);
+        saveResource("biome.BIRCH_FOREST.root.xml", false);
+        saveResource("biome.FOREST.xml", false);
+        saveResource("biome.FOREST.root.xml", false);
+        saveResource("biome.JUNGLE.xml", false);
+        saveResource("biome.JUNGLE.root.xml", false);
+        saveResource("biome.ROOFED_FOREST.xml", false);
+        saveResource("biome.ROOFED_FOREST.root.xml", false);
+        saveResource("biome.SWAMPLAND.xml", false);
+        saveResource("biome.SWAMPLAND.root.xml", false);
+        saveResource("tree.ACACIA.xml", false);
+        saveResource("tree.ACACIA.root.xml", false);
+        saveResource("tree.BIRCH.xml", false);
+        saveResource("tree.BIRCH.root.xml", false);
+        saveResource("tree.DARK_OAK.xml", false);
+        saveResource("tree.DARK_OAK.root.xml", false);
+        saveResource("tree.JUNGLE.xml", false);
+        saveResource("tree.JUNGLE.root.xml", false);
+        saveResource("tree.OAK.xml", false);
+        saveResource("tree.OAK.root.xml", false);
+        saveResource("tree.SPRUCE.xml", false);
+        saveResource("tree.SPRUCE.root.xml", false);
     }
 
     @Override
@@ -40,11 +63,6 @@ public class TreePlugin extends JavaPlugin {
 
         getCommand("tree-edit").setExecutor(new EditTreeCommand(this));
         getCommand("tree-create").setExecutor(new CreateTreeCommand(this));
-    }
-
-    @Override
-    public void onDisable() {
-        super.onDisable();
     }
 
     private class WorldInitListener implements Listener {

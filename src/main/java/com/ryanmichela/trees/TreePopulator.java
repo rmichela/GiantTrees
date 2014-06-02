@@ -30,8 +30,8 @@ public class TreePopulator extends BlockPopulator {
         if (isAcceptableBiome(biome) && treeCanGrow(random)) {
             String treeType = simplifyBiome(biome).name();
 
-            File treeFile = new File(plugin.getDataFolder(), treeType + ".xml");
-            File rootFile = new File(plugin.getDataFolder(), treeType + ".root.xml");
+            File treeFile = new File(plugin.getDataFolder(), "biome." + treeType + ".xml");
+            File rootFile = new File(plugin.getDataFolder(), "biome." + treeType + ".root.xml");
 
             TreeRenderer renderer = new TreeRenderer(plugin);
             renderer.renderTree(refPoint, treeFile, rootFile, true, random.nextInt());
