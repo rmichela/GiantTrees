@@ -9,6 +9,7 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * Copyright 2014 Ryan Michela
@@ -28,6 +29,26 @@ public class EditTreeCommand implements CommandExecutor {
         }
 
         if (arg.length != 1) {
+            File[] treeFiles = plugin.getDataFolder().listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) {
+                    return name.endsWith(".xml");
+                }
+            });
+
+            String[] treeNames = new String[treeFiles.length];
+            for (int i = 0; i < treeFiles.length; i++) {
+                treeNames[i] = treeFiles[i].getName().substring(0, treeFiles[i].getName().lastIndexOf('.'));
+            }
+
+            Arrays.sort(treeNames);
+
+            sender.sendMessage("Available trees:");
+            for (File treeFile : treeFiles) {
+                String treeName = treeFile.getName();
+                treeName = treeName.substring(0, treeName.lastIndexOf('.'));
+                sender.sendMessage(treeName);
+            }
             return false;
         }
 

@@ -2,6 +2,7 @@ package com.ryanmichela.trees;
 
 import com.ryanmichela.trees.rendering.TreeRenderer;
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -57,7 +58,9 @@ public class CreateTreeCommand implements CommandExecutor {
             String species = arg[0];
             File treeFile = new File(plugin.getDataFolder(), species + ".xml");
             File rootFile = new File(plugin.getDataFolder(), species + ".root.xml");
-            renderer.renderTree(player.getLocation(), treeFile, rootFile, true, seed.nextInt());
+
+            Location base = player.getWorld().getHighestBlockAt(player.getLocation()).getLocation();
+            renderer.renderTree(base, treeFile, rootFile, true, seed.nextInt());
         }
         return true;
     }

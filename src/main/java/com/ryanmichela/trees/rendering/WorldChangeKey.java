@@ -1,5 +1,7 @@
 package com.ryanmichela.trees.rendering;
 
+import org.bukkit.util.Vector;
+
 /**
  * Copyright 2014 Ryan Michela
  */
@@ -7,6 +9,8 @@ public class WorldChangeKey {
     public int x;
     public int y;
     public int z;
+
+    public WorldChangeKey() {}
 
     public WorldChangeKey(int x, int y, int z) {
         this.x = x;
@@ -34,5 +38,9 @@ public class WorldChangeKey {
         result = 31 * result + y;
         result = 31 * result + z;
         return result;
+    }
+
+    public Vector toVector() {
+        return new Vector(x, y, z);
     }
 }

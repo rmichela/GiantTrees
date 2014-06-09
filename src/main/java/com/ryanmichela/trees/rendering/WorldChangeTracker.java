@@ -8,6 +8,7 @@ import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Collection;
 
 /**
  * Copyright 2014 Ryan Michela
@@ -23,16 +24,26 @@ public class WorldChangeTracker {
     }
 
     public void addChange(Vector location, Material material, byte materialData, boolean overwrite) {
-        int blockY = location.getBlockY();
+        addChange(new WorldChange(location, material, materialData), overwrite);
+    }
 
-        WorldChangeKey key = new WorldChangeKey(location.getBlockX(), blockY, location.getBlockZ());
+    public void addChange(WorldChange worldChange, boolean overwrite) {
+        WorldChangeKey key = new WorldChangeKey(worldChange.location.getBlockX(), worldChange.location.getBlockY(), worldChange.location.getBlockZ());
         if (changes.containsKey(key)) {
             if (overwrite) {
-                changes.put(key, new WorldChange(location, material, materialData));
+                changes.put(key, worldChange);
             }
         } else {
-            changes.put(key, new WorldChange(location, material, materialData));
+            changes.put(key, worldChange);
         }
+    }
+
+    public WorldChange getChange(WorldChangeKey key) {
+        return changes.get(key);
+    }
+
+    public Collection<WorldChange> getChanges() {
+        return changes.values();
     }
 
     public void applyChanges(Location refPoint) {

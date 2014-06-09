@@ -11,6 +11,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Random;
 
 /**
  * Copyright 2014 Ryan Michela
@@ -42,6 +43,11 @@ public class TreeRenderer {
 
                     MinecraftExporter treeExporter = new MinecraftExporter(tree, d3d);
                     treeExporter.write();
+
+                    if (tree.params.WoodType.equals("Jungle")) {
+                        JungleVinePopulator.populate(changeTracker, new Random(seed));
+                    }
+
                     d3d.drawRootJunction(d3d.toMcVector(((Segment)((Stem) tree.trunks.get(0)).stemSegments().nextElement()).posFrom()), ((Stem)tree.trunks.get(0)).baseRadius);
 
                     if (rootFile != null) {
