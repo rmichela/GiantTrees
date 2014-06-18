@@ -79,7 +79,7 @@ public class IntParam extends AbstractParam {
 	
 	public int intValue() {
 		if (empty()) {
-			warn(name+" not given, using default value("+deflt+")");
+//			warn(name+" not given, using default value("+deflt+")");
 			// set value to default, i.e. don't warn again
 			value=deflt;
 			fireStateChanged();

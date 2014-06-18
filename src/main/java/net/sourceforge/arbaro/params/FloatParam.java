@@ -76,7 +76,7 @@ public class FloatParam extends AbstractParam {
 
     public double doubleValue() {
     	if (empty()) {
-    		warn(name+" not given, using default value("+deflt+")");
+//    		warn(name+" not given, using default value("+deflt+")");
     		// set value to default, t.e. don't warn again
     		value=deflt;
     		fireStateChanged();
