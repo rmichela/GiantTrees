@@ -3,7 +3,10 @@ package com.ryanmichela.trees;
 import com.ryanmichela.trees.rendering.TreeRenderer;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -59,9 +62,22 @@ public class CreateTreeCommand implements CommandExecutor {
             File treeFile = new File(plugin.getDataFolder(), species + ".xml");
             File rootFile = new File(plugin.getDataFolder(), species + ".root.xml");
 
-            Location base = player.getWorld().getHighestBlockAt(player.getLocation()).getLocation();
+            Block highestSoil = getHighestSoil(player.getWorld().getHighestBlockAt(player.getLocation()));
+
+            Location base = highestSoil.getLocation();
             renderer.renderTree(base, treeFile, rootFile, true, seed.nextInt());
         }
         return true;
+    }
+
+    Block getHighestSoil(Block highestBlock) {
+        while (highestBlock.getY() > 0 &&
+                highestBlock.getType() != Material.DIRT && // Includes podzol
+                highestBlock.getType() != Material.GRASS &&
+                highestBlock.getType() != Material.MYCEL &&
+                highestBlock.getType() != Material.SAND) {
+            highestBlock = highestBlock.getRelative(BlockFace.DOWN);
+        }
+        return highestBlock;
     }
 }

@@ -3,8 +3,11 @@ package com.ryanmichela.trees;
 import com.ryanmichela.trees.rendering.TreeRenderer;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.plugin.Plugin;
 
@@ -24,7 +27,7 @@ public class TreePopulator extends BlockPopulator {
     @Override
     public void populate(World world, Random random, Chunk chunk) {
         Location refPoint = new Location(world, chunk.getX() * 16 + random.nextInt(16), 64, chunk.getZ() * 16 + random.nextInt(16));
-        refPoint.setY(world.getHighestBlockYAt(refPoint));
+        refPoint.setY(getHighestSoil(world.getHighestBlockAt(refPoint)));
 
         Biome biome = world.getBiome(refPoint.getBlockX(), refPoint.getBlockZ());
         if (isAcceptableBiome(biome) && treeCanGrow(random)) {
@@ -34,7 +37,7 @@ public class TreePopulator extends BlockPopulator {
             File rootFile = new File(plugin.getDataFolder(), "biome." + treeType + ".root.xml");
 
             TreeRenderer renderer = new TreeRenderer(plugin);
-            renderer.renderTree(refPoint, treeFile, rootFile, false, random.nextInt());
+            renderer.renderTree(refPoint, treeFile, rootFile, true, random.nextInt());
         }
     }
 
@@ -91,5 +94,16 @@ public class TreePopulator extends BlockPopulator {
 
         double randomRoll = random.nextDouble() * 100.0;
         return growChance > randomRoll;
+    }
+
+    int getHighestSoil(Block highestBlock) {
+        while (highestBlock.getY() > 0 &&
+                highestBlock.getType() != Material.DIRT && // Includes podzol
+                highestBlock.getType() != Material.GRASS &&
+                highestBlock.getType() != Material.MYCEL &&
+                highestBlock.getType() != Material.SAND) {
+            highestBlock = highestBlock.getRelative(BlockFace.DOWN);
+        }
+        return highestBlock.getY();
     }
 }

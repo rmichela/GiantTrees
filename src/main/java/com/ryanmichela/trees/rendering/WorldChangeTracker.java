@@ -54,8 +54,8 @@ public class WorldChangeTracker {
         for (WorldChange change : changes.values()) {
             Location changeLoc = refPoint.clone().add(change.location);
             int blockY = changeLoc.getBlockY();
-            if (blockY <= 255 || blockY >= 0) {
-                massBlockUpdate.setBlock(changeLoc.getBlockX(), changeLoc.getBlockY(), changeLoc.getBlockZ(), change.material.getId(), change.materialData);
+            if (blockY <= 255 && blockY >= 0) {
+                massBlockUpdate.setBlock(changeLoc.getBlockX(), blockY, changeLoc.getBlockZ(), change.material.getId(), change.materialData);
             }
         }
 
