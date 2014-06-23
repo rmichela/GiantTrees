@@ -26,8 +26,8 @@ public class TreePlugin extends JavaPlugin {
             saveResource("biome.JUNGLE.root.xml", false);
             saveResource("biome.ROOFED_FOREST.xml", false);
             saveResource("biome.ROOFED_FOREST.root.xml", false);
-            saveResource("biome.SWAMPLAND.xml", false);
-            saveResource("biome.SWAMPLAND.root.xml", false);
+//            saveResource("biome.SWAMPLAND.xml", false);
+//            saveResource("biome.SWAMPLAND.root.xml", false);
             saveResource("tree.ACACIA.xml", false);
             saveResource("tree.ACACIA.root.xml", false);
             saveResource("tree.BIRCH.xml", false);

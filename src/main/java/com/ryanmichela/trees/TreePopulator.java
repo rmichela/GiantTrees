@@ -47,8 +47,8 @@ public class TreePopulator extends BlockPopulator {
                biome == Biome.BIRCH_FOREST ||
                biome == Biome.BIRCH_FOREST_HILLS_MOUNTAINS ||
                biome == Biome.BIRCH_FOREST_MOUNTAINS ||
-               biome == Biome.SWAMPLAND ||
-               biome == Biome.SWAMPLAND_MOUNTAINS ||
+//               biome == Biome.SWAMPLAND ||
+//               biome == Biome.SWAMPLAND_MOUNTAINS ||
                biome == Biome.JUNGLE ||
                biome == Biome.JUNGLE_HILLS ||
                biome == Biome.JUNGLE_MOUNTAINS ||
@@ -66,9 +66,9 @@ public class TreePopulator extends BlockPopulator {
             case BIRCH_FOREST_HILLS_MOUNTAINS:
             case BIRCH_FOREST_MOUNTAINS:
                 return Biome.BIRCH_FOREST;
-            case SWAMPLAND:
-            case SWAMPLAND_MOUNTAINS:
-                return Biome.SWAMPLAND;
+//            case SWAMPLAND:
+//            case SWAMPLAND_MOUNTAINS:
+//                return Biome.SWAMPLAND;
             case JUNGLE:
             case JUNGLE_HILLS:
             case JUNGLE_MOUNTAINS:
