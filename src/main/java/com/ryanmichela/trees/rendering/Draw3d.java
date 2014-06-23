@@ -190,7 +190,7 @@ public class Draw3d {
                     loc,
                     treeType.leafMaterial,
                     (byte)(treeType.dataOffset + 4),
-                    true);
+                    false);
         }
     }
 
