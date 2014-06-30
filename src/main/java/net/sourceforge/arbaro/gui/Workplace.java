@@ -379,8 +379,8 @@ import java.io.*;
 		
 		toolBar.add(Box.createRigidArea(new Dimension(10,10)));
 		
-		addToolBarButton(exportTreeAction);
-		addToolBarButton(renderTreeAction);
+//		addToolBarButton(exportTreeAction);
+//		addToolBarButton(renderTreeAction);
 		
 //		addToolBarButton("0","Show level 0");
 //		addToolBarButton("1","Show level 1");
@@ -430,12 +430,12 @@ import java.io.*;
 		menu.add(new JSeparator());
 		
 		// Export tree
-		item = new JMenuItem(exportTreeAction);
-		menu.add(item);
+//		item = new JMenuItem(exportTreeAction);
+//		menu.add(item);
 		
 		// Export tree
-		item = new JMenuItem(renderTreeAction);
-		menu.add(item);
+//		item = new JMenuItem(renderTreeAction);
+//		menu.add(item);
 
 		menu.add(new JSeparator());
 		
@@ -453,7 +453,7 @@ import java.io.*;
 		item = new JMenuItem(new SetupArbaroAction());
 		menu.add(item);	
 		
-		menubar.add(menu);
+//		menubar.add(menu);
 		
 		
 		/**** help menu ****/

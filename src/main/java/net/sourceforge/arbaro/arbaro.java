@@ -22,14 +22,9 @@
 
 package net.sourceforge.arbaro;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.FileWriter;
-import java.io.File;
+import net.sourceforge.arbaro.tree.Tree;
 
-import net.sourceforge.arbaro.tree.*;
+import java.io.*;
 
 /**
  * Main class for command line version of Arbaro 
@@ -46,7 +41,9 @@ public class arbaro {
 	
 	public static final String programName = 
 		"Arbaro 2.0 - creates trees objects for rendering from xml parameter files\n"+
-		"(c) 2003-2004 by Wolfram Diestel <diestel@steloj.de> (GPL see file COPYING)\n";
+		"(c) 2003-2013 by Wolfram Diestel (wrote core code) <diestel@steloj.de> \n"+
+		"(c) 2014 by Ryan Michela (adapted for Bukkit) <deltahat@gmail.com> \n"+
+        "(GPL see file COPYING)\n";
 	
 	static void printProgramName() {
 		println(programName);
