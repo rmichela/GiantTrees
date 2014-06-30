@@ -41,14 +41,14 @@ public class PlantTreeEventHandler implements Listener{
             ConfigurationSection materialsSection = patternSection.getConfigurationSection("materials");
             Map<String, Object> configMaterialMap = materialsSection.getValues(false);
 
-            Map<Character, Material> materialMap = new HashMap<Character, Material>();
+            Map<Character, String> materialDataMap = new HashMap<Character, String>();
             for (Map.Entry<String, Object> kvp : configMaterialMap.entrySet()) {
-                materialMap.put(kvp.getKey().charAt(0), Material.matchMaterial((String)kvp.getValue()));
+                materialDataMap.put(kvp.getKey().charAt(0), (String) kvp.getValue());
             }
 
             boneMealConsumed = patternSection.getInt("bone-meal-consumed");
 
-            this.recipe = PhysicalCraftingRecipe.fromStringRepresentation(rows.toArray(new String[]{}), materialMap);
+            this.recipe = PhysicalCraftingRecipe.fromStringRepresentation(rows.toArray(new String[]{}), materialDataMap);
             if (!recipe.usedMaterials.contains(Material.SAPLING)) {
                 throw new Exception();
             }
