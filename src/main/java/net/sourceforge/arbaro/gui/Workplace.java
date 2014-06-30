@@ -597,8 +597,6 @@ import java.io.*;
 	}
 	
 	boolean fileSave() {
-		System.err.println("saving to file: " +
-				fileChooser.getSelectedFile().getName());
 		try {
 			PrintWriter out = new PrintWriter(new FileWriter(treefile));
 			tree.toXML(out);
