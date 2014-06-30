@@ -762,20 +762,20 @@ public class Params {
 //				"(See Lobes, LobeDepth)\n"
 		);
 		
-//		intParam("Lobes",0,Integer.MAX_VALUE,0,"TRUNK",
-//				"sinusoidal cross-section variation",
-//				"With <strong>Lobes</strong> you define how much lobes (this are variations in it's<br>\n"+
-//				"cross-section) the trunk will have. This isn't supported for<br>\n"+
-//				"cones output, but for mesh only.<br>\n"+
-//				"(See LobeDepth too)\n"
-//		);
+		intParam("Lobes",0,Integer.MAX_VALUE,0,"UNUSED",
+				"sinusoidal cross-section variation",
+				"With <strong>Lobes</strong> you define how much lobes (this are variations in it's<br>\n"+
+				"cross-section) the trunk will have. This isn't supported for<br>\n"+
+				"cones output, but for mesh only.<br>\n"+
+				"(See LobeDepth too)\n"
+		);
 		
-//		dblParam("LobeDepth",0,Double.POSITIVE_INFINITY,0,
-//				"TRUNK","amplitude of cross-section variation",
-//				"<strong>LobeDepth</strong> defines, how deep the lobes of the trunk will be.<br>\n"+
-//				"This is the amplitude of the sinusoidal cross-section variations.<br>\n"+
-//				"(See Lobes)\n"
-//		);
+		dblParam("LobeDepth",0,Double.POSITIVE_INFINITY,0,
+				"UNUSED","amplitude of cross-section variation",
+				"<strong>LobeDepth</strong> defines, how deep the lobes of the trunk will be.<br>\n"+
+				"This is the amplitude of the sinusoidal cross-section variations.<br>\n"+
+				"(See Lobes)\n"
+		);
 		
 		intParam("Leaves",Integer.MIN_VALUE,Integer.MAX_VALUE,0,
 				"LEAVES","number of leaves per stem",
@@ -786,34 +786,34 @@ public class Params {
 				"the end of the stem.\n"
 		);
 		
-//		lshParam("LeafShape","0","LEAVES","leaf shape id",
-//				"<strong>LeafShape</strong> is the shape of the leaf (\"0\" means oval shape).<br>\n"+
-//				"The length and width of the leaf are given by LeafScale and LeafScaleX.<br>\n"+
-//
-//				"When creating a mesh at the moment you can use the following values:<ul>\n"+
-//				"<li>\"disc\" - a surface consisting of 6 triangles approximating an oval shape</li>\n"+
-//				"<li>\"sphere\" - an ikosaeder approximating a shperical shape,<br>\n"+
-//				"useful for making knots or seeds instead of leaves, or for high quality needles</li>\n"+
-//				"<li>\"disc1\", \"disc2\", ... - a surface consisting of 1, 2, ... triangles approximating an oval shape<br>\n"+
-//				"lower values are useful for low quality needles or leaves, to reduce mesh size,<br>\n"+
-//				"values between 6 and 10 are quite good for big, round leaves.</li>\n"+
-//				"<li>any other - same like disc</li></ul>\n"+
-//
-//				"When using primitives output, the possible values of LeafShape references<br>\n"+
-//				"the declarations in arbaro.inc. At the moment there are:<ul>\n"+
-//				"<li>\"disc\" the standard oval form of a leaf, defined<br>\n"+
-//				"as a unit circle of radius 0.5m. The real<br>\n"+
-//				"length and width are given by the LeafScale parameters.</li>\n"+
-//				"<li>\"sphere\" a spherical form, you can use to<br>\n"+
-//				"simulate seeds on herbs or knots on branches like in the<br>\n"+
-//				"desert bush. You can use the sphere shape for needles too,<br>\n"+
-//				"thus they are visible from all sides</li>\n"+
-//				"<li>\"palm\" a palm leaf, this are two disc halfs put together<br>\n"+
-//				"with an angle between them. So they are visible<br>\n"+
-//				"also from the side and the light effects are<br>\n"+
-//				"more typically, especialy for fan palms seen from small distances.</li>\n"+
-//				"<li>any other - add your own leaf shape to the file arbaro.inc</li></ul>\n"
-//		);
+		lshParam("LeafShape","0","UNUSED","leaf shape id",
+				"<strong>LeafShape</strong> is the shape of the leaf (\"0\" means oval shape).<br>\n"+
+				"The length and width of the leaf are given by LeafScale and LeafScaleX.<br>\n"+
+
+				"When creating a mesh at the moment you can use the following values:<ul>\n"+
+				"<li>\"disc\" - a surface consisting of 6 triangles approximating an oval shape</li>\n"+
+				"<li>\"sphere\" - an ikosaeder approximating a shperical shape,<br>\n"+
+				"useful for making knots or seeds instead of leaves, or for high quality needles</li>\n"+
+				"<li>\"disc1\", \"disc2\", ... - a surface consisting of 1, 2, ... triangles approximating an oval shape<br>\n"+
+				"lower values are useful for low quality needles or leaves, to reduce mesh size,<br>\n"+
+				"values between 6 and 10 are quite good for big, round leaves.</li>\n"+
+				"<li>any other - same like disc</li></ul>\n"+
+
+				"When using primitives output, the possible values of LeafShape references<br>\n"+
+				"the declarations in arbaro.inc. At the moment there are:<ul>\n"+
+				"<li>\"disc\" the standard oval form of a leaf, defined<br>\n"+
+				"as a unit circle of radius 0.5m. The real<br>\n"+
+				"length and width are given by the LeafScale parameters.</li>\n"+
+				"<li>\"sphere\" a spherical form, you can use to<br>\n"+
+				"simulate seeds on herbs or knots on branches like in the<br>\n"+
+				"desert bush. You can use the sphere shape for needles too,<br>\n"+
+				"thus they are visible from all sides</li>\n"+
+				"<li>\"palm\" a palm leaf, this are two disc halfs put together<br>\n"+
+				"with an angle between them. So they are visible<br>\n"+
+				"also from the side and the light effects are<br>\n"+
+				"more typically, especialy for fan palms seen from small distances.</li>\n"+
+				"<li>any other - add your own leaf shape to the file arbaro.inc</li></ul>\n"
+		);
 		
 		dblParam("LeafScale",0.000001,Double.POSITIVE_INFINITY,8,
 				"LEAVES","leaf length/width",
@@ -828,12 +828,12 @@ public class Params {
 				"<li>LeafScaleX=1.0 means the leaf is like a sphere</li></ul>\n"
 		);
 		
-//		dblParam("LeafBend",0,1,0.3,"LEAVES","leaf orientation toward light",
-//				"With <strong>LeafBend</strong> you can influence, how much leaves are oriented<br>\n"+
-//				"outside and upwards.<br>Values near 0.5 are good. For low values the leaves<br>\n"+
-//				"are oriented to the stem, for high value to the light.<br>\n"+
-//				"For trees with long leaves like palms you should use lower values.\n"
-//		);
+		dblParam("LeafBend",0,1,0.3,"UNUSED","leaf orientation toward light",
+				"With <strong>LeafBend</strong> you can influence, how much leaves are oriented<br>\n"+
+				"outside and upwards.<br>Values near 0.5 are good. For low values the leaves<br>\n"+
+				"are oriented to the stem, for high value to the light.<br>\n"+
+				"For trees with long leaves like palms you should use lower values.\n"
+		);
 		
 		dblParam("LeafStemLen",Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY,0,
 				"LEAVES","fractional leaf stem length",
@@ -853,14 +853,14 @@ public class Params {
 				"outside. Default is 4 (some inside, more outside)."
 		);
 		
-//		dblParam("LeafQuality",0.000001,1.0,1.0,"QUALITY","leaf quality/leaf count reduction",
-//				"With a <strong>LeafQuality</strong> less then 1.0 you can reduce the number of leaves<br>\n"+
-//				"to improve rendering speed and memory usage. The leaves are scaled<br>\n"+
-//				"with the same amount to get the same coverage.<br>\n"+
-//				"For trees in the background of the scene you will use a reduced<br>\n"+
-//				"LeafQuality around 0.9. Very small values would cause strange results.<br>\n"+
-//				"(See LeafScale)"
-//		);
+		dblParam("LeafQuality",0.000001,1.0,1.0,"UNUSED","leaf quality/leaf count reduction",
+				"With a <strong>LeafQuality</strong> less then 1.0 you can reduce the number of leaves<br>\n"+
+				"to improve rendering speed and memory usage. The leaves are scaled<br>\n"+
+				"with the same amount to get the same coverage.<br>\n"+
+				"For trees in the background of the scene you will use a reduced<br>\n"+
+				"LeafQuality around 0.9. Very small values would cause strange results.<br>\n"+
+				"(See LeafScale)"
+		);
 		
 		dblParam("Smooth",0.0,1.0,0.02,"QUALITY","smooth value for mesh creation",
 				"Higher <strong>Smooth</strong> values creates trees with more noise added<br>\n"+
