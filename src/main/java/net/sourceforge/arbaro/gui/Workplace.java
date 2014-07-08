@@ -558,9 +558,13 @@ import java.io.*;
                     "Parameter Error",
                     JOptionPane.ERROR_MESSAGE);
         } catch (FileNotFoundException err) {
-            JOptionPane.showMessageDialog(frame,err.getMessage(),
+            int input = JOptionPane.showConfirmDialog(frame,
+                    file.getName() + " does not exist. Do you want to create it?",
                     "File not found",
-                    JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (input == JOptionPane.NO_OPTION) {
+                System.exit(0);
+            }
         } catch (Exception err) {
             System.err.println(err);
             err.printStackTrace();
