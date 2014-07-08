@@ -29,46 +29,47 @@ public class TreePopulator extends BlockPopulator {
         Location refPoint = new Location(world, chunk.getX() * 16 + random.nextInt(16), 64, chunk.getZ() * 16 + random.nextInt(16));
         refPoint.setY(getHighestSoil(world.getHighestBlockAt(refPoint)));
 
-        Biome biome = world.getBiome(refPoint.getBlockX(), refPoint.getBlockZ());
+        Biome biome = simplifyBiome(world.getBiome(refPoint.getBlockX(), refPoint.getBlockZ()));
         if (isAcceptableBiome(biome) && treeCanGrow(random)) {
-            String treeType = simplifyBiome(biome).name();
+            String treeType = biome.name();
 
             File treeFile = new File(plugin.getDataFolder(), "biome." + treeType + ".xml");
             File rootFile = new File(plugin.getDataFolder(), "biome." + treeType + ".root.xml");
 
-            TreeRenderer renderer = new TreeRenderer(plugin);
-            renderer.renderTree(refPoint, treeFile, rootFile, true, random.nextInt());
+            if (treeFile.exists()) {
+                TreeRenderer renderer = new TreeRenderer(plugin);
+                renderer.renderTree(refPoint, treeFile, rootFile, true, random.nextInt());
+            }
         }
     }
 
     private boolean isAcceptableBiome(Biome biome) {
         return biome == Biome.FOREST ||
-               biome == Biome.FOREST_HILLS ||
                biome == Biome.BIRCH_FOREST ||
-               biome == Biome.BIRCH_FOREST_HILLS_MOUNTAINS ||
-               biome == Biome.BIRCH_FOREST_MOUNTAINS ||
-//               biome == Biome.SWAMPLAND ||
-//               biome == Biome.SWAMPLAND_MOUNTAINS ||
+               biome == Biome.SWAMPLAND ||
                biome == Biome.JUNGLE ||
-               biome == Biome.JUNGLE_HILLS ||
-               biome == Biome.JUNGLE_MOUNTAINS ||
                biome == Biome.ROOFED_FOREST ||
-               biome == Biome.ROOFED_FOREST_MOUNTAINS;
+               biome == Biome.COLD_TAIGA ||
+               biome == Biome.EXTREME_HILLS ||
+               biome == Biome.TAIGA ||
+               biome == Biome.MEGA_TAIGA ||
+               biome == Biome.SAVANNA;
     }
 
     private Biome simplifyBiome(Biome biome) {
         switch (biome) {
             case FOREST:
             case FOREST_HILLS:
+            case FLOWER_FOREST:
                 return Biome.FOREST;
             case BIRCH_FOREST:
             case BIRCH_FOREST_HILLS:
             case BIRCH_FOREST_HILLS_MOUNTAINS:
             case BIRCH_FOREST_MOUNTAINS:
                 return Biome.BIRCH_FOREST;
-//            case SWAMPLAND:
-//            case SWAMPLAND_MOUNTAINS:
-//                return Biome.SWAMPLAND;
+            case SWAMPLAND:
+            case SWAMPLAND_MOUNTAINS:
+                return Biome.SWAMPLAND;
             case JUNGLE:
             case JUNGLE_HILLS:
             case JUNGLE_MOUNTAINS:
@@ -76,6 +77,29 @@ public class TreePopulator extends BlockPopulator {
             case ROOFED_FOREST:
             case ROOFED_FOREST_MOUNTAINS:
                 return Biome.ROOFED_FOREST;
+            case COLD_TAIGA:
+            case COLD_TAIGA_HILLS:
+            case COLD_TAIGA_MOUNTAINS:
+                return Biome.COLD_TAIGA;
+            case EXTREME_HILLS:
+            case EXTREME_HILLS_MOUNTAINS:
+            case EXTREME_HILLS_PLUS:
+            case EXTREME_HILLS_PLUS_MOUNTAINS:
+                return Biome.EXTREME_HILLS;
+            case TAIGA:
+            case TAIGA_HILLS:
+            case TAIGA_MOUNTAINS:
+                return Biome.TAIGA;
+            case MEGA_SPRUCE_TAIGA:
+            case MEGA_SPRUCE_TAIGA_HILLS:
+            case MEGA_TAIGA:
+            case MEGA_TAIGA_HILLS:
+                return Biome.MEGA_TAIGA;
+            case SAVANNA:
+            case SAVANNA_MOUNTAINS:
+            case SAVANNA_PLATEAU:
+            case SAVANNA_PLATEAU_MOUNTAINS:
+                return Biome.SAVANNA;
             default:
                 return null;
         }
