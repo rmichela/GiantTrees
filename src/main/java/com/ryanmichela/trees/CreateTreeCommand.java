@@ -1,10 +1,7 @@
 package com.ryanmichela.trees;
 
 import com.ryanmichela.trees.rendering.TreeRenderer;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
@@ -56,15 +53,21 @@ public class CreateTreeCommand implements CommandExecutor {
             World world = chunk.getWorld();
             Random seed = new Random(world.getSeed());
 
-            popup.sendPopup(player, "Stand back!");
-
             String species = arg[0];
             File treeFile = new File(plugin.getDataFolder(), species + ".xml");
             File rootFile = new File(plugin.getDataFolder(), species + ".root.xml");
 
+            if (!treeFile.exists())
+            {
+                sender.sendMessage(ChatColor.RED + "Tree " + species + " does not exist.");
+                sender.sendMessage("Use \"/tree-edit " + species + "\" from the server console to create it.");
+                return true;
+            }
+
             Block highestSoil = getHighestSoil(player.getWorld().getHighestBlockAt(player.getLocation()));
 
             Location base = highestSoil.getLocation();
+            popup.sendPopup(player, "Stand back!");
             renderer.renderTree(base, treeFile, rootFile, true, seed.nextInt());
         }
         return true;
