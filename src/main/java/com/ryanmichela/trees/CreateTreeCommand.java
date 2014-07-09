@@ -68,7 +68,7 @@ public class CreateTreeCommand implements CommandExecutor {
 
             Location base = highestSoil.getLocation();
             popup.sendPopup(player, "Stand back!");
-            renderer.renderTree(base, treeFile, rootFile, true, seed.nextInt());
+            renderer.renderTreeWithHistory(base, treeFile, rootFile, seed.nextInt(), player);
         }
         return true;
     }

@@ -2,6 +2,7 @@ package com.ryanmichela.trees.rendering;
 
 
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.bukkit.util.noise.NoiseGenerator;
 import org.bukkit.util.noise.SimplexNoiseGenerator;
@@ -36,8 +37,8 @@ public class Draw3d {
         return new Vector(arbVec.getX(), invertY ? -arbVec.getZ() : arbVec.getZ(), arbVec.getY());
     }
 
-    public void applyChanges() {
-        changeTracker.applyChanges(refPoint);
+    public void applyChanges(Player forPlayer) {
+        changeTracker.applyChanges(refPoint, forPlayer);
     }
 
     public void drawCone(Vector l1, double rad1, Vector l2, double rad2, int level) {

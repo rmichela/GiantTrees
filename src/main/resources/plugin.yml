@@ -3,7 +3,7 @@ version: "1.0-B02"
 author: Ryan Michela
 main: com.ryanmichela.trees.TreePlugin
 description: Grows enormous trees.
-softdepend: [ProtocolLib, Multiverse-Core, MyWorlds]
+softdepend: [ProtocolLib, Multiverse-Core, MyWorlds, WorldEdit]
 load: STARTUP
 
 commands:

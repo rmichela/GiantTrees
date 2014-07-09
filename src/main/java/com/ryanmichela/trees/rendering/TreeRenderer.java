@@ -7,6 +7,7 @@ import net.sourceforge.arbaro.tree.Segment;
 import net.sourceforge.arbaro.tree.Stem;
 import net.sourceforge.arbaro.tree.Tree;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
@@ -23,13 +24,21 @@ public class TreeRenderer {
         this.plugin = plugin;
     }
 
-    public void renderTree(final Location refPoint, final File treeFile, final File rootFile, final boolean applyLight, final int seed) {
+    public void renderTreeWithHistory(final Location refPoint, final File treeFile, final File rootFile, final int seed, Player forPlayer) {
+        renderTree(refPoint, treeFile, rootFile, seed, true, forPlayer);
+    }
+
+    public void renderTree(final Location refPoint, final File treeFile, final File rootFile, final int seed) {
+        renderTree(refPoint, treeFile, rootFile, seed, false, null);
+    }
+
+    private void renderTree(final Location refPoint, final File treeFile, final File rootFile, final int seed, final boolean recordHistory, final Player forPlayer) {
         AbstractParam.loading = true;
 
         CraftMassBlockUpdate massBlockUpdate = new CraftMassBlockUpdate(plugin, refPoint.getWorld());
-        MassBlockUpdate.RelightingStrategy relightingStrategy = applyLight ? MassBlockUpdate.RelightingStrategy.HYBRID : MassBlockUpdate.RelightingStrategy.NEVER;
+        MassBlockUpdate.RelightingStrategy relightingStrategy = MassBlockUpdate.RelightingStrategy.HYBRID;
         massBlockUpdate.setRelightingStrategy(relightingStrategy);
-        final WorldChangeTracker changeTracker = new WorldChangeTracker(massBlockUpdate, relightingStrategy);
+        final WorldChangeTracker changeTracker = new WorldChangeTracker(massBlockUpdate, relightingStrategy, recordHistory);
 
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
             @Override
@@ -70,7 +79,7 @@ public class TreeRenderer {
                     plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
                         @Override
                         public void run() {
-                            d3d.applyChanges();
+                            d3d.applyChanges(forPlayer);
                         }
                     }, generationDelay);
 
