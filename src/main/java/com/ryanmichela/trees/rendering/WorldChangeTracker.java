@@ -64,20 +64,13 @@ public class WorldChangeTracker {
             Bukkit.getLogger().warning("[GiantTrees] WorldEdit not installed. Undo capability disabled.");
         }
 
-        if (historyTracker != null) {
-            for (WorldChange change : changes.values()) {
-                Location changeLoc = refPoint.clone().add(change.location);
-                int blockY = changeLoc.getBlockY();
-                if (blockY <= 255 && blockY >= 0) {
-                    historyTracker.recordHistoricChange(changeLoc, change.material.getId(), change.materialData);
-                }
-            }
-        }
-
         for (WorldChange change : changes.values()) {
             Location changeLoc = refPoint.clone().add(change.location);
             int blockY = changeLoc.getBlockY();
             if (blockY <= 255 && blockY >= 0) {
+                if (historyTracker != null) {
+                    historyTracker.recordHistoricChange(changeLoc, change.material.getId(), change.materialData);
+                }
                 massBlockUpdate.setBlock(changeLoc.getBlockX(), blockY, changeLoc.getBlockZ(), change.material.getId(), change.materialData);
             }
         }
@@ -87,6 +80,4 @@ public class WorldChangeTracker {
         }
         massBlockUpdate.notifyClients();
     }
-
-
 }

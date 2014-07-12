@@ -3,9 +3,9 @@ package com.ryanmichela.trees.history;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.LocalSession;
 import com.sk89q.worldedit.MaxChangedBlocksException;
+import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.bukkit.BukkitPlayer;
-import com.sk89q.worldedit.bukkit.BukkitUtil;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -31,12 +31,14 @@ public class WorldEditHistoryTracker {
         localWorld = new NoChangeBukkitWorld(refPoint.getWorld());
         activeEditSession = new EditSession(localWorld, Integer.MAX_VALUE);
         activeEditSession.enableQueue();
+        activeEditSession.setMask(null);
+        activeEditSession.setFastMode(true);
         this.forPlayer = forPlayer;
     }
 
     public void recordHistoricChange(Location changeLoc, int materialId, byte materialData) {
         try {
-            com.sk89q.worldedit.Vector weVector = BukkitUtil.toVector(changeLoc);
+            com.sk89q.worldedit.Vector weVector = new Vector(changeLoc.getBlockX(), changeLoc.getBlockY(), changeLoc.getBlockZ());
             activeEditSession.setBlock(weVector, new BaseBlock(materialId, materialData));
         } catch (MaxChangedBlocksException e) {
             Bukkit.getLogger().severe("MaxChangedBlocksException!");
@@ -50,5 +52,13 @@ public class WorldEditHistoryTracker {
         activeEditSession.flushQueue();
         localSession.remember(activeEditSession);
         localWorld.enableUndo();
+    }
+
+    public int getBlockChangeCount() {
+        return activeEditSession.getBlockChangeCount();
+    }
+
+    public int getSize() {
+        return activeEditSession.size();
     }
 }
