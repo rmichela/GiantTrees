@@ -63,6 +63,10 @@ public class TreePlugin extends JavaPlugin {
             getLogger().severe("Failed to initialize plugin: " + e.getMessage());
         }
 
+        if (!getServer().getPluginManager().isPluginEnabled("WorldEdit")) {
+            getLogger().warning("WorldEdit not installed. Undo capability disabled.");
+        }
+
         getCommand("tree-edit").setExecutor(new EditTreeCommand(this));
         getCommand("tree-create").setExecutor(new CreateTreeCommand(this));
     }

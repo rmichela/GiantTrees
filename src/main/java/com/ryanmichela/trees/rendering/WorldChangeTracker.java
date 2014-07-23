@@ -60,8 +60,6 @@ public class WorldChangeTracker {
         WorldEditHistoryTracker historyTracker = null;
         if (recordHistory && Bukkit.getServer().getPluginManager().isPluginEnabled("WorldEdit")) {
             historyTracker = new WorldEditHistoryTracker(refPoint, byPlayer);
-        } else {
-            Bukkit.getLogger().warning("[GiantTrees] WorldEdit not installed. Undo capability disabled.");
         }
 
         for (WorldChange change : changes.values()) {
