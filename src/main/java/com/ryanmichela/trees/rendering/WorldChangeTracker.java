@@ -4,6 +4,7 @@ import com.ryanmichela.trees.history.WorldEditHistoryTracker;
 import me.desht.dhutils.block.CraftMassBlockUpdate;
 import me.desht.dhutils.block.MassBlockUpdate;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -65,6 +66,7 @@ public class WorldChangeTracker {
         for (WorldChange change : changes.values()) {
             Location changeLoc = refPoint.clone().add(change.location);
             int blockY = changeLoc.getBlockY();
+            ensureChunkLoaded(changeLoc.getChunk());
             if (blockY <= 255 && blockY >= 0) {
                 if (historyTracker != null) {
                     historyTracker.recordHistoricChange(changeLoc, change.material.getId(), change.materialData);
@@ -77,5 +79,13 @@ public class WorldChangeTracker {
             historyTracker.finalizeHistoricChanges();
         }
         massBlockUpdate.notifyClients();
+    }
+
+    private void ensureChunkLoaded(Chunk chunk) {
+        if (!chunk.isLoaded()) {
+            if (!chunk.load()) {
+                Bukkit.getLogger().severe("[GiantTrees] Could not load chunk " + chunk.toString());
+            }
+        }
     }
 }
