@@ -38,7 +38,7 @@ public class TreePopulator extends BlockPopulator {
 
             if (treeFile.exists()) {
                 TreeRenderer renderer = new TreeRenderer(plugin);
-                renderer.renderTree(refPoint, treeFile, rootFile, random.nextInt());
+                renderer.renderTree(refPoint, treeFile, rootFile, random.nextInt(), false);
             }
         }
     }

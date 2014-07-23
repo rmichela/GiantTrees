@@ -24,15 +24,15 @@ public class TreeRenderer {
         this.plugin = plugin;
     }
 
-    public void renderTreeWithHistory(final Location refPoint, final File treeFile, final File rootFile, final int seed, Player forPlayer) {
-        renderTree(refPoint, treeFile, rootFile, seed, true, forPlayer);
+    public void renderTreeWithHistory(final Location refPoint, final File treeFile, final File rootFile, final int seed, Player forPlayer, boolean withDelay) {
+        renderTree(refPoint, treeFile, rootFile, seed, true, forPlayer, withDelay);
     }
 
-    public void renderTree(final Location refPoint, final File treeFile, final File rootFile, final int seed) {
-        renderTree(refPoint, treeFile, rootFile, seed, false, null);
+    public void renderTree(final Location refPoint, final File treeFile, final File rootFile, final int seed, boolean withDelay) {
+        renderTree(refPoint, treeFile, rootFile, seed, false, null, withDelay);
     }
 
-    private void renderTree(final Location refPoint, final File treeFile, final File rootFile, final int seed, final boolean recordHistory, final Player forPlayer) {
+    private void renderTree(final Location refPoint, final File treeFile, final File rootFile, final int seed, final boolean recordHistory, final Player forPlayer, final boolean withDelay) {
         AbstractParam.loading = true;
 
         CraftMassBlockUpdate massBlockUpdate = new CraftMassBlockUpdate(plugin, refPoint.getWorld());
@@ -74,12 +74,16 @@ public class TreeRenderer {
                     }
                     AbstractParam.loading = false;
 
-                    long generationDelay = plugin.getConfig().getInt("generation-delay", 0) * 20;
+                    long generationDelay = withDelay ? plugin.getConfig().getInt("generation-delay", 0) * 20 : 0;
 
                     plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
                         @Override
                         public void run() {
-                            d3d.applyChanges(forPlayer);
+                            try {
+                                d3d.applyChanges(forPlayer);
+                            } catch (Exception e) {
+                                plugin.getLogger().severe("Error rendering tree: " + e.getMessage());
+                            }
                         }
                     }, generationDelay);
 
