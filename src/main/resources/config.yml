@@ -30,3 +30,5 @@ planting-pattern:
 # Giant trees can possibly smother players if they don't get out of the way.
 # How many seconds should Giant Trees wait before adding a tree to the world?
 generation-delay: 3
+
+# verbose-logging: true

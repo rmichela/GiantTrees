@@ -52,8 +52,7 @@ public class WorldChangeTracker {
         return changes.values();
     }
 
-    public void applyChanges(Location refPoint, Player byPlayer) {
-        Bukkit.getLogger().info("[GiantTrees] Affected blocks: " + changes.size());
+    public int applyChanges(Location refPoint, Player byPlayer) {
         if (relightingStrategy == MassBlockUpdate.RelightingStrategy.HYBRID || relightingStrategy == MassBlockUpdate.RelightingStrategy.DEFERRED) {
             massBlockUpdate.setDeferredBufferSize(changes.size());
         }
@@ -79,6 +78,7 @@ public class WorldChangeTracker {
             historyTracker.finalizeHistoricChanges();
         }
         massBlockUpdate.notifyClients();
+        return changes.size();
     }
 
     private void ensureChunkLoaded(Chunk chunk) {

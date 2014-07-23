@@ -37,8 +37,8 @@ public class Draw3d {
         return new Vector(arbVec.getX(), invertY ? -arbVec.getZ() : arbVec.getZ(), arbVec.getY());
     }
 
-    public void applyChanges(Player forPlayer) {
-        changeTracker.applyChanges(refPoint, forPlayer);
+    public int applyChanges(Player forPlayer) {
+        return changeTracker.applyChanges(refPoint, forPlayer);
     }
 
     public void drawCone(Vector l1, double rad1, Vector l2, double rad2, int level) {

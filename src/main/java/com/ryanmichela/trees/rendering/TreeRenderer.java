@@ -44,7 +44,7 @@ public class TreeRenderer {
             @Override
             public void run() {
                 try {
-                    plugin.getLogger().info("Rendering tree " + treeFile.getName());
+                    logVerbose("Rendering tree " + treeFile.getName());
                     Tree tree = loadTree(treeFile, seed);
                     tree.make();
                     TreeType treeType = new TreeType(tree.params.WoodType);
@@ -60,7 +60,7 @@ public class TreeRenderer {
                     d3d.drawRootJunction(d3d.toMcVector(((Segment)((Stem) tree.trunks.get(0)).stemSegments().nextElement()).posFrom()), ((Stem)tree.trunks.get(0)).baseRadius);
 
                     if (rootFile != null) {
-                        plugin.getLogger().info("Rendering root " + rootFile.getName());
+                        logVerbose("Rendering root " + rootFile.getName());
                         Tree root = loadTree(rootFile, seed);
                         // Turn off leaves for roots and scale the roots the same as the tree
                         root.params.Leaves = -1;
@@ -80,7 +80,8 @@ public class TreeRenderer {
                         @Override
                         public void run() {
                             try {
-                                d3d.applyChanges(forPlayer);
+                                int changeCount = d3d.applyChanges(forPlayer);
+                                logVerbose("Affected blocks: " + changeCount);
                             } catch (Exception e) {
                                 plugin.getLogger().severe("Error rendering tree: " + e.getMessage());
                             }
@@ -104,5 +105,11 @@ public class TreeRenderer {
         tree.params.stopLevel = -1; // -1 for everything
         tree.params.verbose = false;
         return tree;
+    }
+
+    private void logVerbose(String message) {
+        if (plugin.getConfig().getBoolean("verbose-logging", false)) {
+            plugin.getLogger().info(message);
+        }
     }
 }
