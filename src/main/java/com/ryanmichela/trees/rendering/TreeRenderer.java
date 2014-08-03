@@ -59,7 +59,7 @@ public class TreeRenderer {
 
                     d3d.drawRootJunction(d3d.toMcVector(((Segment)((Stem) tree.trunks.get(0)).stemSegments().nextElement()).posFrom()), ((Stem)tree.trunks.get(0)).baseRadius);
 
-                    if (rootFile != null) {
+                    if (rootFile != null && rootFile.exists()) {
                         logVerbose("Rendering root " + rootFile.getName());
                         Tree root = loadTree(rootFile, seed);
                         // Turn off leaves for roots and scale the roots the same as the tree
