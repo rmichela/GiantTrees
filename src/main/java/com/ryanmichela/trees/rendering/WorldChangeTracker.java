@@ -8,6 +8,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
 import java.util.Collection;
@@ -18,15 +19,23 @@ import java.util.Map;
  * Copyright 2014 Ryan Michela
  */
 public class WorldChangeTracker {
+    private Plugin plugin;
     private Map<WorldChangeKey, WorldChange> changes = new HashMap<WorldChangeKey, WorldChange>(10000);
     private CraftMassBlockUpdate massBlockUpdate;
     private MassBlockUpdate.RelightingStrategy relightingStrategy;
     private boolean recordHistory;
 
-    public WorldChangeTracker(CraftMassBlockUpdate massBlockUpdate, MassBlockUpdate.RelightingStrategy relightingStrategy, boolean recordHistory) {
+    private final int BLOCKS_PER_TICK;
+    private final int GAP_BETWEEN_TICK;
+
+    public WorldChangeTracker(Plugin plugin, CraftMassBlockUpdate massBlockUpdate, MassBlockUpdate.RelightingStrategy relightingStrategy, boolean recordHistory) {
+        this.plugin = plugin;
         this.massBlockUpdate = massBlockUpdate;
         this.relightingStrategy = relightingStrategy;
         this.recordHistory = recordHistory;
+
+        BLOCKS_PER_TICK = plugin.getConfig().getInt("BLOCKS_PER_TICK", 1500);
+        GAP_BETWEEN_TICK = plugin.getConfig().getInt("GAP_BETWEEN_TICK", 2);
     }
 
     public void addChange(Vector location, Material material, byte materialData, boolean overwrite) {
@@ -52,40 +61,80 @@ public class WorldChangeTracker {
         return changes.values();
     }
 
-    public int applyChanges(Location refPoint, Player byPlayer) {
+    public void applyChanges(Location refPoint, Player byPlayer) {
         if (relightingStrategy == MassBlockUpdate.RelightingStrategy.HYBRID || relightingStrategy == MassBlockUpdate.RelightingStrategy.DEFERRED) {
             massBlockUpdate.setDeferredBufferSize(changes.size());
         }
 
-        WorldEditHistoryTracker historyTracker = null;
-        if (recordHistory && Bukkit.getServer().getPluginManager().isPluginEnabled("WorldEdit")) {
-            historyTracker = new WorldEditHistoryTracker(refPoint, byPlayer);
+        final WorldEditHistoryTracker historyTracker =
+                (recordHistory && Bukkit.getServer().getPluginManager().isPluginEnabled("WorldEdit")) ?
+                        new WorldEditHistoryTracker(refPoint, byPlayer) : null;
+
+        WorldChange[] changesArray = changes.values().toArray(new WorldChange[changes.values().size()]);
+        int i;
+        for (i = 0; (i + 1) * BLOCKS_PER_TICK < changesArray.length; i++) {
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Changer(changesArray, refPoint, historyTracker, i*BLOCKS_PER_TICK, BLOCKS_PER_TICK), i*GAP_BETWEEN_TICK);
         }
 
-        for (WorldChange change : changes.values()) {
-            Location changeLoc = refPoint.clone().add(change.location);
-            int blockY = changeLoc.getBlockY();
-            ensureChunkLoaded(changeLoc.getChunk());
-            if (blockY <= 255 && blockY >= 0) {
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Changer(changesArray, refPoint, historyTracker, i*BLOCKS_PER_TICK, changesArray.length - (i*BLOCKS_PER_TICK)), (i+1)*GAP_BETWEEN_TICK);
+
+
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+            @Override
+            public void run() {
                 if (historyTracker != null) {
-                    historyTracker.recordHistoricChange(changeLoc, change.material.getId(), change.materialData);
+                    historyTracker.finalizeHistoricChanges();
                 }
-                massBlockUpdate.setBlock(changeLoc.getBlockX(), blockY, changeLoc.getBlockZ(), change.material.getId(), change.materialData);
+                massBlockUpdate.notifyClients();
+                logVerbose("Affected blocks: " + changes.size());
             }
-        }
+        }, (i+2)*GAP_BETWEEN_TICK);
 
-        if (historyTracker != null) {
-            historyTracker.finalizeHistoricChanges();
-        }
-        massBlockUpdate.notifyClients();
-        return changes.size();
     }
 
-    private void ensureChunkLoaded(Chunk chunk) {
-        if (!chunk.isLoaded()) {
-            if (!chunk.load()) {
-                Bukkit.getLogger().severe("[GiantTrees] Could not load chunk " + chunk.toString());
+    private class Changer implements Runnable {
+        private WorldChange[] changes;
+        private Location refPoint;
+        private WorldEditHistoryTracker historyTracker;
+        private int offset;
+        private int count;
+
+        private Changer(WorldChange[] changes, Location refPoint, WorldEditHistoryTracker historyTracker, int offset, int count) {
+            this.changes = changes;
+            this.refPoint = refPoint;
+            this.historyTracker = historyTracker;
+            this.offset = offset;
+            this.count = count;
+        }
+
+        @Override
+        public void run() {
+            for(int i = offset; i < offset + count; i++) {
+                WorldChange change = changes[i];
+                Location changeLoc = refPoint.clone().add(change.location);
+                int blockY = changeLoc.getBlockY();
+                ensureChunkLoaded(changeLoc.getChunk());
+                if (blockY <= 255 && blockY >= 0) {
+                    if (historyTracker != null) {
+                        historyTracker.recordHistoricChange(changeLoc, change.material.getId(), change.materialData);
+                    }
+                    massBlockUpdate.setBlock(changeLoc.getBlockX(), blockY, changeLoc.getBlockZ(), change.material.getId(), change.materialData);
+                }
             }
+        }
+
+        private void ensureChunkLoaded(Chunk chunk) {
+            if (!chunk.isLoaded()) {
+                if (!chunk.load()) {
+                    plugin.getLogger().severe("Could not load chunk " + chunk.toString());
+                }
+            }
+        }
+    }
+
+    private void logVerbose(String message) {
+        if (plugin.getConfig().getBoolean("verbose-logging", false)) {
+            plugin.getLogger().info(message);
         }
     }
 }

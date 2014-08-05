@@ -38,7 +38,7 @@ public class TreeRenderer {
         CraftMassBlockUpdate massBlockUpdate = new CraftMassBlockUpdate(plugin, refPoint.getWorld());
         MassBlockUpdate.RelightingStrategy relightingStrategy = MassBlockUpdate.RelightingStrategy.HYBRID;
         massBlockUpdate.setRelightingStrategy(relightingStrategy);
-        final WorldChangeTracker changeTracker = new WorldChangeTracker(massBlockUpdate, relightingStrategy, recordHistory);
+        final WorldChangeTracker changeTracker = new WorldChangeTracker(plugin, massBlockUpdate, relightingStrategy, recordHistory);
 
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
             @Override
@@ -80,8 +80,7 @@ public class TreeRenderer {
                         @Override
                         public void run() {
                             try {
-                                int changeCount = d3d.applyChanges(forPlayer);
-                                logVerbose("Affected blocks: " + changeCount);
+                                d3d.applyChanges(forPlayer);
                             } catch (Exception e) {
                                 plugin.getLogger().severe("Error rendering tree: " + e.getMessage());
                             }

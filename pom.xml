@@ -6,7 +6,7 @@
 
     <groupId>GiantTrees</groupId>
     <artifactId>GiantTrees</artifactId>
-    <version>1.0-R03</version>
+    <version>1.0-R04</version>
 
     <!-- Repositories -->
     <repositories>

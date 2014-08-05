@@ -1,5 +1,5 @@
 name: GiantTrees
-version: "1.0-R03"
+version: "1.0-R04"
 author: Ryan Michela
 main: com.ryanmichela.trees.TreePlugin
 description: Grows enormous trees.
