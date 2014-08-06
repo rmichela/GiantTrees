@@ -36,7 +36,9 @@ public class TreeRenderer {
         AbstractParam.loading = true;
 
         CraftMassBlockUpdate massBlockUpdate = new CraftMassBlockUpdate(plugin, refPoint.getWorld());
-        MassBlockUpdate.RelightingStrategy relightingStrategy = MassBlockUpdate.RelightingStrategy.HYBRID;
+        MassBlockUpdate.RelightingStrategy relightingStrategy = plugin.getConfig().getBoolean("SIMPLE_LIGHTING", false) ?
+                MassBlockUpdate.RelightingStrategy.NEVER :
+                MassBlockUpdate.RelightingStrategy.HYBRID;
         massBlockUpdate.setRelightingStrategy(relightingStrategy);
         final WorldChangeTracker changeTracker = new WorldChangeTracker(plugin, massBlockUpdate, relightingStrategy, recordHistory);
 
