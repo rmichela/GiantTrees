@@ -25,8 +25,8 @@ public class WorldChangeTracker {
     private MassBlockUpdate.RelightingStrategy relightingStrategy;
     private boolean recordHistory;
 
-    private final int BLOCKS_PER_TICK;
-    private final int GAP_BETWEEN_TICK;
+    private int BLOCKS_PER_TICK;
+    private int TICK_DELAY;
 
     public WorldChangeTracker(Plugin plugin, CraftMassBlockUpdate massBlockUpdate, MassBlockUpdate.RelightingStrategy relightingStrategy, boolean recordHistory) {
         this.plugin = plugin;
@@ -34,8 +34,11 @@ public class WorldChangeTracker {
         this.relightingStrategy = relightingStrategy;
         this.recordHistory = recordHistory;
 
-        BLOCKS_PER_TICK = plugin.getConfig().getInt("BLOCKS_PER_TICK", 1500);
-        GAP_BETWEEN_TICK = plugin.getConfig().getInt("GAP_BETWEEN_TICK", 2);
+        BLOCKS_PER_TICK = plugin.getConfig().getInt("BLOCKS_PER_TICK", 2500);
+        TICK_DELAY = plugin.getConfig().getInt("TICK_DELAY", 1);
+
+        if (BLOCKS_PER_TICK < 1) BLOCKS_PER_TICK = 1;
+        if (TICK_DELAY < 1) TICK_DELAY = 1;
     }
 
     public void addChange(Vector location, Material material, byte materialData, boolean overwrite) {
@@ -73,10 +76,10 @@ public class WorldChangeTracker {
         WorldChange[] changesArray = changes.values().toArray(new WorldChange[changes.values().size()]);
         int i;
         for (i = 0; (i + 1) * BLOCKS_PER_TICK < changesArray.length; i++) {
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Changer(changesArray, refPoint, historyTracker, i*BLOCKS_PER_TICK, BLOCKS_PER_TICK), i*GAP_BETWEEN_TICK);
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Changer(changesArray, refPoint, historyTracker, i*BLOCKS_PER_TICK, BLOCKS_PER_TICK), i* TICK_DELAY);
         }
 
-        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Changer(changesArray, refPoint, historyTracker, i*BLOCKS_PER_TICK, changesArray.length - (i*BLOCKS_PER_TICK)), (i+1)*GAP_BETWEEN_TICK);
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Changer(changesArray, refPoint, historyTracker, i*BLOCKS_PER_TICK, changesArray.length - (i*BLOCKS_PER_TICK)), (i+1)* TICK_DELAY);
 
 
         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
@@ -88,7 +91,7 @@ public class WorldChangeTracker {
                 massBlockUpdate.notifyClients();
                 logVerbose("Affected blocks: " + changes.size());
             }
-        }, (i+2)*GAP_BETWEEN_TICK);
+        }, (i+2)* TICK_DELAY);
 
     }
 

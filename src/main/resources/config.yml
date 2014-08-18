@@ -32,3 +32,8 @@ planting-pattern:
 generation-delay: 3
 
 # verbose-logging: true
+
+# Only change the settings below if you are having lag problems
+BLOCKS_PER_TICK: 2500       # The number of blocks to modify in a single tick
+TICK_DELAY: 1               # The delay in ticks between block modification actions
+SIMPLE_LIGHTING: false      # Disables the second lighting pass
