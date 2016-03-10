@@ -9,8 +9,8 @@
     <version>2.0.0-alpha.1-SNAPSHOT</version>
     
     <properties>
-      <maven.compiler.source>1.6</maven.compiler.source>
-      <maven.compiler.target>1.6</maven.compiler.target>
+      <maven.compiler.source>1.7</maven.compiler.source>
+      <maven.compiler.target>1.7</maven.compiler.target>
       <sonar.java.source>${maven.compiler.source}</sonar.java.source>
       <sonar.exclusions>src/main/java/net/sourceforge/arbaro/**</sonar.exclusions>
       <rtr.allowExternalSnapshots>true</rtr.allowExternalSnapshots>
