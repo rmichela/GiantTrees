@@ -18,6 +18,14 @@
         <developerConnection>scm:git:git@github.com:rmichela/GiantTrees.git</developerConnection>
         <url>https://github.com/rmichela/GiantTrees</url>
     </scm>
+
+    <licenses>
+        <license>
+            <name>GNU GENERAL PUBLIC LICENSE - Version 3, 29 June 2007</name>
+            <url>http://www.gnu.org/licenses/gpl.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
     
     <!-- Repositories -->
     <repositories>
