@@ -12,6 +12,7 @@
       <maven.compiler.source>1.6</maven.compiler.source>
       <maven.compiler.target>1.6</maven.compiler.target>
       <sonar.java.source>${maven.compiler.source}</sonar.java.source>
+      <sonar.exclusions>src/main/java/net/sourceforge/arbaro/**</sonar.exclusions>
       <rtr.allowExternalSnapshots>true</rtr.allowExternalSnapshots>
       <tagNameFormat>@{project.version}</tagNameFormat>
     </properties>
