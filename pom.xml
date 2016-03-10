@@ -9,6 +9,9 @@
     <version>2.0.0-alpha.1-SNAPSHOT</version>
     
     <properties>
+      <maven.compiler.source>1.6</maven.compiler.source>
+      <maven.compiler.target>1.6</maven.compiler.target>
+      <sonar.java.source>${maven.compiler.source}</sonar.java.source>
       <rtr.allowExternalSnapshots>true</rtr.allowExternalSnapshots>
       <tagNameFormat>@{project.version}</tagNameFormat>
     </properties>
@@ -94,10 +97,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -129,6 +128,33 @@
     </build>
     
     <profiles>
+        <!-- SonarQube analysis profile. -->
+        <profile>
+            <id>sonarqube</id>
+            <activation>
+                <property>
+                    <name>sonar.host.url</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.sonarsource.scanner.maven</groupId>
+                        <artifactId>sonar-maven-plugin</artifactId>
+                        <version>3.0.1</version>
+                        <executions>
+                            <execution>
+                                <id>sonarqube-analysis</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sonar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
         <!-- Things to do only for releases. -->
         <profile>
             <id>release</id>
