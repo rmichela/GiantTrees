@@ -49,10 +49,10 @@ public class TreePopulator extends BlockPopulator {
                biome == Biome.SWAMPLAND ||
                biome == Biome.JUNGLE ||
                biome == Biome.ROOFED_FOREST ||
-               biome == Biome.COLD_TAIGA ||
+               biome == Biome.TAIGA_COLD ||
                biome == Biome.EXTREME_HILLS ||
                biome == Biome.TAIGA ||
-               biome == Biome.MEGA_TAIGA ||
+               biome == Biome.REDWOOD_TAIGA ||
                biome == Biome.SAVANNA;
     }
 
@@ -60,45 +60,48 @@ public class TreePopulator extends BlockPopulator {
         switch (biome) {
             case FOREST:
             case FOREST_HILLS:
-            case FLOWER_FOREST:
+            case MUTATED_FOREST:
                 return Biome.FOREST;
             case BIRCH_FOREST:
             case BIRCH_FOREST_HILLS:
-            case BIRCH_FOREST_HILLS_MOUNTAINS:
-            case BIRCH_FOREST_MOUNTAINS:
+            case MUTATED_BIRCH_FOREST:
+            case MUTATED_BIRCH_FOREST_HILLS:
                 return Biome.BIRCH_FOREST;
             case SWAMPLAND:
-            case SWAMPLAND_MOUNTAINS:
+            case MUTATED_SWAMPLAND:
                 return Biome.SWAMPLAND;
             case JUNGLE:
+            case JUNGLE_EDGE:
             case JUNGLE_HILLS:
-            case JUNGLE_MOUNTAINS:
+            case MUTATED_JUNGLE:
+            case MUTATED_JUNGLE_EDGE:
                 return Biome.JUNGLE;
             case ROOFED_FOREST:
-            case ROOFED_FOREST_MOUNTAINS:
+            case MUTATED_ROOFED_FOREST:
                 return Biome.ROOFED_FOREST;
-            case COLD_TAIGA:
-            case COLD_TAIGA_HILLS:
-            case COLD_TAIGA_MOUNTAINS:
-                return Biome.COLD_TAIGA;
+            case TAIGA_COLD:
+            case TAIGA_COLD_HILLS:
+            case MUTATED_TAIGA_COLD:
+                return Biome.TAIGA_COLD;
             case EXTREME_HILLS:
-            case EXTREME_HILLS_MOUNTAINS:
-            case EXTREME_HILLS_PLUS:
-            case EXTREME_HILLS_PLUS_MOUNTAINS:
+            case EXTREME_HILLS_WITH_TREES:
+            case MUTATED_EXTREME_HILLS:
+            case MUTATED_EXTREME_HILLS_WITH_TREES:
+            case SMALLER_EXTREME_HILLS :
                 return Biome.EXTREME_HILLS;
             case TAIGA:
             case TAIGA_HILLS:
-            case TAIGA_MOUNTAINS:
+            case MUTATED_TAIGA :
                 return Biome.TAIGA;
-            case MEGA_SPRUCE_TAIGA:
-            case MEGA_SPRUCE_TAIGA_HILLS:
-            case MEGA_TAIGA:
-            case MEGA_TAIGA_HILLS:
-                return Biome.MEGA_TAIGA;
+            case REDWOOD_TAIGA:
+            case REDWOOD_TAIGA_HILLS:
+            case MUTATED_REDWOOD_TAIGA:
+            case MUTATED_REDWOOD_TAIGA_HILLS:
+                return Biome.REDWOOD_TAIGA;
             case SAVANNA:
-            case SAVANNA_MOUNTAINS:
-            case SAVANNA_PLATEAU:
-            case SAVANNA_PLATEAU_MOUNTAINS:
+            case SAVANNA_ROCK:
+            case MUTATED_SAVANNA:
+            case MUTATED_SAVANNA_ROCK:
                 return Biome.SAVANNA;
             default:
                 return null;

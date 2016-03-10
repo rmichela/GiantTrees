@@ -31,7 +31,7 @@ public class WorldEditHistoryTracker {
         localWorld = new NoChangeBukkitWorld(refPoint.getWorld());
         activeEditSession = new EditSession(localWorld, Integer.MAX_VALUE);
         activeEditSession.enableQueue();
-        activeEditSession.setMask(null);
+        activeEditSession.setMask((com.sk89q.worldedit.function.mask.Mask) null);
         activeEditSession.setFastMode(true);
         this.forPlayer = forPlayer;
     }
