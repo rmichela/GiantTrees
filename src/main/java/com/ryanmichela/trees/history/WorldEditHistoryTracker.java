@@ -31,7 +31,10 @@ public class WorldEditHistoryTracker {
     this.wePlugin = (WorldEditPlugin) plugin;
 
     this.localWorld = new NoChangeBukkitWorld(refPoint.getWorld());
-    this.activeEditSession = new EditSession(this.localWorld, Integer.MAX_VALUE);
+    // No public alternative
+    @SuppressWarnings("deprecation")
+    final EditSession es = new EditSession(this.localWorld, Integer.MAX_VALUE);
+    this.activeEditSession = es;
     this.activeEditSession.enableQueue();
     this.activeEditSession.setMask((com.sk89q.worldedit.function.mask.Mask) null);
     this.activeEditSession.setFastMode(true);
@@ -42,7 +45,8 @@ public class WorldEditHistoryTracker {
     final BukkitPlayer localPlayer = new BukkitPlayer(this.wePlugin, null,
                                                       this.forPlayer);
     final LocalSession localSession = this.wePlugin.getWorldEdit()
-                                                   .getSession(localPlayer);
+                                                   .getSessionManager()
+                                                   .get(localPlayer);
     this.activeEditSession.flushQueue();
     localSession.remember(this.activeEditSession);
     this.localWorld.enableUndo();

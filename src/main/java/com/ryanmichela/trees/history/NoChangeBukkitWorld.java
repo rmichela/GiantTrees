@@ -6,7 +6,6 @@ import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
-import com.sk89q.worldedit.foundation.Block;
 
 /**
  * Copyright 2014 Ryan Michela
@@ -27,18 +26,6 @@ public class NoChangeBukkitWorld extends BukkitWorld {
   public boolean
       setBlock(final Vector pt, final BaseBlock block,
                final boolean notifyAdjacent) throws WorldEditException {
-    if (this.doneUpdating) {
-      return super.setBlock(pt, block, notifyAdjacent);
-    } else {
-      return true;
-    }
-  }
-
-  @Override
-  public
-      boolean
-      setBlock(final Vector pt, final Block block, final boolean notifyAdjacent)
-                                                                                throws WorldEditException {
     if (this.doneUpdating) {
       return super.setBlock(pt, block, notifyAdjacent);
     } else {
