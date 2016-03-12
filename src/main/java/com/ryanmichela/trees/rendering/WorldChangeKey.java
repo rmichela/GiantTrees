@@ -6,41 +6,43 @@ import org.bukkit.util.Vector;
  * Copyright 2014 Ryan Michela
  */
 public class WorldChangeKey {
-    public int x;
-    public int y;
-    public int z;
 
-    public WorldChangeKey() {}
+  public int x;
+  public int y;
+  public int z;
 
-    public WorldChangeKey(int x, int y, int z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
+  public WorldChangeKey() {
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+  public WorldChangeKey(final int x, final int y, final int z) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+  }
 
-        WorldChangeKey that = (WorldChangeKey) o;
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) { return true; }
+    if ((o == null) || (this.getClass() != o.getClass())) { return false; }
 
-        if (x != that.x) return false;
-        if (y != that.y) return false;
-        if (z != that.z) return false;
+    final WorldChangeKey that = (WorldChangeKey) o;
 
-        return true;
-    }
+    if (this.x != that.x) { return false; }
+    if (this.y != that.y) { return false; }
+    if (this.z != that.z) { return false; }
 
-    @Override
-    public int hashCode() {
-        int result = x;
-        result = 31 * result + y;
-        result = 31 * result + z;
-        return result;
-    }
+    return true;
+  }
 
-    public Vector toVector() {
-        return new Vector(x, y, z);
-    }
+  @Override
+  public int hashCode() {
+    int result = this.x;
+    result = (31 * result) + this.y;
+    result = (31 * result) + this.z;
+    return result;
+  }
+
+  public Vector toVector() {
+    return new Vector(this.x, this.y, this.z);
+  }
 }

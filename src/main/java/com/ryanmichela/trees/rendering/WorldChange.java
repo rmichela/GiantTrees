@@ -4,16 +4,18 @@ import org.bukkit.Material;
 import org.bukkit.util.Vector;
 
 /**
-* Copyright 2014 Ryan Michela
-*/
+ * Copyright 2014 Ryan Michela
+ */
 class WorldChange {
-    Vector location;
-    public Material material;
-    public byte materialData;
 
-    WorldChange(Vector location, Material material, byte materialData) {
-        this.location = location;
-        this.material = material;
-        this.materialData = materialData;
-    }
+  public Material material;
+  public byte     materialData;
+  Vector          location;
+
+  WorldChange(final Vector location, final Material material,
+              final byte materialData) {
+    this.location = location;
+    this.material = material;
+    this.materialData = materialData;
+  }
 }

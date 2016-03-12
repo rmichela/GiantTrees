@@ -1,7 +1,13 @@
 package com.ryanmichela.trees;
 
-import com.ryanmichela.trees.rendering.TreeRenderer;
-import org.bukkit.*;
+import java.io.File;
+import java.util.Random;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
@@ -13,74 +19,81 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.Plugin;
 
-import java.io.File;
-import java.util.Random;
+import com.ryanmichela.trees.rendering.TreeRenderer;
 
 /**
  * Copyright 2014 Ryan Michela
  */
 public class CreateTreeCommand implements CommandExecutor {
-    private Plugin plugin;
-    private TreeRenderer renderer;
-    private PopupHandler popup;
 
-    public CreateTreeCommand(Plugin plugin) {
-        this.plugin = plugin;
-        renderer = new TreeRenderer(plugin);
-        popup = new PopupHandler(plugin);
+  private final Plugin       plugin;
+  private final PopupHandler popup;
+  private final TreeRenderer renderer;
+
+  public CreateTreeCommand(final Plugin plugin) {
+    this.plugin = plugin;
+    this.renderer = new TreeRenderer(plugin);
+    this.popup = new PopupHandler(plugin);
+  }
+
+  @Override
+  public boolean onCommand(final CommandSender sender, final Command command,
+                           final String label, final String[] arg) {
+    if (sender instanceof ConsoleCommandSender) {
+      sender.sendMessage("Cannot create giant trees from the console");
+      return true;
     }
 
-    @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent event) {
-
+    if (arg.length != 1) {
+      // incorrect number of arguments
+      return false;
     }
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] arg) {
-        if (sender instanceof ConsoleCommandSender) {
-            sender.sendMessage("Cannot create giant trees from the console");
-            return true;
-        }
+    final Player player = (Player) sender;
+    if (player.hasPermission("gianttrees.create")) {
+      final Chunk chunk = player.getLocation().getChunk();
+      final World world = chunk.getWorld();
+      final Random seed = new Random(world.getSeed());
 
-        if (arg.length != 1) {
-            // incorrect number of arguments
-            return false;
-        }
+      final String species = arg[0];
+      final File treeFile = new File(this.plugin.getDataFolder(), species
+                                                                  + ".xml");
+      final File rootFile = new File(this.plugin.getDataFolder(), species
+                                                                  + ".root.xml");
 
-        Player player = (Player) sender;
-        if (player.hasPermission("gianttrees.create")) {
-            Chunk chunk = player.getLocation().getChunk();
-            World world = chunk.getWorld();
-            Random seed = new Random(world.getSeed());
-
-            String species = arg[0];
-            File treeFile = new File(plugin.getDataFolder(), species + ".xml");
-            File rootFile = new File(plugin.getDataFolder(), species + ".root.xml");
-
-            if (!treeFile.exists())
-            {
-                sender.sendMessage(ChatColor.RED + "Tree " + species + " does not exist.");
-                sender.sendMessage("Use \"/tree-edit " + species + "\" from the server console to create it.");
-                return true;
-            }
-
-            Block highestSoil = getHighestSoil(player.getWorld().getHighestBlockAt(player.getLocation()));
-
-            Location base = highestSoil.getLocation();
-            popup.sendPopup(player, "Stand back!");
-            renderer.renderTreeWithHistory(base, treeFile, rootFile, seed.nextInt(), player, true);
-        }
+      if (!treeFile.exists()) {
+        sender.sendMessage(ChatColor.RED + "Tree " + species
+                           + " does not exist.");
+        sender.sendMessage("Use \"/tree-edit " + species
+                           + "\" from the server console to create it.");
         return true;
-    }
+      }
 
-    Block getHighestSoil(Block highestBlock) {
-        while (highestBlock.getY() > 0 &&
-                highestBlock.getType() != Material.DIRT && // Includes podzol
-                highestBlock.getType() != Material.GRASS &&
-                highestBlock.getType() != Material.MYCEL &&
-                highestBlock.getType() != Material.SAND) {
-            highestBlock = highestBlock.getRelative(BlockFace.DOWN);
-        }
-        return highestBlock;
+      final Block highestSoil = this.getHighestSoil(player.getWorld()
+                                                          .getHighestBlockAt(player.getLocation()));
+
+      final Location base = highestSoil.getLocation();
+      this.popup.sendPopup(player, "Stand back!");
+      this.renderer.renderTreeWithHistory(base, treeFile, rootFile,
+                                          seed.nextInt(), player, true);
     }
+    return true;
+  }
+
+  @EventHandler
+  public void onPlayerInteract(final PlayerInteractEvent event) {
+
+  }
+
+  Block getHighestSoil(Block highestBlock) {
+    while ((highestBlock.getY() > 0)
+           && (highestBlock.getType() != Material.DIRT)
+           && // Includes podzol
+           (highestBlock.getType() != Material.GRASS)
+           && (highestBlock.getType() != Material.MYCEL)
+           && (highestBlock.getType() != Material.SAND)) {
+      highestBlock = highestBlock.getRelative(BlockFace.DOWN);
+    }
+    return highestBlock;
+  }
 }

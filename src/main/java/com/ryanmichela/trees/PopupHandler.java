@@ -1,6 +1,7 @@
 package com.ryanmichela.trees;
 
 import me.desht.dhutils.ItemMessage;
+
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -8,18 +9,19 @@ import org.bukkit.plugin.Plugin;
  * Copyright 2014 Ryan Michela
  */
 public class PopupHandler {
-    private Plugin plugin;
 
-    public PopupHandler(Plugin plugin) {
-        this.plugin = plugin;
-    }
+  private final Plugin plugin;
 
-    public void sendPopup(Player player, String message) {
-        try {
-            ItemMessage itemMessage = new ItemMessage(plugin);
-            itemMessage.sendMessage(player, message);
-        } catch (Exception e) {
-            player.sendMessage(message);
-        }
+  public PopupHandler(final Plugin plugin) {
+    this.plugin = plugin;
+  }
+
+  public void sendPopup(final Player player, final String message) {
+    try {
+      final ItemMessage itemMessage = new ItemMessage(this.plugin);
+      itemMessage.sendMessage(player, message);
+    } catch (final Exception e) {
+      player.sendMessage(message);
     }
+  }
 }

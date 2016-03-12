@@ -12,26 +12,38 @@ import com.sk89q.worldedit.foundation.Block;
  * Copyright 2014 Ryan Michela
  */
 public class NoChangeBukkitWorld extends BukkitWorld {
-    private boolean doneUpdating = false;
 
-    public NoChangeBukkitWorld(World world) {
-        super(world);
-    }
+  private boolean doneUpdating = false;
 
-    public void enableUndo() {
-        doneUpdating = true;
+  public NoChangeBukkitWorld(final World world) {
+    super(world);
+  }
+
+  public void enableUndo() {
+    this.doneUpdating = true;
+  }
+
+  @Override
+  public boolean
+      setBlock(final Vector pt, final BaseBlock block,
+               final boolean notifyAdjacent) throws WorldEditException {
+    if (this.doneUpdating) {
+      return super.setBlock(pt, block, notifyAdjacent);
+    } else {
+      return true;
     }
-    
-    @Override
-	public boolean setBlock(Vector pt, Block block, boolean notifyAdjacent) throws WorldEditException {
-    	if (doneUpdating) return super.setBlock(pt, block, notifyAdjacent);
-    	else return true;
-	}
-    
-    @Override
-    public boolean setBlock(Vector pt, BaseBlock block, boolean notifyAdjacent) throws WorldEditException {
-        if (doneUpdating) return super.setBlock(pt, block, notifyAdjacent);
-        else return true;
+  }
+
+  @Override
+  public
+      boolean
+      setBlock(final Vector pt, final Block block, final boolean notifyAdjacent)
+                                                                                throws WorldEditException {
+    if (this.doneUpdating) {
+      return super.setBlock(pt, block, notifyAdjacent);
+    } else {
+      return true;
     }
+  }
 
 }
