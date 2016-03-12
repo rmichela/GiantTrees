@@ -91,6 +91,20 @@
   </dependencies>
   <build>
     <defaultGoal>clean install</defaultGoal>
+    <resources>
+      <resource>
+        <directory>${project.basedir}/src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>${project.basedir}/src/arbaro/resources</directory>
+      </resource>
+      <resource>
+        <directory>${project.basedir}</directory>
+        <includes>
+          <include>LICENSE</include>
+        </includes>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -107,20 +121,6 @@
               <sources>
                 <source>${project.basedir}/src/arbaro/java</source>
               </sources>
-            </configuration>
-          </execution>
-          <execution>
-            <id>add-resource</id>
-            <!-- generate-resources -->
-            <goals>
-              <goal>add-resource</goal>
-            </goals>
-            <configuration>
-              <resources>
-                <resource>
-                  <directory>${project.basedir}/src/arbaro/resources</directory>
-                </resource>
-              </resources>
             </configuration>
           </execution>
         </executions>
