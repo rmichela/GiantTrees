@@ -22,10 +22,39 @@
 
 package net.sourceforge.arbaro.gui;
 
-import java.io.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;    
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.SwingWorker;
+import javax.swing.Timer;
 
 import net.sourceforge.arbaro.tree.Tree;
 
@@ -599,12 +628,14 @@ class TreeCreationTask {
 	boolean isNotActive;
 	String povrayexe;
 	
-	final class TreeWorker extends SwingWorker {
-		public Object construct() {
+	final class TreeWorker extends SwingWorker<DoTask, Void> {
+	  @Override
+		protected DoTask doInBackground() {
 			return new DoTask();
 		}
 		
-		public void finished() {
+		@Override
+		protected void done() {
 			// may be this should be done in DoTask instead?
 			isNotActive = true;
 		}
@@ -638,7 +669,7 @@ class TreeCreationTask {
 			isNotActive = false;
 			
 			worker = new TreeWorker();
-			worker.start();
+			worker.execute();
 			
 		} catch (Exception e) {
 			System.err.println(e);
@@ -657,7 +688,7 @@ class TreeCreationTask {
 	void stop() {
 		if (worker != null) {
 			System.err.println("stop tree creation...");
-			worker.interrupt();
+			worker.cancel(true);
 			isNotActive = true;
 			worker = null;
 		}
