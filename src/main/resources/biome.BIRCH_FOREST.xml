@@ -1,75 +1,74 @@
 <?xml version='1.0' ?>
-
 <arbaro>
   <species name='default'>
     <!-- general params -->
-    <param name='WoodType' value='Birch'/>
-    <param name='Shape' value='1'/>
-    <param name='Levels' value='2'/>
-    <param name='Scale' value='50.0'/>
-    <param name='ScaleV' value='10.0'/>
-    <param name='BaseSize' value='0.5'/>
-    <param name='Ratio' value='0.1'/>
-    <param name='RatioPower' value='0.9'/>
-    <param name='Flare' value='0.2'/>
-    <param name='Lobes' value='0'/>
-    <param name='LobeDepth' value='0.0'/>
-    <param name='Smooth' value='0.25'/>
-    <param name='Leaves' value='3'/>
-    <param name='LeafShape' value='disc'/>
-    <param name='LeafScale' value='16.0'/>
-    <param name='LeafScaleX' value='0.8'/>
-    <param name='LeafQuality' value='1.0'/>
-    <param name='LeafStemLen' value='0.0'/>
-    <param name='LeafDistrib' value='2'/>
-    <param name='LeafBend' value='0.3'/>
-    <param name='AttractionUp' value='0.0'/>
-    <param name='PruneRatio' value='0.0'/>
-    <param name='PrunePowerLow' value='0.5'/>
-    <param name='PrunePowerHigh' value='0.5'/>
-    <param name='PruneWidth' value='0.5'/>
-    <param name='PruneWidthPeak' value='0.5'/>
-    <param name='0Scale' value='1.0'/>
-    <param name='0ScaleV' value='0.0'/>
-    <param name='0BaseSplits' value='0'/>
+    <param name='WoodType' value='Birch' />
+    <param name='Shape' value='1' />
+    <param name='Levels' value='2' />
+    <param name='Scale' value='50.0' />
+    <param name='ScaleV' value='10.0' />
+    <param name='BaseSize' value='0.5' />
+    <param name='Ratio' value='0.1' />
+    <param name='RatioPower' value='0.9' />
+    <param name='Flare' value='0.2' />
+    <param name='Lobes' value='0' />
+    <param name='LobeDepth' value='0.0' />
+    <param name='Smooth' value='0.25' />
+    <param name='Leaves' value='3' />
+    <param name='LeafShape' value='disc' />
+    <param name='LeafScale' value='16.0' />
+    <param name='LeafScaleX' value='0.8' />
+    <param name='LeafQuality' value='1.0' />
+    <param name='LeafStemLen' value='0.0' />
+    <param name='LeafDistrib' value='2' />
+    <param name='LeafBend' value='0.3' />
+    <param name='AttractionUp' value='0.0' />
+    <param name='PruneRatio' value='0.0' />
+    <param name='PrunePowerLow' value='0.5' />
+    <param name='PrunePowerHigh' value='0.5' />
+    <param name='PruneWidth' value='0.5' />
+    <param name='PruneWidthPeak' value='0.5' />
+    <param name='0Scale' value='1.0' />
+    <param name='0ScaleV' value='0.0' />
+    <param name='0BaseSplits' value='0' />
     <!-- level 0 -->
-    <param name='0DownAngle' value='0.0'/>
-    <param name='0DownAngleV' value='0.0'/>
-    <param name='0Rotate' value='0.0'/>
-    <param name='0RotateV' value='0.0'/>
-    <param name='0Branches' value='1'/>
-    <param name='0BranchDist' value='0.0'/>
-    <param name='0Length' value='1.0'/>
-    <param name='0LengthV' value='0.0'/>
-    <param name='0Taper' value='1.75'/>
-    <param name='0SegSplits' value='0.0'/>
-    <param name='0SplitAngle' value='0.0'/>
-    <param name='0SplitAngleV' value='0.0'/>
-    <param name='0CurveRes' value='10'/>
-    <param name='0Curve' value='0.0'/>
-    <param name='0CurveBack' value='0.0'/>
-    <param name='0CurveV' value='0.0'/>
+    <param name='0DownAngle' value='0.0' />
+    <param name='0DownAngleV' value='0.0' />
+    <param name='0Rotate' value='0.0' />
+    <param name='0RotateV' value='0.0' />
+    <param name='0Branches' value='1' />
+    <param name='0BranchDist' value='0.0' />
+    <param name='0Length' value='1.0' />
+    <param name='0LengthV' value='0.0' />
+    <param name='0Taper' value='1.75' />
+    <param name='0SegSplits' value='0.0' />
+    <param name='0SplitAngle' value='0.0' />
+    <param name='0SplitAngleV' value='0.0' />
+    <param name='0CurveRes' value='10' />
+    <param name='0Curve' value='0.0' />
+    <param name='0CurveBack' value='0.0' />
+    <param name='0CurveV' value='0.0' />
     <!-- level 1 -->
-    <param name='1DownAngle' value='70.0'/>
-    <param name='1DownAngleV' value='5.0'/>
-    <param name='1Rotate' value='60.0'/>
-    <param name='1RotateV' value='10.0'/>
-    <param name='1Branches' value='15'/>
-    <param name='1BranchDist' value='1.0'/>
-    <param name='1Length' value='0.4'/>
-    <param name='1LengthV' value='0.2'/>
-    <param name='1Taper' value='1.0'/>
-    <param name='1SegSplits' value='0.0'/>
-    <param name='1SplitAngle' value='0.0'/>
-    <param name='1SplitAngleV' value='0.0'/>
-    <param name='1CurveRes' value='10'/>
-    <param name='1Curve' value='20.0'/>
-    <param name='1CurveBack' value='0.0'/>
-    <param name='1CurveV' value='5.0'/>
+    <param name='1DownAngle' value='70.0' />
+    <param name='1DownAngleV' value='5.0' />
+    <param name='1Rotate' value='60.0' />
+    <param name='1RotateV' value='10.0' />
+    <param name='1Branches' value='15' />
+    <param name='1BranchDist' value='1.0' />
+    <param name='1Length' value='0.4' />
+    <param name='1LengthV' value='0.2' />
+    <param name='1Taper' value='1.0' />
+    <param name='1SegSplits' value='0.0' />
+    <param name='1SplitAngle' value='0.0' />
+    <param name='1SplitAngleV' value='0.0' />
+    <param name='1CurveRes' value='10' />
+    <param name='1Curve' value='20.0' />
+    <param name='1CurveBack' value='0.0' />
+    <param name='1CurveV' value='5.0' />
     <!-- level 2 -->
-    <param name='2DownAngle' value='30.0'/>
-    <param name='2DownAngleV' value='0.0'/>
-    <param name='2Rotate' value='120.0'/>
-    <param name='2RotateV' value='0.0'/>
+    <param name='2DownAngle' value='30.0' />
+    <param name='2DownAngleV' value='0.0' />
+    <param name='2Rotate' value='120.0' />
+    <param name='2RotateV' value='0.0' />
   </species>
 </arbaro>
