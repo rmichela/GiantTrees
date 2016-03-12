@@ -1,3 +1,7 @@
+/*
+ * This copy of Arbaro is redistributed to you under GPLv3 or (at your option)
+ * any later version. The original copyright notice is retained below.
+ */
 //  #**************************************************************************
 //  #
 //  #    Copyright (C) 2003-2006  Wolfram Diestel

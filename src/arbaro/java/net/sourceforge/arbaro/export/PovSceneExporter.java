@@ -1,3 +1,7 @@
+/*
+ * This copy of Arbaro is redistributed to you under GPLv3 or (at your option)
+ * any later version. The original copyright notice is retained below.
+ */
 //#**************************************************************************
 //#
 //#    $Id:PovSceneExporter.java 77 2006-11-05 11:46:01 +0000 (So, 05 Nov 2006) wolfram $  
