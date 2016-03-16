@@ -84,7 +84,7 @@ public final class PreviewTree extends Tree {
 			// FIXME: previewTree.Levels <= tree.Levels
 			int Levels = ((IntParam)(originalParams.getParam("Levels"))).intValue(); 
 			if (Levels>showLevel+1) {
-				setParam("Levels",""+(showLevel+1));
+				setParam("Levels", Integer.toString(showLevel+1));
 				setParam("Leaves","0");
 			} 
 			for (int i=0; i<showLevel; i++) {

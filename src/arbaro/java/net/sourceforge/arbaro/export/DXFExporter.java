@@ -129,7 +129,7 @@ final class DXFWriter {
 	}
 	
 	void wg(int code, String val) {
-		w.println(""+code);
+		w.println(Integer.toString(code));
 		w.println(val);
 	}
 	
