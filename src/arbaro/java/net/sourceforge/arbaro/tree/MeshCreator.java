@@ -78,8 +78,8 @@ public class MeshCreator implements TreeTraversal {
 					mesh.addMeshpart(traversal.getMeshPart());
 				}
 				// show progress
-				if (tree.params.verbose) {
-					if (stem.stemlevel<=1 && stem.cloneIndex.size()==0) System.err.print(".");
+				if (tree.params.verbose && stem.stemlevel<=1 && stem.cloneIndex.size()==0) {
+					System.err.print(".");
 				}
 				progress.incProgress(1);
 				return true; // proceed

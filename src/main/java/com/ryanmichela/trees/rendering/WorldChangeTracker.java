@@ -77,12 +77,10 @@ public class WorldChangeTracker {
     }
 
     private void ensureChunkLoaded(final Chunk chunk) {
-      if (!chunk.isLoaded()) {
-        if (!chunk.load()) {
-          WorldChangeTracker.this.plugin.getLogger()
-                                        .severe("Could not load chunk "
-                                                    + chunk.toString());
-        }
+      if (!chunk.isLoaded() && !chunk.load()) {
+        WorldChangeTracker.this.plugin.getLogger()
+                                      .severe("Could not load chunk "
+                                                  + chunk.toString());
       }
     }
   }

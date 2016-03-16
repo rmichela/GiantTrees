@@ -90,21 +90,19 @@ public class PlantTreeEventHandler implements Listener {
 
     final ItemCost cost = new ItemCost(Material.INK_SACK, (short) 15,
                                        this.boneMealConsumed);
-    if (cost.isAffordable(event.getPlayer()) && this.stackIsCorrect(itemInHand)) {
-      if (this.recipe.matches(clickedBlock)) {
-        final String treeType = this.identifyTree(clickedBlock);
-        final Random seed = new Random(clickedBlock.getWorld().getSeed());
-        final File treeFile = new File(this.plugin.getDataFolder(), "tree."
-                                                                    + treeType
-                                                                    + ".xml");
-        final File rootFile = new File(this.plugin.getDataFolder(),
-                                       "tree." + treeType + ".root.xml");
-        cost.apply(event.getPlayer());
-        this.popup.sendPopup(event.getPlayer(), "Stand back!");
+    if (cost.isAffordable(event.getPlayer()) && this.stackIsCorrect(itemInHand) && this.recipe.matches(clickedBlock)) {
+      final String treeType = this.identifyTree(clickedBlock);
+      final Random seed = new Random(clickedBlock.getWorld().getSeed());
+      final File treeFile = new File(this.plugin.getDataFolder(), "tree."
+                                                                  + treeType
+                                                                  + ".xml");
+      final File rootFile = new File(this.plugin.getDataFolder(),
+                                     "tree." + treeType + ".root.xml");
+      cost.apply(event.getPlayer());
+      this.popup.sendPopup(event.getPlayer(), "Stand back!");
 
-        this.renderer.renderTree(clickedBlock.getLocation(), treeFile,
-                                 rootFile, seed.nextInt(), true);
-      }
+      this.renderer.renderTree(clickedBlock.getLocation(), treeFile,
+                               rootFile, seed.nextInt(), true);
     }
   }
 
