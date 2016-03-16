@@ -88,8 +88,8 @@ public class WorldChangeTracker {
   }
 
   private int                                      BLOCKS_PER_TICK;
-  private final Map<WorldChangeKey, WorldChange>   changes = new HashMap<WorldChangeKey, WorldChange>(
-                                                                                                      10000);
+  private final Map<WorldChangeKey, WorldChange>   changes = new HashMap<>(
+          10000);
   private final CraftMassBlockUpdate               massBlockUpdate;
   private final Plugin                             plugin;
 
