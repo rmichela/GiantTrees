@@ -609,12 +609,10 @@ public class Stem {
 		
 		if (stemlevel==1) tree.updateGenProgress();
 		
-		if (par.verbose) {
-			if (! pruneTest) {
-				if (stemlevel==0) System.err.print("=");
-				else if (stemlevel==1 && start_seg==0) System.err.print("/");
-				else if (stemlevel==2 && start_seg==0) System.err.print(".");
-			}
+		if (par.verbose && ! pruneTest) {
+			if (stemlevel==0) System.err.print("=");
+			else if (stemlevel==1 && start_seg==0) System.err.print("/");
+			else if (stemlevel==2 && start_seg==0) System.err.print(".");
 		}
 		
 		Transformation trf = transf;
@@ -622,8 +620,8 @@ public class Stem {
 		for (int s=start_seg; s<end_seg; s++) {
 			if (stemlevel==0) tree.updateGenProgress();
 			
-			if (! pruneTest && par.verbose) {
-				if (stemlevel==0) System.err.print("|");
+			if (! pruneTest && par.verbose && stemlevel==0) {
+				System.err.print("|");
 			}
 			
 			// curving
@@ -1329,15 +1327,12 @@ public class Stem {
 	
 	
 	public boolean traverseStem(StemTraversal traversal) throws TraversalException {
-	    if (traversal.enterStem(this))  // enter this stem?
+	    if (traversal.enterStem(this) && segments != null)  // enter this stem?
         {
-	    
-            if (segments != null) {
-            		Enumeration s = segments.elements();
-            		while (s.hasMoreElements())
-            			if (! ((Segment)s.nextElement()).traverseStem(traversal))
-            				break;
-            }
+        	Enumeration s = segments.elements();
+        	while (s.hasMoreElements())
+        		if (! ((Segment)s.nextElement()).traverseStem(traversal))
+        			break;
         }
 	    
 	    	return traversal.leaveStem(this);
