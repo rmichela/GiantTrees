@@ -203,7 +203,7 @@ public final class ParamValueTable extends JPanel {
 			for (int i=0; i<items.length; i++) {
 				// values[i] = new Integer(i);
 				shapeIcons[i] = createImageIcon("images/shape"+i+".png",items[i]);
-				addItem(""+i);
+				addItem(Integer.toString(i));
 			}
 		}
 		
@@ -213,7 +213,7 @@ public final class ParamValueTable extends JPanel {
 		}
 		
 		public String getValue() {
-			return ""+getSelectedIndex();
+			return Integer.toString(getSelectedIndex());
 		}
 	    
 		class ShapeRenderer extends JLabel implements ListCellRenderer {
