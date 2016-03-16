@@ -188,7 +188,7 @@ public class Draw3d {
 
   private List<Point2D> plotCircle(final int cx, final int cy, final int z,
                                    final int r, final int level) {
-    final List<Point2D> points2d = new LinkedList<Point2D>();
+    final List<Point2D> points2d = new LinkedList<>();
 
     final int rSquare = r * r;
     for (int x = -r - 8; x <= (r + 8); x++) {
@@ -207,7 +207,7 @@ public class Draw3d {
   }
 
   private List<Vector> plotDownwardHemisphere(final Vector pos, final double r) {
-    final List<Vector> points = new LinkedList<Vector>();
+    final List<Vector> points = new LinkedList<>();
     final int rCeil = (int) Math.ceil(r) + 4;
     final double r2 = r * r;
     for (int x = -rCeil; x <= rCeil; x++) {
@@ -230,7 +230,7 @@ public class Draw3d {
   private List<Vector> plotEllipsoid(final Vector pos, final double a,
                                      final double b, final double c,
                                      final int level) {
-    final List<Vector> points = new LinkedList<Vector>();
+    final List<Vector> points = new LinkedList<>();
 
     final int halfSize = (int) Math.ceil(Math.max(Math.max(a, b), c)) + 2;
 
@@ -254,7 +254,7 @@ public class Draw3d {
 
   private List<Point2D> plotLine2d(final int x1, final int y1, final int x2,
                                    final int y2) {
-    final List<Point2D> points2d = new LinkedList<Point2D>();
+    final List<Point2D> points2d = new LinkedList<>();
     // Bresenham's Line Algorithm
     int currentX, currentY;
     int xInc, yInc;
@@ -312,7 +312,7 @@ public class Draw3d {
 
   private List<Vector> plotLine3d(final Vector l1, final Vector l2,
                                   final Orientation orientation) {
-    final List<Vector> locations = new LinkedList<Vector>();
+    final List<Vector> locations = new LinkedList<>();
     if (orientation == Orientation.xMajor) /* x dominant */
     {
       final List<Point2D> xy = this.plotLine2d(l1.getBlockX(), l1.getBlockY(),
@@ -347,7 +347,7 @@ public class Draw3d {
 
   private List<Vector> plotSphere(final Vector pos, final double r,
                                   final int level) {
-    final List<Vector> points = new LinkedList<Vector>();
+    final List<Vector> points = new LinkedList<>();
     final int rCeil = (int) Math.ceil(r) + 4;
     final double r2 = r * r;
     for (int x = -rCeil; x <= rCeil; x++) {

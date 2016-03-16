@@ -59,7 +59,7 @@ public class PlantTreeEventHandler implements Listener {
       final ConfigurationSection materialsSection = patternSection.getConfigurationSection("materials");
       final Map<String, Object> configMaterialMap = materialsSection.getValues(false);
 
-      final Map<Character, String> materialDataMap = new HashMap<Character, String>();
+      final Map<Character, String> materialDataMap = new HashMap<>();
       for (final Map.Entry<String, Object> kvp : configMaterialMap.entrySet()) {
         materialDataMap.put(kvp.getKey().charAt(0), (String) kvp.getValue());
       }

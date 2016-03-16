@@ -35,7 +35,7 @@ public class PhysicalCraftingRecipe {
 
   public final byte[][]      data;
   public final Material[][]  pattern;
-  public final Set<Material> usedMaterials = new HashSet<Material>();
+  public final Set<Material> usedMaterials = new HashSet<>();
 
   /**
    * Creates a PhysicalCraftingRecipe from a 2D pattern of Materials. The
@@ -157,8 +157,8 @@ public class PhysicalCraftingRecipe {
     Validate.notEmpty(materialDataMap, "materialMap cannot be null or empty");
 
     // Break up materialDataMap into materialMap and dataMap
-    final Map<Character, Material> materialMap = new HashMap<Character, Material>();
-    final Map<Character, Byte> dataMap = new HashMap<Character, Byte>();
+    final Map<Character, Material> materialMap = new HashMap<>();
+    final Map<Character, Byte> dataMap = new HashMap<>();
     for (final Character c : materialDataMap.keySet()) {
       final String s = materialDataMap.get(c);
       final String[] splits = s.split(":", 2);

@@ -31,7 +31,7 @@ public class JungleVinePopulator {
     final WorldChangeKey east = new WorldChangeKey();
     final WorldChangeKey west = new WorldChangeKey();
 
-    final List<WorldChange> newChanges = new LinkedList<WorldChange>();
+    final List<WorldChange> newChanges = new LinkedList<>();
 
     for (final WorldChange change : tracker.getChanges()) {
       if ((change.material == Material.LOG)
