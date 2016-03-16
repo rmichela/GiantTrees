@@ -155,25 +155,25 @@ public class arbaro {
 			} else if (args[i].equals("-o") || args[i].equals("--output")) {
 				output_file = args[++i];
 			} else if (args[i].equals("-s") || args[i].equals("--seed")) {
-				seed = new Integer(args[++i]).intValue();
+				seed = Integer.parseInt(args[++i]);
 			} else if (args[i].equals("-l") || args[i].equals("--levels")) {
-				levels = new Integer(args[++i]).intValue();
+				levels = Integer.parseInt(args[++i]);
 			} else if (args[i].equals("-c") || args[i].equals("--cones")) {
 				output = Tree.CONES;
 			} else if (args[i].equals("-m") || args[i].equals("--mesh")) {
 				output = Tree.MESH;
 				if (args[i+1].charAt(0) == '0' || args[i+1].charAt(0) == '1') {
-					smooth = new Double(args[++i]).doubleValue();
+					smooth = Double.parseDouble(args[++i]);
 				}
 			} else if (args[i].equals("--dxf")) {
 				output = Tree.DXF;
 				if (args[i+1].charAt(0) == '0' || args[i+1].charAt(0) == '1') {
-					smooth = new Double(args[++i]).doubleValue();
+					smooth = Double.parseDouble(args[++i]);
 				}
 			} else if (args[i].equals("--obj")) {
 				output = Tree.OBJ;
 				if (args[i+1].charAt(0) == '0' || args[i+1].charAt(0) == '1') {
-					smooth = new Double(args[++i]).doubleValue();
+					smooth = Double.parseDouble(args[++i]);
 				}
 			} else if (args[i].equals("-x") || args[i].equals("--xml")) {
 				output = XMLoutput;
