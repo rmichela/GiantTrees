@@ -223,8 +223,8 @@ public class CfgDialog {
 	
 	class OKButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			config.setProperty("export.format",""+formatBox.getSelectedIndex());
-			config.setProperty("export.path",""+pathField.getText());
+			config.setProperty("export.format", Integer.toString(formatBox.getSelectedIndex()));
+			config.setProperty("export.path", pathField.getText());
 			config.setProperty("povray.executable",fileField.getText());
 			config.setProperty("povray.width",widthField.getText());
 			config.setProperty("povray.height",heightField.getText());

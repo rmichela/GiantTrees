@@ -226,7 +226,7 @@ public class arbaro {
 		else tree.readFromXML(in);
 		
 		// FIXME: put here or earlier?
-		if (smooth>=0) tree.params.setParam("Smooth",new Double(smooth).toString());
+		if (smooth>=0) tree.params.setParam("Smooth",new Double.toString(smooth));
 		
 		tree.params.verbose=(! quiet);
 		tree.params.Seed=seed;
