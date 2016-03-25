@@ -6,12 +6,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -41,7 +41,7 @@ public class PhysicalCraftingRecipe {
    * Creates a PhysicalCraftingRecipe from a 2D pattern of Materials. The
    * pattern must
    * be rectangular - all rows must be the same length.
-   * 
+   *
    * @param pattern
    *          The rectangle of Materials to match.
    */
@@ -55,7 +55,7 @@ public class PhysicalCraftingRecipe {
    * be rectangular - all rows must be the same length. Data must be the same
    * dimensions as pattern.
    * A data value of -1 matches all data values.
-   * 
+   *
    * @param pattern
    *          The rectangle of Materials to match.
    * @param data
@@ -87,7 +87,7 @@ public class PhysicalCraftingRecipe {
    * character in the array represents one
    * combination of material/data encoded in materialMap and dataMap. Data
    * values of -1 match any material value.
-   * 
+   *
    * @param rows
    *          The characters making up the crafting recipe
    * @param materialMap
@@ -142,7 +142,7 @@ public class PhysicalCraftingRecipe {
    * materialDataMap map entries start with the
    * name of the associated material, followed by an optional data value
    * separated by a colon.
-   * 
+   *
    * @param rows
    *          The characters making up the crafting recipe
    * @param materialDataMap
@@ -195,7 +195,7 @@ public class PhysicalCraftingRecipe {
 
   /**
    * Determines if this PhysicalCraftingRecipe matches the blocks in the world.
-   * 
+   *
    * @param lastPlaced
    *          A starting point for evaluating this recipe.
    * @return

@@ -6,12 +6,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -90,19 +90,21 @@ public class PlantTreeEventHandler implements Listener {
 
     final ItemCost cost = new ItemCost(Material.INK_SACK, (short) 15,
                                        this.boneMealConsumed);
-    if (cost.isAffordable(event.getPlayer()) && this.stackIsCorrect(itemInHand) && this.recipe.matches(clickedBlock)) {
+    if (cost.isAffordable(event.getPlayer()) && this.stackIsCorrect(itemInHand)
+        && this.recipe.matches(clickedBlock)) {
       final String treeType = this.identifyTree(clickedBlock);
       final Random seed = new Random(clickedBlock.getWorld().getSeed());
       final File treeFile = new File(this.plugin.getDataFolder(), "tree."
                                                                   + treeType
                                                                   + ".xml");
-      final File rootFile = new File(this.plugin.getDataFolder(),
-                                     "tree." + treeType + ".root.xml");
+      final File rootFile = new File(this.plugin.getDataFolder(), "tree."
+                                                                  + treeType
+                                                                  + ".root.xml");
       cost.apply(event.getPlayer());
       this.popup.sendPopup(event.getPlayer(), "Stand back!");
 
-      this.renderer.renderTree(clickedBlock.getLocation(), treeFile,
-                               rootFile, seed.nextInt(), true);
+      this.renderer.renderTree(clickedBlock.getLocation(), treeFile, rootFile,
+                               seed.nextInt(), true);
     }
   }
 
