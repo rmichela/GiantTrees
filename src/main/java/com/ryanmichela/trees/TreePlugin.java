@@ -82,29 +82,31 @@ public class TreePlugin extends JavaPlugin {
   public void onLoad() {
     if (!this.getDataFolder().exists()) {
       this.saveDefaultConfig();
-      // unpack basic trees
-      this.saveResource("biome.BIRCH_FOREST.xml", false);
-      this.saveResource("biome.BIRCH_FOREST.root.xml", false);
-      this.saveResource("biome.FOREST.xml", false);
-      this.saveResource("biome.FOREST.root.xml", false);
-      this.saveResource("biome.JUNGLE.xml", false);
-      this.saveResource("biome.JUNGLE.root.xml", false);
-      this.saveResource("biome.ROOFED_FOREST.xml", false);
-      this.saveResource("biome.ROOFED_FOREST.root.xml", false);
-      // saveResource("biome.SWAMPLAND.xml", false);
-      // saveResource("biome.SWAMPLAND.root.xml", false);
-      this.saveResource("tree.ACACIA.xml", false);
-      this.saveResource("tree.ACACIA.root.xml", false);
-      this.saveResource("tree.BIRCH.xml", false);
-      this.saveResource("tree.BIRCH.root.xml", false);
-      this.saveResource("tree.DARK_OAK.xml", false);
-      this.saveResource("tree.DARK_OAK.root.xml", false);
-      this.saveResource("tree.JUNGLE.xml", false);
-      this.saveResource("tree.JUNGLE.root.xml", false);
-      this.saveResource("tree.OAK.xml", false);
-      this.saveResource("tree.OAK.root.xml", false);
-      this.saveResource("tree.SPRUCE.xml", false);
-      this.saveResource("tree.SPRUCE.root.xml", false);
     }
+    // unpack basic trees
+    this.saveResource("biome.BIRCH_FOREST.xml", false);
+    this.saveResource("biome.BIRCH_FOREST.root.xml", false);
+    this.saveResource("biome.FOREST.xml", false);
+    this.saveResource("biome.FOREST.root.xml", false);
+    this.saveResource("biome.JUNGLE.xml", false);
+    this.saveResource("biome.JUNGLE.root.xml", false);
+    this.saveResource("biome.ROOFED_FOREST.xml", false);
+    this.saveResource("biome.ROOFED_FOREST.root.xml", false);
+    this.saveResource("biome.SAVANNA.xml", false);
+    this.saveResource("biome.SAVANNA.root.xml", false);
+    this.saveResource("biome.TAIGA.xml", false);
+    this.saveResource("biome.TAIGA.root.xml", false);
+    this.saveResource("tree.ACACIA.xml", false);
+    this.saveResource("tree.ACACIA.root.xml", false);
+    this.saveResource("tree.BIRCH.xml", false);
+    this.saveResource("tree.BIRCH.root.xml", false);
+    this.saveResource("tree.DARK_OAK.xml", false);
+    this.saveResource("tree.DARK_OAK.root.xml", false);
+    this.saveResource("tree.JUNGLE.xml", false);
+    this.saveResource("tree.JUNGLE.root.xml", false);
+    this.saveResource("tree.OAK.xml", false);
+    this.saveResource("tree.OAK.root.xml", false);
+    this.saveResource("tree.SPRUCE.xml", false);
+    this.saveResource("tree.SPRUCE.root.xml", false);
   }
 }
