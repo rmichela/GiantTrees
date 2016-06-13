@@ -112,25 +112,23 @@ public class TreePopulator extends BlockPopulator {
       case ROOFED_FOREST:
       case MUTATED_ROOFED_FOREST:
         return Biome.ROOFED_FOREST;
+      case TAIGA:
+      case TAIGA_HILLS:
+      case MUTATED_TAIGA:
       case TAIGA_COLD:
       case TAIGA_COLD_HILLS:
       case MUTATED_TAIGA_COLD:
-        return Biome.TAIGA_COLD;
+      case REDWOOD_TAIGA:
+      case REDWOOD_TAIGA_HILLS:
+      case MUTATED_REDWOOD_TAIGA:
+      case MUTATED_REDWOOD_TAIGA_HILLS:
+        return Biome.TAIGA;
       case EXTREME_HILLS:
       case EXTREME_HILLS_WITH_TREES:
       case MUTATED_EXTREME_HILLS:
       case MUTATED_EXTREME_HILLS_WITH_TREES:
       case SMALLER_EXTREME_HILLS:
         return Biome.EXTREME_HILLS;
-      case TAIGA:
-      case TAIGA_HILLS:
-      case MUTATED_TAIGA:
-        return Biome.TAIGA;
-      case REDWOOD_TAIGA:
-      case REDWOOD_TAIGA_HILLS:
-      case MUTATED_REDWOOD_TAIGA:
-      case MUTATED_REDWOOD_TAIGA_HILLS:
-        return Biome.REDWOOD_TAIGA;
       case SAVANNA:
       case SAVANNA_ROCK:
       case MUTATED_SAVANNA:

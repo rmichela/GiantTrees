@@ -1,0 +1,91 @@
+<?xml version='1.0' ?>
+<!--
+  Copyright (C) 2014 Ryan Michela
+  Copyright (C) 2016 Ronald Jack Jenkins Jr.
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<arbaro>
+  <species name='default'>
+    <!-- general params -->
+    <param name='WoodType' value='Acacia' />
+    <param name='Shape' value='3' />
+    <param name='Levels' value='2' />
+    <param name='Scale' value='50.0' />
+    <param name='ScaleV' value='0.0' />
+    <param name='BaseSize' value='0.6' />
+    <param name='Ratio' value='0.08' />
+    <param name='RatioPower' value='1.0' />
+    <param name='Flare' value='0.2' />
+    <param name='Lobes' value='0' />
+    <param name='LobeDepth' value='0.0' />
+    <param name='Smooth' value='0.1' />
+    <param name='Leaves' value='10' />
+    <param name='LeafShape' value='0' />
+    <param name='LeafScale' value='16.0' />
+    <param name='LeafScaleX' value='0.3' />
+    <param name='LeafQuality' value='1.0' />
+    <param name='LeafStemLen' value='0.1' />
+    <param name='LeafDistrib' value='4' />
+    <param name='LeafBend' value='0.3' />
+    <param name='AttractionUp' value='0.0' />
+    <param name='PruneRatio' value='0.0' />
+    <param name='PrunePowerLow' value='0.5' />
+    <param name='PrunePowerHigh' value='0.5' />
+    <param name='PruneWidth' value='0.5' />
+    <param name='PruneWidthPeak' value='0.5' />
+    <param name='0Scale' value='1.0' />
+    <param name='0ScaleV' value='0.0' />
+    <param name='0BaseSplits' value='2' />
+    <!-- level 0 -->
+    <param name='0DownAngle' value='0.0' />
+    <param name='0DownAngleV' value='0.0' />
+    <param name='0Rotate' value='0.0' />
+    <param name='0RotateV' value='0.0' />
+    <param name='0Branches' value='1' />
+    <param name='0BranchDist' value='0.0' />
+    <param name='0Length' value='1.0' />
+    <param name='0LengthV' value='0.0' />
+    <param name='0Taper' value='1.2' />
+    <param name='0SegSplits' value='0.0' />
+    <param name='0SplitAngle' value='0.0' />
+    <param name='0SplitAngleV' value='0.0' />
+    <param name='0CurveRes' value='30' />
+    <param name='0Curve' value='40.0' />
+    <param name='0CurveBack' value='-40.0' />
+    <param name='0CurveV' value='20.0' />
+    <!-- level 1 -->
+    <param name='1DownAngle' value='90.0' />
+    <param name='1DownAngleV' value='0.0' />
+    <param name='1Rotate' value='60.0' />
+    <param name='1RotateV' value='10.0' />
+    <param name='1Branches' value='20' />
+    <param name='1BranchDist' value='1.0' />
+    <param name='1Length' value='0.2' />
+    <param name='1LengthV' value='0.0' />
+    <param name='1Taper' value='1.2' />
+    <param name='1SegSplits' value='0.0' />
+    <param name='1SplitAngle' value='0.0' />
+    <param name='1SplitAngleV' value='0.0' />
+    <param name='1CurveRes' value='3' />
+    <param name='1Curve' value='0.0' />
+    <param name='1CurveBack' value='0.0' />
+    <param name='1CurveV' value='0.0' />
+    <!-- level 2 -->
+    <param name='2DownAngle' value='30.0' />
+    <param name='2DownAngleV' value='0.0' />
+    <param name='2Rotate' value='120.0' />
+    <param name='2RotateV' value='0.0' />
+  </species>
+</arbaro>
