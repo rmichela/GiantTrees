@@ -68,7 +68,7 @@
     <dependency>
       <groupId>me.desht</groupId>
       <artifactId>dhutils</artifactId>
-      <version>3.0.0-alpha.4-SNAPSHOT</version>
+      <version>3.0.0-alpha.4</version>
     </dependency>
     <dependency>
       <groupId>org.mcstats.bukkit</groupId>
