@@ -94,6 +94,7 @@
     <resources>
       <resource>
         <directory>${project.basedir}/src/main/resources</directory>
+        <filtering>true</filtering>
       </resource>
       <resource>
         <directory>${project.basedir}/src/arbaro/resources</directory>
