@@ -17,6 +17,7 @@
  */
 package com.ryanmichela.trees;
 
+import java.io.File;
 import java.io.IOException;
 
 import me.desht.dhutils.nms.NMSHelper;
@@ -26,6 +27,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.Metrics;
+
+import com.google.common.collect.ImmutableList;
 
 public class TreePlugin extends JavaPlugin {
 
@@ -84,29 +87,27 @@ public class TreePlugin extends JavaPlugin {
       this.saveDefaultConfig();
     }
     // unpack basic trees
-    this.saveResource("biome.BIRCH_FOREST.xml", false);
-    this.saveResource("biome.BIRCH_FOREST.root.xml", false);
-    this.saveResource("biome.FOREST.xml", false);
-    this.saveResource("biome.FOREST.root.xml", false);
-    this.saveResource("biome.JUNGLE.xml", false);
-    this.saveResource("biome.JUNGLE.root.xml", false);
-    this.saveResource("biome.ROOFED_FOREST.xml", false);
-    this.saveResource("biome.ROOFED_FOREST.root.xml", false);
-    this.saveResource("biome.SAVANNA.xml", false);
-    this.saveResource("biome.SAVANNA.root.xml", false);
-    this.saveResource("biome.TAIGA.xml", false);
-    this.saveResource("biome.TAIGA.root.xml", false);
-    this.saveResource("tree.ACACIA.xml", false);
-    this.saveResource("tree.ACACIA.root.xml", false);
-    this.saveResource("tree.BIRCH.xml", false);
-    this.saveResource("tree.BIRCH.root.xml", false);
-    this.saveResource("tree.DARK_OAK.xml", false);
-    this.saveResource("tree.DARK_OAK.root.xml", false);
-    this.saveResource("tree.JUNGLE.xml", false);
-    this.saveResource("tree.JUNGLE.root.xml", false);
-    this.saveResource("tree.OAK.xml", false);
-    this.saveResource("tree.OAK.root.xml", false);
-    this.saveResource("tree.SPRUCE.xml", false);
-    this.saveResource("tree.SPRUCE.root.xml", false);
+    for (final String biome : ImmutableList.of("BIRCH_FOREST", "FOREST",
+                                               "JUNGLE", "ROOFED_FOREST",
+                                               "SAVANNA", "TAIGA")) {
+      ensureTreeFileExists("biome." + biome);
+    }
+    for (final String tree : ImmutableList.of("ACACIA", "BIRCH", "DARK_OAK",
+                                              "JUNGLE", "OAK", "SPRUCE")) {
+      ensureTreeFileExists("tree." + tree);
+    }
   }
+
+  private void ensureTreeFileExists(String filePrefix) {
+    String treeFile = filePrefix + ".xml";
+    String treeRootFile = filePrefix + ".root.xml";
+    // Check before creation, to silence meaningless warnings
+    if (!new File(this.getDataFolder(), treeFile).exists()) {
+      this.saveResource(treeFile, true);
+    }
+    if (!new File(this.getDataFolder(), treeRootFile).exists()) {
+      this.saveResource(treeRootFile, true);
+    }
+  }
+
 }
