@@ -100,6 +100,7 @@ public class PlantTreeEventHandler implements Listener {
       final File rootFile = new File(this.plugin.getDataFolder(), "tree."
                                                                   + treeType
                                                                   + ".root.xml");
+      event.setCancelled(true);
       cost.apply(event.getPlayer());
       this.popup.sendPopup(event.getPlayer(), "Stand back!");
 
