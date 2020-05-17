@@ -20,8 +20,12 @@ package com.ryanmichela.trees.rendering;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Consumer;
 
 import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
 
 public class JungleVinePopulator {
 
@@ -50,20 +54,16 @@ public class JungleVinePopulator {
         west.z = change.location.getBlockZ();
 
         if ((r.nextInt(3) > 0) && (tracker.getChange(north) == null)) {
-          newChanges.add(new WorldChange(north.toVector(), Material.VINE,
-                                         (byte) 1));
+          newChanges.add(new WorldChange(north.toVector(), Material.VINE, Orient(BlockFace.NORTH)));
         }
         if ((r.nextInt(3) > 0) && (tracker.getChange(south) == null)) {
-          newChanges.add(new WorldChange(south.toVector(), Material.VINE,
-                                         (byte) 4));
+          newChanges.add(new WorldChange(south.toVector(), Material.VINE, Orient(BlockFace.SOUTH)));
         }
         if ((r.nextInt(3) > 0) && (tracker.getChange(east) == null)) {
-          newChanges.add(new WorldChange(east.toVector(), Material.VINE,
-                                         (byte) 2));
+          newChanges.add(new WorldChange(east.toVector(), Material.VINE, Orient(BlockFace.EAST)));
         }
         if ((r.nextInt(3) > 0) && (tracker.getChange(west) == null)) {
-          newChanges.add(new WorldChange(west.toVector(), Material.VINE,
-                                         (byte) 8));
+          newChanges.add(new WorldChange(west.toVector(), Material.VINE, Orient(BlockFace.WEST)));
         }
       }
     }
@@ -71,5 +71,14 @@ public class JungleVinePopulator {
     for (final WorldChange newChange : newChanges) {
       tracker.addChange(newChange, false);
     }
+  }
+
+  private static Consumer<BlockData> Orient(BlockFace direction) {
+    return blockData -> {
+      if (blockData instanceof Directional) {
+        Directional directional = (Directional) blockData;
+        directional.setFacing(direction);
+      }
+    };
   }
 }

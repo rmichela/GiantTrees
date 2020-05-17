@@ -21,40 +21,32 @@ import org.bukkit.Material;
 
 public class TreeType {
 
-  public byte     dataOffset;
   public Material leafMaterial;
   public Material woodMaterial;
 
   public TreeType(final String treeType) {
     // "Oak","Spruce","Birch","Jungle","Acacia","Dark Oak"
     if (treeType.equals("Oak")) {
-      this.woodMaterial = Material.LEGACY_LOG;
-      this.leafMaterial = Material.LEGACY_LEAVES;
-      this.dataOffset = 0;
+      this.woodMaterial = Material.OAK_LOG;
+      this.leafMaterial = Material.OAK_LEAVES;
     } else if (treeType.equals("Spruce")) {
-      this.woodMaterial = Material.LEGACY_LOG;
-      this.leafMaterial = Material.LEGACY_LEAVES;
-      this.dataOffset = 1;
+      this.woodMaterial = Material.SPRUCE_LOG;
+      this.leafMaterial = Material.SPRUCE_LEAVES;
     } else if (treeType.equals("Birch")) {
-      this.woodMaterial = Material.LEGACY_LOG;
-      this.leafMaterial = Material.LEGACY_LEAVES;
-      this.dataOffset = 2;
+      this.woodMaterial = Material.BIRCH_LOG;
+      this.leafMaterial = Material.BIRCH_LEAVES;
     } else if (treeType.equals("Jungle")) {
-      this.woodMaterial = Material.LEGACY_LOG;
-      this.leafMaterial = Material.LEGACY_LEAVES;
-      this.dataOffset = 3;
+      this.woodMaterial = Material.JUNGLE_LOG;
+      this.leafMaterial = Material.JUNGLE_LEAVES;
     } else if (treeType.equals("Acacia")) {
-      this.woodMaterial = Material.LEGACY_LOG_2;
-      this.leafMaterial = Material.LEGACY_LEAVES_2;
-      this.dataOffset = 0;
+      this.woodMaterial = Material.ACACIA_LOG;
+      this.leafMaterial = Material.ACACIA_LEAVES;
     } else if (treeType.equals("Dark Oak")) {
-      this.woodMaterial = Material.LEGACY_LOG_2;
-      this.leafMaterial = Material.LEGACY_LEAVES_2;
-      this.dataOffset = 1;
+      this.woodMaterial = Material.DARK_OAK_LOG;
+      this.leafMaterial = Material.DARK_OAK_LEAVES;
     } else {
-      this.woodMaterial = Material.LEGACY_LOG;
-      this.leafMaterial = Material.LEGACY_LEAVES;
-      this.dataOffset = 0;
+      this.woodMaterial = Material.OAK_LOG;
+      this.leafMaterial = Material.OAK_LEAVES;
     }
   }
 }

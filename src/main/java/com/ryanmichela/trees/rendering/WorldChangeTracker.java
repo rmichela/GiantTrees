@@ -1,8 +1,11 @@
 package com.ryanmichela.trees.rendering;
 
+import org.bukkit.Axis;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Orientable;
 import org.bukkit.util.Vector;
 
 import java.util.Collection;
@@ -10,6 +13,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * Copyright 2014 Ryan Michela
@@ -18,8 +22,8 @@ public class WorldChangeTracker {
   private Map<WorldChangeKey, WorldChange> changes = new HashMap<WorldChangeKey, WorldChange>(1000);
 
   public void addChange(final Vector location, final Material material,
-                        final byte materialData, final boolean overwrite) {
-    this.addChange(new WorldChange(location, material, materialData), overwrite);
+                        final Consumer<BlockData> blockDataMutator, final boolean overwrite) {
+    this.addChange(new WorldChange(location, material, blockDataMutator), overwrite);
   }
 
   public void addChange(final WorldChange worldChange, final boolean overwrite) {
@@ -51,7 +55,7 @@ public class WorldChangeTracker {
       Location changeLoc = refPoint.clone().add(change.location);
       Block block = changeLoc.getBlock();
       block.setType(change.material);
-      block.setData(change.materialData, false);
+      change.blockDataMutator.accept(block.getBlockData());
       touchedChunks.add(new WorldChangeKey(block.getChunk().getX(), -1, block.getChunk().getZ()));
     }
 
