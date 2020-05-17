@@ -21,16 +21,16 @@ import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.util.Vector;
 
-import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
 class WorldChange {
 
   public final Material material;
-  public final Consumer<BlockData> blockDataMutator;
+  public final UnaryOperator<BlockData> blockDataMutator;
   public final Vector location;
 
   WorldChange(final Vector location, final Material material,
-              final Consumer<BlockData> blockDataMutator) {
+              final UnaryOperator<BlockData> blockDataMutator) {
     this.location = location;
     this.material = material;
     this.blockDataMutator = blockDataMutator;

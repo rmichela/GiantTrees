@@ -60,11 +60,6 @@ public class TreePlugin extends JavaPlugin {
       this.getLogger().severe("Failed to initialize plugin: " + e.getMessage());
     }
 
-    if (this.getServer().getPluginManager().getPlugin("WorldEdit") == null) {
-      this.getLogger()
-          .warning("WorldEdit not installed. Undo capability disabled.");
-    }
-
     this.getCommand("tree-edit").setExecutor(new EditTreeCommand(this));
     this.getCommand("tree-create").setExecutor(new CreateTreeCommand(this));
   }
@@ -76,7 +71,7 @@ public class TreePlugin extends JavaPlugin {
     }
     // unpack basic trees
     for (final String biome : ImmutableList.of("BIRCH_FOREST", "FOREST",
-                                               "JUNGLE", "ROOFED_FOREST",
+                                               "JUNGLE", "DARK_FOREST",
                                                "SAVANNA", "TAIGA")) {
       ensureTreeFileExists("biome." + biome);
     }

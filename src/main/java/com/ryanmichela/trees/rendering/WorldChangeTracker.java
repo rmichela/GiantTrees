@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
 /**
  * Copyright 2014 Ryan Michela
@@ -22,7 +22,7 @@ public class WorldChangeTracker {
   private Map<WorldChangeKey, WorldChange> changes = new HashMap<WorldChangeKey, WorldChange>(1000);
 
   public void addChange(final Vector location, final Material material,
-                        final Consumer<BlockData> blockDataMutator, final boolean overwrite) {
+                        final UnaryOperator<BlockData> blockDataMutator, final boolean overwrite) {
     this.addChange(new WorldChange(location, material, blockDataMutator), overwrite);
   }
 
@@ -55,7 +55,8 @@ public class WorldChangeTracker {
       Location changeLoc = refPoint.clone().add(change.location);
       Block block = changeLoc.getBlock();
       block.setType(change.material);
-      change.blockDataMutator.accept(block.getBlockData());
+      BlockData newBlockData = change.blockDataMutator.apply(block.getBlockData());
+      block.setBlockData(newBlockData, false);
       touchedChunks.add(new WorldChangeKey(block.getChunk().getX(), -1, block.getChunk().getZ()));
     }
 

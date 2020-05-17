@@ -20,6 +20,7 @@ package com.ryanmichela.trees.rendering;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
 import org.bukkit.Axis;
 import org.bukkit.Location;
@@ -98,7 +99,7 @@ public class Draw3d {
                                       (l1.getBlockZ() - centerPoint.getBlockZ())
                                           + p.q),
                            treeType.woodMaterial,
-                    Orient(orientation), true);
+                    orient(orientation), true);
           }
           break;
         case yMajor:
@@ -113,7 +114,7 @@ public class Draw3d {
                                                     (l1.getBlockZ() - centerPoint.getBlockZ())
                                                         + p.q),
                                          treeType.woodMaterial,
-                    Orient(orientation), true);
+                    orient(orientation), true);
           }
           break;
         case zMajor:
@@ -128,7 +129,7 @@ public class Draw3d {
                                                         + p.q,
                                                     centerPoint.getBlockZ()),
                                          treeType.woodMaterial,
-                    Orient(orientation), true);
+                    orient(orientation), true);
           }
           break;
       }
@@ -139,14 +140,14 @@ public class Draw3d {
                               final double width) {
     for (final Vector loc : plotEllipsoid(pos, length, width, length, 0)) {
       changeTracker.addChange(loc, treeType.leafMaterial,
-                                   Persist(), false);
+                                   persist(), false);
     }
   }
 
   public void drawRootJunction(final Vector pos, final double r) {
     for (final Vector loc : plotDownwardHemisphere(pos, r)) {
       changeTracker.addChange(loc, treeType.woodMaterial,
-              Orient(Orientation.yMajor), true);
+              orient(Orientation.yMajor), true);
     }
   }
 
@@ -154,7 +155,7 @@ public class Draw3d {
                              final Orientation orientation, final int level) {
     for (final Vector loc : plotSphere(pos, r, level)) {
       changeTracker.addChange(loc, treeType.woodMaterial,
-              Orient(orientation), true);
+              orient(orientation), true);
     }
   }
 
@@ -172,7 +173,7 @@ public class Draw3d {
            * noiseIntensity * multiplier * levelScale;
   }
 
-  private Consumer<BlockData> Orient(Orientation orientation) {
+  private UnaryOperator<BlockData> orient(Orientation orientation) {
     return blockData -> {
       if (blockData instanceof Orientable) {
         Orientable orientable = (Orientable) blockData;
@@ -182,15 +183,17 @@ public class Draw3d {
           case zMajor: orientable.setAxis(Axis.Z);
         }
       }
+      return blockData;
     };
   }
 
-  private Consumer<BlockData> Persist() {
+  private UnaryOperator<BlockData> persist() {
     return blockData -> {
       if (blockData instanceof Leaves) {
         Leaves leaves = (Leaves) blockData;
         leaves.setPersistent(true);
       }
+      return blockData;
     };
   }
 

@@ -21,6 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
@@ -38,8 +39,7 @@ public class JungleVinePopulator {
     final List<WorldChange> newChanges = new LinkedList<>();
 
     for (final WorldChange change : tracker.getChanges()) {
-      if ((change.material == Material.LEGACY_LOG)
-          || (change.material == Material.LEGACY_LOG_2)) {
+      if (isLog(change.material)) {
         north.x = change.location.getBlockX();
         north.y = change.location.getBlockY();
         north.z = change.location.getBlockZ() - 1;
@@ -54,16 +54,16 @@ public class JungleVinePopulator {
         west.z = change.location.getBlockZ();
 
         if ((r.nextInt(3) > 0) && (tracker.getChange(north) == null)) {
-          newChanges.add(new WorldChange(north.toVector(), Material.VINE, Orient(BlockFace.NORTH)));
+          newChanges.add(new WorldChange(north.toVector(), Material.VINE, orient(BlockFace.NORTH)));
         }
         if ((r.nextInt(3) > 0) && (tracker.getChange(south) == null)) {
-          newChanges.add(new WorldChange(south.toVector(), Material.VINE, Orient(BlockFace.SOUTH)));
+          newChanges.add(new WorldChange(south.toVector(), Material.VINE, orient(BlockFace.SOUTH)));
         }
         if ((r.nextInt(3) > 0) && (tracker.getChange(east) == null)) {
-          newChanges.add(new WorldChange(east.toVector(), Material.VINE, Orient(BlockFace.EAST)));
+          newChanges.add(new WorldChange(east.toVector(), Material.VINE, orient(BlockFace.EAST)));
         }
         if ((r.nextInt(3) > 0) && (tracker.getChange(west) == null)) {
-          newChanges.add(new WorldChange(west.toVector(), Material.VINE, Orient(BlockFace.WEST)));
+          newChanges.add(new WorldChange(west.toVector(), Material.VINE, orient(BlockFace.WEST)));
         }
       }
     }
@@ -73,12 +73,22 @@ public class JungleVinePopulator {
     }
   }
 
-  private static Consumer<BlockData> Orient(BlockFace direction) {
+  private static boolean isLog(Material material) {
+    return  material == Material.ACACIA_LOG ||
+            material == Material.BIRCH_LOG ||
+            material == Material.DARK_OAK_LOG ||
+            material == Material.JUNGLE_LOG ||
+            material == Material.OAK_LOG ||
+            material == Material.SPRUCE_LOG;
+  }
+
+  private static UnaryOperator<BlockData> orient(BlockFace direction) {
     return blockData -> {
       if (blockData instanceof Directional) {
         Directional directional = (Directional) blockData;
         directional.setFacing(direction);
       }
+      return blockData;
     };
   }
 }

@@ -68,12 +68,12 @@ public class PlantTreeEventHandler implements Listener {
 
       this.recipe = PhysicalCraftingRecipe.fromStringRepresentation(rows.toArray(new String[] {}),
                                                                     materialDataMap);
-      if (!this.recipe.usedMaterials.contains(Material.LEGACY_SAPLING)) { throw new Exception(); }
+//      if (!this.recipe.usedMaterials.contains(Material.LEGACY_SAPLING)) { throw new Exception(); }
 
       this.enabled = true;
     } catch (final Exception e) {
-      plugin.getLogger()
-            .severe("The planting-pattern config section is invalid! Disabling survival planting of giant trees.");
+      plugin.getLogger().severe("The planting-pattern config section is invalid! Disabling survival planting of giant trees.");
+      plugin.getLogger().severe(e.getMessage());
       this.enabled = false;
     }
   }
