@@ -179,8 +179,8 @@ public class Draw3d {
         Orientable orientable = (Orientable) blockData;
         switch (orientation) {
           case xMajor: orientable.setAxis(Axis.X);
-          case yMajor: orientable.setAxis(Axis.Y);
-          case zMajor: orientable.setAxis(Axis.Z);
+          case yMajor: orientable.setAxis(Axis.Z);
+          case zMajor: orientable.setAxis(Axis.Y);
         }
       }
       return blockData;
