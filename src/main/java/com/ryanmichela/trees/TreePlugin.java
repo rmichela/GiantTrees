@@ -18,15 +18,11 @@
 package com.ryanmichela.trees;
 
 import java.io.File;
-import java.io.IOException;
-
-import me.desht.dhutils.nms.NMSHelper;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.mcstats.Metrics;
 
 import com.google.common.collect.ImmutableList;
 
@@ -53,14 +49,6 @@ public class TreePlugin extends JavaPlugin {
   @Override
   public void onEnable() {
     try {
-      final Metrics metrics = new Metrics(this);
-      metrics.start();
-    } catch (final IOException e) {
-      // Failed to submit the stats :-(
-    }
-
-    try {
-      NMSHelper.init(this, true);
       this.getServer().getPluginManager()
           .registerEvents(new PlantTreeEventHandler(this), this);
       // attach to worlds automatically when onlyUseWorldManagers is false

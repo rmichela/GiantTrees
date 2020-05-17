@@ -104,7 +104,7 @@ public class CreateTreeCommand implements CommandExecutor {
            && (highestBlock.getType() != Material.DIRT)
            && // Includes podzol
            (highestBlock.getType() != Material.GRASS)
-           && (highestBlock.getType() != Material.MYCEL)
+           && (highestBlock.getType() != Material.MYCELIUM)
            && (highestBlock.getType() != Material.SAND)) {
       highestBlock = highestBlock.getRelative(BlockFace.DOWN);
     }

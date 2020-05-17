@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import me.desht.dhutils.cost.ItemCost;
+import com.ryanmichela.trees.cost.ItemCost;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -68,7 +68,7 @@ public class PlantTreeEventHandler implements Listener {
 
       this.recipe = PhysicalCraftingRecipe.fromStringRepresentation(rows.toArray(new String[] {}),
                                                                     materialDataMap);
-      if (!this.recipe.usedMaterials.contains(Material.SAPLING)) { throw new Exception(); }
+      if (!this.recipe.usedMaterials.contains(Material.LEGACY_SAPLING)) { throw new Exception(); }
 
       this.enabled = true;
     } catch (final Exception e) {
@@ -88,7 +88,7 @@ public class PlantTreeEventHandler implements Listener {
     if ((itemInHand == null) || (clickedBlock == null)
         || (event.getAction() != Action.RIGHT_CLICK_BLOCK)) { return; }
 
-    final ItemCost cost = new ItemCost(Material.INK_SACK, (short) 15,
+    final ItemCost cost = new ItemCost(Material.INK_SAC, (short) 15,
                                        this.boneMealConsumed);
     if (cost.isAffordable(event.getPlayer()) && this.stackIsCorrect(itemInHand)
         && this.recipe.matches(clickedBlock)) {
@@ -110,7 +110,7 @@ public class PlantTreeEventHandler implements Listener {
   }
 
   private String identifyTree(final Block block) {
-    if (block.getType() != Material.SAPLING) { throw new IllegalArgumentException(); }
+    if (block.getType() != Material.LEGACY_SAPLING) { throw new IllegalArgumentException(); }
     if (block.getData() == 0) { return "OAK"; }
     if (block.getData() == 1) { return "SPRUCE"; }
     if (block.getData() == 2) { return "BIRCH"; }
@@ -121,7 +121,7 @@ public class PlantTreeEventHandler implements Listener {
   }
 
   private boolean stackIsCorrect(final ItemStack inHand) {
-    return (inHand != null) && (inHand.getType() == Material.INK_SACK)
+    return (inHand != null) && (inHand.getType() == Material.INK_SAC)
            && (inHand.getData().getData() == 15);
   }
 }

@@ -40,16 +40,13 @@ public class WorldChangeTracker {
 
     private final WorldChange[]           changes;
     private final int                     count;
-    private final WorldEditHistoryTracker historyTracker;
     private final int                     offset;
     private final Location                refPoint;
 
     private Changer(final WorldChange[] changes, final Location refPoint,
-                    final WorldEditHistoryTracker historyTracker,
                     final int offset, final int count) {
       this.changes = changes;
       this.refPoint = refPoint;
-      this.historyTracker = historyTracker;
       this.offset = offset;
       this.count = count;
     }
@@ -62,12 +59,7 @@ public class WorldChangeTracker {
         final int blockY = changeLoc.getBlockY();
         this.ensureChunkLoaded(changeLoc.getChunk());
         if ((blockY <= 255) && (blockY >= 0)) {
-          if (this.historyTracker != null) {
-            this.historyTracker.recordHistoricChange(changeLoc,
-                                                     change.material.getId(),
-                                                     change.materialData);
-          }
-          WorldChangeTracker.this.massBlockUpdate.setBlock(changeLoc.getBlockX(),
+          massBlockUpdate.setBlock(changeLoc.getBlockX(),
                                                            blockY,
                                                            changeLoc.getBlockZ(),
                                                            change.material.getId(),
@@ -78,7 +70,7 @@ public class WorldChangeTracker {
 
     private void ensureChunkLoaded(final Chunk chunk) {
       if (!chunk.isLoaded() && !chunk.load()) {
-        WorldChangeTracker.this.plugin.getLogger()
+        plugin.getLogger()
                                       .severe("Could not load chunk "
                                                   + chunk.toString());
       }
@@ -183,9 +175,9 @@ public class WorldChangeTracker {
                    if (historyTracker != null) {
                      historyTracker.finalizeHistoricChanges();
                    }
-                   WorldChangeTracker.this.massBlockUpdate.notifyClients();
-                   WorldChangeTracker.this.logVerbose("Affected blocks: "
-                                                      + WorldChangeTracker.this.changes.size());
+                   massBlockUpdate.notifyClients();
+                   logVerbose("Affected blocks: "
+                                                      + changes.size());
                  }
                }, (i + 2) * this.TICK_DELAY);
 

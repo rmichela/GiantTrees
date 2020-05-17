@@ -34,8 +34,8 @@ public class JungleVinePopulator {
     final List<WorldChange> newChanges = new LinkedList<>();
 
     for (final WorldChange change : tracker.getChanges()) {
-      if ((change.material == Material.LOG)
-          || (change.material == Material.LOG_2)) {
+      if ((change.material == Material.LEGACY_LOG)
+          || (change.material == Material.LEGACY_LOG_2)) {
         north.x = change.location.getBlockX();
         north.y = change.location.getBlockY();
         north.z = change.location.getBlockZ() - 1;

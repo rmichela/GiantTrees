@@ -74,7 +74,7 @@ public class TreePopulator extends BlockPopulator {
            && (highestBlock.getType() != Material.DIRT)
            && // Includes podzol
            (highestBlock.getType() != Material.GRASS)
-           && (highestBlock.getType() != Material.MYCEL)
+           && (highestBlock.getType() != Material.MYCELIUM)
            && (highestBlock.getType() != Material.SAND)) {
       highestBlock = highestBlock.getRelative(BlockFace.DOWN);
     }
@@ -83,56 +83,50 @@ public class TreePopulator extends BlockPopulator {
 
   private boolean isAcceptableBiome(final Biome biome) {
     return (biome == Biome.FOREST) || (biome == Biome.BIRCH_FOREST)
-           || (biome == Biome.SWAMPLAND) || (biome == Biome.JUNGLE)
-           || (biome == Biome.ROOFED_FOREST) || (biome == Biome.TAIGA_COLD)
-           || (biome == Biome.EXTREME_HILLS) || (biome == Biome.TAIGA)
-           || (biome == Biome.REDWOOD_TAIGA) || (biome == Biome.SAVANNA);
+           || (biome == Biome.SWAMP) || (biome == Biome.JUNGLE)
+           || (biome == Biome.DARK_FOREST) || (biome == Biome.DARK_FOREST_HILLS)
+           || (biome == Biome.MOUNTAINS) || (biome == Biome.TAIGA)
+           || (biome == Biome.SAVANNA);
   }
 
   private Biome simplifyBiome(final Biome biome) {
     switch (biome) {
       case FOREST:
-      case FOREST_HILLS:
-      case MUTATED_FOREST:
+      case FLOWER_FOREST:
         return Biome.FOREST;
       case BIRCH_FOREST:
       case BIRCH_FOREST_HILLS:
-      case MUTATED_BIRCH_FOREST:
-      case MUTATED_BIRCH_FOREST_HILLS:
+      case TALL_BIRCH_FOREST:
+      case TALL_BIRCH_HILLS:
         return Biome.BIRCH_FOREST;
-      case SWAMPLAND:
-      case MUTATED_SWAMPLAND:
-        return Biome.SWAMPLAND;
+      case SWAMP:
+      case SWAMP_HILLS:
+        return Biome.SWAMP;
       case JUNGLE:
-      case JUNGLE_EDGE:
       case JUNGLE_HILLS:
-      case MUTATED_JUNGLE:
-      case MUTATED_JUNGLE_EDGE:
+      case MODIFIED_JUNGLE:
         return Biome.JUNGLE;
-      case ROOFED_FOREST:
-      case MUTATED_ROOFED_FOREST:
-        return Biome.ROOFED_FOREST;
+      case DARK_FOREST:
+      case DARK_FOREST_HILLS:
+        return Biome.DARK_FOREST;
       case TAIGA:
       case TAIGA_HILLS:
-      case MUTATED_TAIGA:
-      case TAIGA_COLD:
-      case TAIGA_COLD_HILLS:
-      case MUTATED_TAIGA_COLD:
-      case REDWOOD_TAIGA:
-      case REDWOOD_TAIGA_HILLS:
-      case MUTATED_REDWOOD_TAIGA:
-      case MUTATED_REDWOOD_TAIGA_HILLS:
+      case TAIGA_MOUNTAINS:
+      case SNOWY_TAIGA_MOUNTAINS:
+      case SNOWY_TAIGA:
+      case SNOWY_TAIGA_HILLS:
+      case GIANT_SPRUCE_TAIGA:
+      case GIANT_SPRUCE_TAIGA_HILLS:
+      case GIANT_TREE_TAIGA:
+      case GIANT_TREE_TAIGA_HILLS:
         return Biome.TAIGA;
-      case EXTREME_HILLS:
-      case EXTREME_HILLS_WITH_TREES:
-      case MUTATED_EXTREME_HILLS:
-      case MUTATED_EXTREME_HILLS_WITH_TREES:
-      case SMALLER_EXTREME_HILLS:
-        return Biome.EXTREME_HILLS;
+      case MOUNTAINS:
+      case WOODED_MOUNTAINS:
+        return Biome.MOUNTAINS;
       case SAVANNA:
-      case SAVANNA_ROCK:
-      case MUTATED_SAVANNA:
-      case MUTATED_SAVANNA_ROCK:
+      case SAVANNA_PLATEAU:
+      case SHATTERED_SAVANNA:
+      case SHATTERED_SAVANNA_PLATEAU:
         return Biome.SAVANNA;
       default:
         return null;
