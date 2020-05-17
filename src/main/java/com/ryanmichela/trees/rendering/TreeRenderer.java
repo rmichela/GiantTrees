@@ -21,8 +21,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.Random;
 
-import me.desht.dhutils.block.CraftMassBlockUpdate;
-import me.desht.dhutils.block.MassBlockUpdate;
 import net.sourceforge.arbaro.params.AbstractParam;
 import net.sourceforge.arbaro.tree.Segment;
 import net.sourceforge.arbaro.tree.Stem;
@@ -78,19 +76,7 @@ public class TreeRenderer {
                           final boolean withDelay) {
     AbstractParam.loading = true;
 
-    final CraftMassBlockUpdate massBlockUpdate = new CraftMassBlockUpdate(
-                                                                          this.plugin,
-                                                                          refPoint.getWorld());
-    final MassBlockUpdate.RelightingStrategy relightingStrategy = this.plugin.getConfig()
-                                                                             .getBoolean("SIMPLE_LIGHTING",
-                                                                                         false) ? MassBlockUpdate.RelightingStrategy.NEVER
-                                                                                               : MassBlockUpdate.RelightingStrategy.HYBRID;
-    massBlockUpdate.setRelightingStrategy(relightingStrategy);
-    final WorldChangeTracker changeTracker = new WorldChangeTracker(
-                                                                    this.plugin,
-                                                                    massBlockUpdate,
-                                                                    relightingStrategy,
-                                                                    recordHistory);
+    final WorldChangeTracker changeTracker = new WorldChangeTracker();
 
     this.plugin.getServer().getScheduler()
                .runTaskAsynchronously(this.plugin, new Runnable() {
@@ -165,7 +151,7 @@ public class TreeRenderer {
                                                              @Override
                                                              public void run() {
                                                                try {
-                                                                 d3d.applyChanges(forPlayer);
+                                                                 d3d.applyChanges();
                                                                } catch (final Exception e) {
                                                                  TreeRenderer.this.plugin.getLogger()
                                                                                          .severe("Error rendering tree: "

@@ -64,8 +64,8 @@ public class Draw3d {
     this.renderOrientation = renderOrientation;
   }
 
-  public void applyChanges(final Player forPlayer) {
-    this.changeTracker.applyChanges(this.refPoint, forPlayer);
+  public void applyChanges() {
+    this.changeTracker.applyChanges(this.refPoint);
   }
 
   public void drawCone(final Vector l1, final double rad1, final Vector l2,
