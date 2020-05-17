@@ -20,7 +20,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>GiantTrees</groupId>
   <artifactId>GiantTrees</artifactId>
-  <version>2.0.0-alpha.7-SNAPSHOT</version>
+  <version>3.0.0-alpha.1-SNAPSHOT</version>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -112,7 +112,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>1.5</version>
+        <version>3.2.0</version>
         <executions>
           <execution>
             <id>default</id>
@@ -122,16 +122,6 @@
             </goals>
             <configuration>
               <minimizeJar>true</minimizeJar>
-              <relocations>
-                <relocation>
-                  <pattern>me.desht.dhutils</pattern>
-                  <shadedPattern>com.ryanmichela.trees.dhutils</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>org.mcstats</pattern>
-                  <shadedPattern>com.ryanmichela.trees.mcstats</shadedPattern>
-                </relocation>
-              </relocations>
             </configuration>
           </execution>
         </executions>
@@ -139,34 +129,6 @@
     </plugins>
   </build>
   <profiles>
-    <!-- SonarQube analysis profile. -->
-    <profile>
-      <id>sonarqube</id>
-      <activation>
-        <property>
-          <name>sonar.host.url</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.sonarsource.scanner.maven</groupId>
-            <artifactId>sonar-maven-plugin</artifactId>
-            <version>3.0.1</version>
-            <executions>
-              <execution>
-                <id>sonarqube-analysis</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>sonar</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <!-- Things to do only for releases. -->
     <profile>
       <id>release</id>
       <activation>
