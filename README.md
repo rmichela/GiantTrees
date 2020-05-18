@@ -4,7 +4,7 @@
 
 _This plugin now only uses official Bukkit APIs, so it should be future proof. Recently tested with Spigot 1.15._
 
-Giant Trees is a plugin for adding procedurally generated giant trees to your world. Giant trees are generated in 
+Giant Trees is a plugin for adding procedurally generated giant trees to your Spigot world. Giant trees are generated in 
 three ways:
 
 * Grow trees in creative/survival mode by planting saplings and fertilizing with bone meal
@@ -63,7 +63,15 @@ Design your tree using the visual tree editor. When you are done, click save and
 your tree, create another tree with the same name as your tree, with .root added to the end. For example, 
 `/tree-edit tree.ACACIA.root`. Root trees are rendered upside down in the world and scaled to match their tree.
 
-# Permissions
+## Permissions
 
 * `gianttrees.create` (default OP) - Allows the creation of a giant tree using the tree-create command.
 * `gianttrees.grow` (default true) - Allows a player to grow a giant tree by fertilizing a grid of saplings.
+
+# Installation
+
+1. Make sure you have Apache Maven installed.
+1. Clone this repo.
+1. Run `mvn package` in the plugin directory.
+1. Copy the Giant Trees jar file from the `target` directory to your server's `plugins` directory.
+1. Restart your server.
