@@ -2,6 +2,8 @@
 
 ![Screenshot](doc/herotree.png)
 
+_This plugin now only uses official Bukkit APIs, so it should be future proof. Recently tested with Spigot 1.15._
+
 Giant Trees is a plugin for adding procedurally generated giant trees to your world. Giant trees are generated in 
 three ways:
 
