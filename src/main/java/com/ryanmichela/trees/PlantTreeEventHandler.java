@@ -18,6 +18,7 @@
 package com.ryanmichela.trees;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +45,7 @@ public class PlantTreeEventHandler implements Listener {
   private boolean                enabled;
   private final Plugin           plugin;
   private final PopupHandler     popup;
-  private List<PhysicalCraftingRecipe> recipes;
+  private List<PhysicalCraftingRecipe> recipes = new ArrayList<>();
   private final TreeRenderer     renderer;
 
   public PlantTreeEventHandler(final Plugin plugin) {
@@ -88,7 +89,7 @@ public class PlantTreeEventHandler implements Listener {
 
       enabled = true;
     } catch (final Exception e) {
-      plugin.getLogger().severe("The planting-pattern config section is invalid! Disabling survival planting of giant trees. " + e.getMessage());
+      plugin.getLogger().severe("The planting-pattern config section is invalid! Disabling survival planting of giant trees. " + e.toString());
       enabled = false;
     }
   }
@@ -103,26 +104,28 @@ public class PlantTreeEventHandler implements Listener {
     if ((itemInHand == null) || (clickedBlock == null)
         || (event.getAction() != Action.RIGHT_CLICK_BLOCK)) { return; }
 
-    final ItemCost cost = new ItemCost(Material.INK_SAC, (short) 15,
+    final ItemCost cost = new ItemCost(Material.BONE_MEAL, (short) 15,
                                        boneMealConsumed);
 
     for (PhysicalCraftingRecipe recipe : recipes) {
       if (cost.isAffordable(event.getPlayer()) && stackIsCorrect(itemInHand)
               && recipe.matches(clickedBlock)) {
         final String treeType = identifyTree(clickedBlock);
-        final Random seed = new Random(clickedBlock.getWorld().getSeed());
-        final File treeFile = new File(plugin.getDataFolder(), "tree."
-                + treeType
-                + ".xml");
-        final File rootFile = new File(plugin.getDataFolder(), "tree."
-                + treeType
-                + ".root.xml");
-        event.setCancelled(true);
-        cost.apply(event.getPlayer());
-        popup.sendPopup(event.getPlayer(), "Stand back!");
+        if (treeType != null) {
+          final Random seed = new Random(clickedBlock.getWorld().getSeed());
+          final File treeFile = new File(plugin.getDataFolder(), "tree."
+                  + treeType
+                  + ".xml");
+          final File rootFile = new File(plugin.getDataFolder(), "tree."
+                  + treeType
+                  + ".root.xml");
+          event.setCancelled(true);
+          cost.apply(event.getPlayer());
+          popup.sendPopup(event.getPlayer(), "Stand back!");
 
-        renderer.renderTree(clickedBlock.getLocation(), treeFile, rootFile,
-                seed.nextInt(), true);
+          renderer.renderTree(clickedBlock.getLocation(), treeFile, rootFile,
+                  seed.nextInt(), true);
+        }
       }
     }
   }
@@ -135,11 +138,11 @@ public class PlantTreeEventHandler implements Listener {
       case JUNGLE_SAPLING: return "JUNGLE";
       case ACACIA_SAPLING: return "ACACIA";
       case DARK_OAK_SAPLING: return "DARK_OAK";
-      default: throw new IllegalArgumentException("Unknown sapling kind");
+      default: return null;
     }
   }
 
   private boolean stackIsCorrect(final ItemStack inHand) {
-    return (inHand != null) && (inHand.getType() == Material.INK_SAC);
+    return (inHand != null) && (inHand.getType() == Material.BONE_MEAL);
   }
 }
