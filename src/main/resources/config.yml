@@ -20,7 +20,7 @@ planting-pattern:
         - SSSSS
         - SSSSS
     # Each unique character in the pattern must have one material mapping.
-    # The pattern must contain at least one sapling.
+    # The pattern must contain at least one "SAPLING", which will expand to each sapling kind.
     materials:
         S: SAPLING
         E: EMERALD_BLOCK
