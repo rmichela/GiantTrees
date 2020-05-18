@@ -27,6 +27,7 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.MultipleFacing;
 
 public class JungleVinePopulator {
 
@@ -54,16 +55,16 @@ public class JungleVinePopulator {
         west.z = change.location.getBlockZ();
 
         if ((r.nextInt(3) > 0) && (tracker.getChange(north) == null)) {
-          newChanges.add(new WorldChange(north.toVector(), Material.VINE, orient(BlockFace.NORTH)));
+          newChanges.add(new WorldChange(north.toVector(), Material.VINE, orient(BlockFace.SOUTH)));
         }
         if ((r.nextInt(3) > 0) && (tracker.getChange(south) == null)) {
-          newChanges.add(new WorldChange(south.toVector(), Material.VINE, orient(BlockFace.SOUTH)));
+          newChanges.add(new WorldChange(south.toVector(), Material.VINE, orient(BlockFace.NORTH)));
         }
         if ((r.nextInt(3) > 0) && (tracker.getChange(east) == null)) {
-          newChanges.add(new WorldChange(east.toVector(), Material.VINE, orient(BlockFace.EAST)));
+          newChanges.add(new WorldChange(east.toVector(), Material.VINE, orient(BlockFace.WEST)));
         }
         if ((r.nextInt(3) > 0) && (tracker.getChange(west) == null)) {
-          newChanges.add(new WorldChange(west.toVector(), Material.VINE, orient(BlockFace.WEST)));
+          newChanges.add(new WorldChange(west.toVector(), Material.VINE, orient(BlockFace.EAST)));
         }
       }
     }
@@ -84,9 +85,13 @@ public class JungleVinePopulator {
 
   private static UnaryOperator<BlockData> orient(BlockFace direction) {
     return blockData -> {
-      if (blockData instanceof Directional) {
-        Directional directional = (Directional) blockData;
-        directional.setFacing(direction);
+      if (blockData instanceof MultipleFacing) {
+        MultipleFacing facing = (MultipleFacing) blockData;
+        facing.setFace(BlockFace.NORTH, false);
+        facing.setFace(BlockFace.SOUTH, false);
+        facing.setFace(BlockFace.EAST, false);
+        facing.setFace(BlockFace.WEST, false);
+        facing.setFace(direction, true);
       }
       return blockData;
     };
