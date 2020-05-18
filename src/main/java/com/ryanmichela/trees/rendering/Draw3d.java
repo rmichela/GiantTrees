@@ -19,9 +19,14 @@ package com.ryanmichela.trees.rendering;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
+import org.bukkit.Axis;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Orientable;
+import org.bukkit.block.data.type.Leaves;
 import org.bukkit.util.Vector;
 import org.bukkit.util.noise.NoiseGenerator;
 import org.bukkit.util.noise.SimplexNoiseGenerator;
@@ -64,14 +69,14 @@ public class Draw3d {
     this.renderOrientation = renderOrientation;
   }
 
-  public void applyChanges(final Player forPlayer) {
-    this.changeTracker.applyChanges(this.refPoint, forPlayer);
+  public void applyChanges() {
+    changeTracker.applyChanges(refPoint);
   }
 
   public void drawCone(final Vector l1, final double rad1, final Vector l2,
                        final double rad2, final int level) {
     final Orientation orientation = Orientation.orient(l1, l2);
-    final List<Vector> centerLine = this.plotLine3d(l1, l2, orientation);
+    final List<Vector> centerLine = plotLine3d(l1, l2, orientation);
 
     // Circle stuff
     final double h = l1.distance(l2);
@@ -83,51 +88,48 @@ public class Draw3d {
       List<Point2D> circle2d;
       switch (orientation) {
         case xMajor:
-          circle2d = this.plotCircle(centerPoint.getBlockY(),
+          circle2d = plotCircle(centerPoint.getBlockY(),
                                      centerPoint.getBlockZ(),
                                      centerPoint.getBlockX(), r, level);
           for (final Point2D p : circle2d) {
-            this.changeTracker.addChange(new Vector(
-                                                    centerPoint.getBlockX(),
-                                                    (l1.getBlockY() - centerPoint.getBlockY())
-                                                        + p.p,
-                                                    (l1.getBlockZ() - centerPoint.getBlockZ())
-                                                        + p.q),
-                                         this.treeType.woodMaterial,
-                                         this.LogData(this.treeType.dataOffset,
-                                                      orientation), true);
+            changeTracker.addChange(new Vector(
+                                      centerPoint.getBlockX(),
+                                      (l1.getBlockY() - centerPoint.getBlockY())
+                                          + p.p,
+                                      (l1.getBlockZ() - centerPoint.getBlockZ())
+                                          + p.q),
+                           treeType.woodMaterial,
+                    orient(orientation), true);
           }
           break;
         case yMajor:
-          circle2d = this.plotCircle(centerPoint.getBlockX(),
+          circle2d = plotCircle(centerPoint.getBlockX(),
                                      centerPoint.getBlockZ(),
                                      centerPoint.getBlockY(), r, level);
           for (final Point2D p : circle2d) {
-            this.changeTracker.addChange(new Vector(
+            changeTracker.addChange(new Vector(
                                                     (l1.getBlockX() - centerPoint.getBlockX())
                                                         + p.p,
                                                     centerPoint.getBlockY(),
                                                     (l1.getBlockZ() - centerPoint.getBlockZ())
                                                         + p.q),
-                                         this.treeType.woodMaterial,
-                                         this.LogData(this.treeType.dataOffset,
-                                                      orientation), true);
+                                         treeType.woodMaterial,
+                    orient(orientation), true);
           }
           break;
         case zMajor:
-          circle2d = this.plotCircle(centerPoint.getBlockX(),
+          circle2d = plotCircle(centerPoint.getBlockX(),
                                      centerPoint.getBlockY(),
                                      centerPoint.getBlockZ(), r, level);
           for (final Point2D p : circle2d) {
-            this.changeTracker.addChange(new Vector(
+            changeTracker.addChange(new Vector(
                                                     (l1.getBlockX() - centerPoint.getBlockX())
                                                         + p.p,
                                                     (l1.getBlockY() - centerPoint.getBlockY())
                                                         + p.q,
                                                     centerPoint.getBlockZ()),
-                                         this.treeType.woodMaterial,
-                                         this.LogData(this.treeType.dataOffset,
-                                                      orientation), true);
+                                         treeType.woodMaterial,
+                    orient(orientation), true);
           }
           break;
       }
@@ -136,32 +138,30 @@ public class Draw3d {
 
   public void drawLeafCluster(final Vector pos, final double length,
                               final double width) {
-    for (final Vector loc : this.plotEllipsoid(pos, length, width, length, 0)) {
-      this.changeTracker.addChange(loc, this.treeType.leafMaterial,
-                                   (byte) (this.treeType.dataOffset + 4), false);
+    for (final Vector loc : plotEllipsoid(pos, length, width, length, 0)) {
+      changeTracker.addChange(loc, treeType.leafMaterial,
+                                   persist(), false);
     }
   }
 
   public void drawRootJunction(final Vector pos, final double r) {
-    for (final Vector loc : this.plotDownwardHemisphere(pos, r)) {
-      this.changeTracker.addChange(loc, this.treeType.woodMaterial,
-                                   this.LogData(this.treeType.dataOffset,
-                                                Orientation.yMajor), true);
+    for (final Vector loc : plotDownwardHemisphere(pos, r)) {
+      changeTracker.addChange(loc, treeType.woodMaterial,
+              orient(Orientation.yMajor), true);
     }
   }
 
   public void drawWoodSphere(final Vector pos, final double r,
                              final Orientation orientation, final int level) {
-    for (final Vector loc : this.plotSphere(pos, r, level)) {
-      this.changeTracker.addChange(loc, this.treeType.woodMaterial,
-                                   this.LogData(this.treeType.dataOffset,
-                                                orientation), true);
+    for (final Vector loc : plotSphere(pos, r, level)) {
+      changeTracker.addChange(loc, treeType.woodMaterial,
+              orient(orientation), true);
     }
   }
 
   public Vector
       toMcVector(final net.sourceforge.arbaro.transformation.Vector arbVec) {
-    final boolean invertY = this.renderOrientation == RenderOrientation.INVERTED;
+    final boolean invertY = renderOrientation == RenderOrientation.INVERTED;
     return new Vector(arbVec.getX(), invertY ? -arbVec.getZ() : arbVec.getZ(),
                       arbVec.getY());
   }
@@ -169,21 +169,32 @@ public class Draw3d {
   private double calculateNoiseOffset(final int x, final int y, final int z,
                                       final int multiplier, final int level) {
     final double levelScale = ((double) (4 - level) / (double) 4);
-    return (this.noise.noise(x * .25, y * .25, z * .25) + 1)
-           * this.noiseIntensity * multiplier * levelScale;
+    return (noise.noise(x * .25, y * .25, z * .25) + 1)
+           * noiseIntensity * multiplier * levelScale;
   }
 
-  private byte LogData(final byte baseData, final Orientation orientation) {
-    switch (orientation) {
-      case xMajor:
-        return (byte) (baseData + 4);
-      case yMajor:
-        return baseData;
-      case zMajor:
-        return (byte) (baseData + 8);
-      default:
-        return baseData;
-    }
+  private UnaryOperator<BlockData> orient(Orientation orientation) {
+    return blockData -> {
+      if (blockData instanceof Orientable) {
+        Orientable orientable = (Orientable) blockData;
+        switch (orientation) {
+          case xMajor: orientable.setAxis(Axis.X);
+          case yMajor: orientable.setAxis(Axis.Z);
+          case zMajor: orientable.setAxis(Axis.Y);
+        }
+      }
+      return blockData;
+    };
+  }
+
+  private UnaryOperator<BlockData> persist() {
+    return blockData -> {
+      if (blockData instanceof Leaves) {
+        Leaves leaves = (Leaves) blockData;
+        leaves.setPersistent(true);
+      }
+      return blockData;
+    };
   }
 
   private List<Point2D> plotCircle(final int cx, final int cy, final int z,
@@ -193,7 +204,7 @@ public class Draw3d {
     final int rSquare = r * r;
     for (int x = -r - 8; x <= (r + 8); x++) {
       for (int y = -r - 8; y <= (r + 8); y++) {
-        final double noiseOffset = this.calculateNoiseOffset((x + cx),
+        final double noiseOffset = calculateNoiseOffset((x + cx),
                                                              (y + cy), (z), 4,
                                                              level);
         if (((x == 0) && (y == 0))
@@ -214,7 +225,7 @@ public class Draw3d {
       for (int y = -rCeil; y <= 0; y++) {
         for (int z = -rCeil; z <= rCeil; z++) {
           final double left = (x * x) + (y * y) + (z * z);
-          final double noiseOffset = this.calculateNoiseOffset((x + pos.getBlockX()),
+          final double noiseOffset = calculateNoiseOffset((x + pos.getBlockX()),
                                                                (y + pos.getBlockY()),
                                                                (z + pos.getBlockZ()),
                                                                2, 0);
@@ -239,7 +250,7 @@ public class Draw3d {
         for (int z = -halfSize; z <= halfSize; z++) {
           final double left = ((x * x) / (a * a)) + ((y * y) / (b * b))
                               + ((z * z) / (c * c));
-          final double noiseOffset = this.calculateNoiseOffset((x + pos.getBlockX()),
+          final double noiseOffset = calculateNoiseOffset((x + pos.getBlockX()),
                                                                (y + pos.getBlockY()),
                                                                (z + pos.getBlockZ()),
                                                                1, level);
@@ -315,27 +326,27 @@ public class Draw3d {
     final List<Vector> locations = new LinkedList<>();
     if (orientation == Orientation.xMajor) /* x dominant */
     {
-      final List<Point2D> xy = this.plotLine2d(l1.getBlockX(), l1.getBlockY(),
+      final List<Point2D> xy = plotLine2d(l1.getBlockX(), l1.getBlockY(),
                                                l2.getBlockX(), l2.getBlockZ());
-      final List<Point2D> xz = this.plotLine2d(l1.getBlockX(), l1.getBlockZ(),
+      final List<Point2D> xz = plotLine2d(l1.getBlockX(), l1.getBlockZ(),
                                                l2.getBlockX(), l2.getBlockZ());
       for (int i = 0; i < Math.min(xy.size(), xz.size()); i++) {
         locations.add(new Vector(l1.getBlockX() + i, xy.get(i).q, xz.get(i).q));
       }
     } else if (orientation == Orientation.yMajor) /* y dominant */
     {
-      final List<Point2D> yx = this.plotLine2d(l1.getBlockY(), l1.getBlockX(),
+      final List<Point2D> yx = plotLine2d(l1.getBlockY(), l1.getBlockX(),
                                                l2.getBlockY(), l2.getBlockX());
-      final List<Point2D> yz = this.plotLine2d(l1.getBlockY(), l1.getBlockZ(),
+      final List<Point2D> yz = plotLine2d(l1.getBlockY(), l1.getBlockZ(),
                                                l2.getBlockY(), l2.getBlockZ());
       for (int i = 0; i < Math.min(yx.size(), yz.size()); i++) {
         locations.add(new Vector(yx.get(i).q, l1.getBlockY() + i, yz.get(i).q));
       }
     } else if (orientation == Orientation.zMajor) /* z dominant */
     {
-      final List<Point2D> zx = this.plotLine2d(l1.getBlockZ(), l1.getBlockX(),
+      final List<Point2D> zx = plotLine2d(l1.getBlockZ(), l1.getBlockX(),
                                                l2.getBlockZ(), l2.getBlockX());
-      final List<Point2D> zy = this.plotLine2d(l1.getBlockZ(), l1.getBlockY(),
+      final List<Point2D> zy = plotLine2d(l1.getBlockZ(), l1.getBlockY(),
                                                l2.getBlockZ(), l2.getBlockY());
       for (int i = 0; i < Math.min(zx.size(), zy.size()); i++) {
         locations.add(new Vector(zx.get(i).q, zy.get(i).q, l1.getBlockZ() + i));
@@ -354,7 +365,7 @@ public class Draw3d {
       for (int y = -rCeil; y <= rCeil; y++) {
         for (int z = -rCeil; z <= rCeil; z++) {
           final double left = (x * x) + (y * y) + (z * z);
-          final double noiseOffset = this.calculateNoiseOffset((x + pos.getBlockX()),
+          final double noiseOffset = calculateNoiseOffset((x + pos.getBlockX()),
                                                                (y + pos.getBlockY()),
                                                                (z + pos.getBlockZ()),
                                                                2, level);

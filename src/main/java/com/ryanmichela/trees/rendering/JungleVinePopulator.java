@@ -20,8 +20,14 @@ package com.ryanmichela.trees.rendering;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
 import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.MultipleFacing;
 
 public class JungleVinePopulator {
 
@@ -34,8 +40,7 @@ public class JungleVinePopulator {
     final List<WorldChange> newChanges = new LinkedList<>();
 
     for (final WorldChange change : tracker.getChanges()) {
-      if ((change.material == Material.LOG)
-          || (change.material == Material.LOG_2)) {
+      if (isLog(change.material)) {
         north.x = change.location.getBlockX();
         north.y = change.location.getBlockY();
         north.z = change.location.getBlockZ() - 1;
@@ -50,20 +55,16 @@ public class JungleVinePopulator {
         west.z = change.location.getBlockZ();
 
         if ((r.nextInt(3) > 0) && (tracker.getChange(north) == null)) {
-          newChanges.add(new WorldChange(north.toVector(), Material.VINE,
-                                         (byte) 1));
+          newChanges.add(new WorldChange(north.toVector(), Material.VINE, orient(BlockFace.SOUTH)));
         }
         if ((r.nextInt(3) > 0) && (tracker.getChange(south) == null)) {
-          newChanges.add(new WorldChange(south.toVector(), Material.VINE,
-                                         (byte) 4));
+          newChanges.add(new WorldChange(south.toVector(), Material.VINE, orient(BlockFace.NORTH)));
         }
         if ((r.nextInt(3) > 0) && (tracker.getChange(east) == null)) {
-          newChanges.add(new WorldChange(east.toVector(), Material.VINE,
-                                         (byte) 2));
+          newChanges.add(new WorldChange(east.toVector(), Material.VINE, orient(BlockFace.WEST)));
         }
         if ((r.nextInt(3) > 0) && (tracker.getChange(west) == null)) {
-          newChanges.add(new WorldChange(west.toVector(), Material.VINE,
-                                         (byte) 8));
+          newChanges.add(new WorldChange(west.toVector(), Material.VINE, orient(BlockFace.EAST)));
         }
       }
     }
@@ -71,5 +72,28 @@ public class JungleVinePopulator {
     for (final WorldChange newChange : newChanges) {
       tracker.addChange(newChange, false);
     }
+  }
+
+  private static boolean isLog(Material material) {
+    return  material == Material.ACACIA_LOG ||
+            material == Material.BIRCH_LOG ||
+            material == Material.DARK_OAK_LOG ||
+            material == Material.JUNGLE_LOG ||
+            material == Material.OAK_LOG ||
+            material == Material.SPRUCE_LOG;
+  }
+
+  private static UnaryOperator<BlockData> orient(BlockFace direction) {
+    return blockData -> {
+      if (blockData instanceof MultipleFacing) {
+        MultipleFacing facing = (MultipleFacing) blockData;
+        facing.setFace(BlockFace.NORTH, false);
+        facing.setFace(BlockFace.SOUTH, false);
+        facing.setFace(BlockFace.EAST, false);
+        facing.setFace(BlockFace.WEST, false);
+        facing.setFace(direction, true);
+      }
+      return blockData;
+    };
   }
 }

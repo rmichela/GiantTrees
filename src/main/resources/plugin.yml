@@ -1,9 +1,9 @@
 name: GiantTrees
 version: "${project.version}"
+api-version: "1.15"
 author: Ryan Michela
 main: com.ryanmichela.trees.TreePlugin
 description: Grows enormous trees.
-softdepend: [ProtocolLib, Multiverse-Core, MyWorlds, WorldEdit]
 load: STARTUP
 
 commands:

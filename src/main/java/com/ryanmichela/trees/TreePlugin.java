@@ -18,15 +18,11 @@
 package com.ryanmichela.trees;
 
 import java.io.File;
-import java.io.IOException;
-
-import me.desht.dhutils.nms.NMSHelper;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.mcstats.Metrics;
 
 import com.google.common.collect.ImmutableList;
 
@@ -53,14 +49,6 @@ public class TreePlugin extends JavaPlugin {
   @Override
   public void onEnable() {
     try {
-      final Metrics metrics = new Metrics(this);
-      metrics.start();
-    } catch (final IOException e) {
-      // Failed to submit the stats :-(
-    }
-
-    try {
-      NMSHelper.init(this, true);
       this.getServer().getPluginManager()
           .registerEvents(new PlantTreeEventHandler(this), this);
       // attach to worlds automatically when onlyUseWorldManagers is false
@@ -70,11 +58,6 @@ public class TreePlugin extends JavaPlugin {
       }
     } catch (final Exception e) {
       this.getLogger().severe("Failed to initialize plugin: " + e.getMessage());
-    }
-
-    if (this.getServer().getPluginManager().getPlugin("WorldEdit") == null) {
-      this.getLogger()
-          .warning("WorldEdit not installed. Undo capability disabled.");
     }
 
     this.getCommand("tree-edit").setExecutor(new EditTreeCommand(this));
@@ -88,7 +71,7 @@ public class TreePlugin extends JavaPlugin {
     }
     // unpack basic trees
     for (final String biome : ImmutableList.of("BIRCH_FOREST", "FOREST",
-                                               "JUNGLE", "ROOFED_FOREST",
+                                               "JUNGLE", "DARK_FOREST",
                                                "SAVANNA", "TAIGA")) {
       ensureTreeFileExists("biome." + biome);
     }
