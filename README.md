@@ -68,7 +68,7 @@ your tree, create another tree with the same name as your tree, with .root added
 * `gianttrees.create` (default OP) - Allows the creation of a giant tree using the tree-create command.
 * `gianttrees.grow` (default true) - Allows a player to grow a giant tree by fertilizing a grid of saplings.
 
-# Installation
+## Installation
 
 1. Make sure you have Apache Maven installed.
 1. Clone this repo.
