@@ -19,6 +19,7 @@ package com.ryanmichela.trees;
 
 import java.io.File;
 import java.util.Random;
+import java.util.logging.Level;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -41,31 +42,34 @@ public class TreePopulator extends BlockPopulator {
   }
 
   @Override
-  public void
-      populate(final World world, final Random random, final Chunk chunk) {
-    final Location refPoint = new Location(world, (chunk.getX() * 16)
-                                                  + random.nextInt(16), 64,
-                                           (chunk.getZ() * 16)
-                                               + random.nextInt(16));
-    refPoint.setY(this.getHighestSoil(world.getHighestBlockAt(refPoint)));
+  public void populate(final World world, final Random random, final Chunk chunk) {
+    try {
+      final Location refPoint = new Location(world, (chunk.getX() * 16)
+              + random.nextInt(16), 64,
+              (chunk.getZ() * 16)
+                      + random.nextInt(16));
+      refPoint.setY(this.getHighestSoil(world.getHighestBlockAt(refPoint)));
 
-    final Biome biome = this.simplifyBiome(world.getBiome(refPoint.getBlockX(),
-                                                          refPoint.getBlockZ()));
-    if (this.isAcceptableBiome(biome) && this.treeCanGrow(random)) {
-      final String treeType = biome.name();
+      final Biome biome = this.simplifyBiome(world.getBiome(refPoint.getBlockX(),
+              refPoint.getBlockZ()));
+      if (this.isAcceptableBiome(biome) && this.treeCanGrow(random)) {
+        final String treeType = biome.name();
 
-      final File treeFile = new File(this.plugin.getDataFolder(), "biome."
-                                                                  + treeType
-                                                                  + ".xml");
-      final File rootFile = new File(this.plugin.getDataFolder(), "biome."
-                                                                  + treeType
-                                                                  + ".root.xml");
+        final File treeFile = new File(this.plugin.getDataFolder(), "biome."
+                + treeType
+                + ".xml");
+        final File rootFile = new File(this.plugin.getDataFolder(), "biome."
+                + treeType
+                + ".root.xml");
 
-      if (treeFile.exists()) {
-        final TreeRenderer renderer = new TreeRenderer(this.plugin);
-        renderer.renderTree(refPoint, treeFile, rootFile, random.nextInt(),
-                            false);
+        if (treeFile.exists()) {
+          final TreeRenderer renderer = new TreeRenderer(this.plugin);
+          renderer.renderTree(refPoint, treeFile, rootFile, random.nextInt(),
+                  false);
+        }
       }
+    } catch (Exception ex) {
+      plugin.getLogger().log(Level.SEVERE, "Exception caught generating giant tree", ex);
     }
   }
 
