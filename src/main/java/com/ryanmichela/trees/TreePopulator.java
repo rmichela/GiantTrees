@@ -49,9 +49,7 @@ public class TreePopulator extends BlockPopulator {
               (chunk.getZ() * 16)
                       + random.nextInt(16));
       refPoint.setY(this.getHighestSoil(world.getHighestBlockAt(refPoint)));
-
-      final Biome biome = this.simplifyBiome(world.getBiome(refPoint.getBlockX(),
-              refPoint.getBlockZ()));
+      Biome biome = this.simplifyBiome(world.getBiome(refPoint.getBlockX(), refPoint.getBlockY(), refPoint.getBlockZ()));
       if (this.isAcceptableBiome(biome) && this.treeCanGrow(random)) {
         final String treeType = biome.name();
 
