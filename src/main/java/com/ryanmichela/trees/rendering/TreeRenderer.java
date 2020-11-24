@@ -78,94 +78,71 @@ public class TreeRenderer {
 
     final WorldChangeTracker changeTracker = new WorldChangeTracker();
 
-    this.plugin.getServer().getScheduler()
-               .runTaskAsynchronously(this.plugin, new Runnable() {
+    if (plugin.isEnabled()) {
+        this.plugin.getServer().getScheduler()
+                .runTaskAsynchronously(this.plugin, () -> {
+                    try {
+                        TreeRenderer.this.logVerbose("Rendering tree " + treeFile.getName());
+                        final Tree tree = TreeRenderer.this.loadTree(treeFile, seed);
+                        tree.make();
+                        final TreeType treeType = new TreeType(tree.params.WoodType);
+                        final Draw3d d3d = new Draw3d(refPoint,
+                                tree.params.Smooth,
+                                treeType,
+                                changeTracker,
+                                Draw3d.RenderOrientation.NORMAL);
 
-                 @Override
-                 public void run() {
-                   try {
-                     TreeRenderer.this.logVerbose("Rendering tree "
-                                                  + treeFile.getName());
-                     final Tree tree = TreeRenderer.this.loadTree(treeFile,
-                                                                  seed);
-                     tree.make();
-                     final TreeType treeType = new TreeType(
-                                                            tree.params.WoodType);
-                     final Draw3d d3d = new Draw3d(
-                                                   refPoint,
-                                                   tree.params.Smooth,
-                                                   treeType,
-                                                   changeTracker,
-                                                   Draw3d.RenderOrientation.NORMAL);
+                        final MinecraftExporter treeExporter = new MinecraftExporter(tree, d3d);
+                        treeExporter.write();
 
-                     final MinecraftExporter treeExporter = new MinecraftExporter(
-                                                                                  tree,
-                                                                                  d3d);
-                     treeExporter.write();
+                        if (tree.params.WoodType.equals("Jungle")) {
+                            JungleVinePopulator.populate(changeTracker, new Random(seed));
+                        }
 
-                     if (tree.params.WoodType.equals("Jungle")) {
-                       JungleVinePopulator.populate(changeTracker,
-                                                    new Random(seed));
-                     }
+                        d3d.drawRootJunction(d3d.toMcVector(((Segment) ((Stem) tree.trunks.get(0)).stemSegments().nextElement()).posFrom()),
+                                ((Stem) tree.trunks.get(0)).baseRadius);
 
-                     d3d.drawRootJunction(d3d.toMcVector(((Segment) ((Stem) tree.trunks.get(0)).stemSegments()
-                                                                                               .nextElement()).posFrom()),
-                                          ((Stem) tree.trunks.get(0)).baseRadius);
+                        if ((rootFile != null) && rootFile.exists()) {
+                            TreeRenderer.this.logVerbose("Rendering root "
+                                    + rootFile.getName());
+                            final Tree root = TreeRenderer.this.loadTree(rootFile,
+                                    seed);
+                            // Turn off leaves for roots and scale the roots the same
+                            // as the tree
+                            root.params.Leaves = -1;
+                            root.params.scale_tree = tree.params.scale_tree;
+                            root.make();
+                            final TreeType rootType = new TreeType(root.params.WoodType);
+                            final Draw3d d3dInverted = new Draw3d(refPoint,
+                                    root.params.Smooth,
+                                    rootType,
+                                    changeTracker,
+                                    Draw3d.RenderOrientation.INVERTED);
 
-                     if ((rootFile != null) && rootFile.exists()) {
-                       TreeRenderer.this.logVerbose("Rendering root "
-                                                    + rootFile.getName());
-                       final Tree root = TreeRenderer.this.loadTree(rootFile,
-                                                                    seed);
-                       // Turn off leaves for roots and scale the roots the same
-                       // as the tree
-                       root.params.Leaves = -1;
-                       root.params.scale_tree = tree.params.scale_tree;
-                       root.make();
-                       final TreeType rootType = new TreeType(
-                                                              root.params.WoodType);
-                       final Draw3d d3dInverted = new Draw3d(
-                                                             refPoint,
-                                                             root.params.Smooth,
-                                                             rootType,
-                                                             changeTracker,
-                                                             Draw3d.RenderOrientation.INVERTED);
+                            final MinecraftExporter treeExporterInverted = new MinecraftExporter(root, d3dInverted);
+                            treeExporterInverted.write();
+                        }
+                        AbstractParam.loading = false;
 
-                       final MinecraftExporter treeExporterInverted = new MinecraftExporter(
-                                                                                            root,
-                                                                                            d3dInverted);
-                       treeExporterInverted.write();
-                     }
-                     AbstractParam.loading = false;
+                        final long generationDelay = withDelay ? TreeRenderer.this.plugin.getConfig().getInt("generation-delay", 0) * 20 : 0;
 
-                     final long generationDelay = withDelay ? TreeRenderer.this.plugin.getConfig()
-                                                                                      .getInt("generation-delay",
-                                                                                              0) * 20
-                                                           : 0;
+                        if (plugin.isEnabled()) {
+                            TreeRenderer.this.plugin.getServer()
+                                    .getScheduler()
+                                    .runTaskLater(TreeRenderer.this.plugin,
+                                            () -> {
+                                                try {
+                                                    d3d.applyChanges();
+                                                } catch (final Exception e) {
+                                                    TreeRenderer.this.plugin.getLogger().severe("Error rendering tree: " + e.getMessage());
+                                                }
+                                            }, generationDelay);
+                        }
 
-                     TreeRenderer.this.plugin.getServer()
-                                             .getScheduler()
-                                             .runTaskLater(TreeRenderer.this.plugin,
-                                                           new Runnable() {
-
-                                                             @Override
-                                                             public void run() {
-                                                               try {
-                                                                 d3d.applyChanges();
-                                                               } catch (final Exception e) {
-                                                                 TreeRenderer.this.plugin.getLogger()
-                                                                                         .severe("Error rendering tree: "
-                                                                                                     + e.getMessage());
-                                                               }
-                                                             }
-                                                           }, generationDelay);
-
-                   } catch (final Exception e) {
-                     TreeRenderer.this.plugin.getLogger()
-                                             .severe("Error rendering tree: "
-                                                         + e.getMessage());
-                   }
-                 }
-               });
+                    } catch (final Exception e) {
+                        TreeRenderer.this.plugin.getLogger().severe("Error rendering tree: " + e.getMessage());
+                    }
+                });
+    }
   }
 }
